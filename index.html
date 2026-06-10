@@ -6,330 +6,177 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>台湾 · 全景旅游地图</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
+@font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+@font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Heavy.ttf') format('truetype');font-weight:800;font-display:swap}
+@font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Light.ttf') format('truetype');font-weight:300;font-display:swap}
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --t:#1A1817;--t2:#8A847E;--bd:#EAE8E4;--div:#F2F0ED;--sf:#FFFFFF;--bg:#FFFFFF;
-  --amber:#C88242;--green:#059669;--purple:#7C3AED;--blue:#2563EB;--grey:#8A847E;
+  --t:#1A1817;--t2:#A09894;--bd:rgba(0,0,0,0.04);--div:rgba(0,0,0,0.03);
+  --sf:#FFFFFF;--bg:#FFFFFF;
+  --amber:#C88242;--green:#059669;--purple:#7C3AED;--blue:#2563EB;--grey:#9A9490;
+  --amber-bg:rgba(200,130,66,0.06);--green-bg:rgba(5,150,105,0.06);--purple-bg:rgba(124,58,237,0.06);--blue-bg:rgba(37,99,235,0.06);--grey-bg:rgba(154,148,144,0.06);
   --bez:cubic-bezier(0.32,0.72,0,1);--spr:cubic-bezier(0.34,1.56,0.64,1);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 }
-html{scroll-behavior:smooth;scroll-padding-top:90px}
-body{font-family:'Smartisan C','Noto Sans SC',sans-serif;background:var(--bg);color:var(--t);line-height:1.6;-webkit-font-smoothing:antialiased;font-size:16px}
-.reveal{opacity:0;transform:translateY(28px);transition:all 0.9s var(--bez)}.reveal.revealed{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:0.08s}.reveal-d2{transition-delay:0.16s}.reveal-d3{transition-delay:0.24s}.reveal-d4{transition-delay:0.32s}
+html{scroll-behavior:smooth;scroll-padding-top:80px;background:var(--bg)}
+body{font-family:'Smartisan C','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--t);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:17px}
 
-/* ═══ VIEW TOGGLE ═══ */
+/* ─── Scroll Reveal ─── */
+.reveal{opacity:0;transform:translateY(24px);transition:all 0.8s var(--bez)}.reveal.revealed{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:0.06s}.reveal-d2{transition-delay:0.12s}.reveal-d3{transition-delay:0.18s}.reveal-d4{transition-delay:0.24s}
+
+/* ─── View Toggle ─── */
 .view-toggle{
-  position:fixed;top:calc(var(--safe-t) + 10px);right:16px;z-index:1100;
-  display:flex;background:rgba(26,24,23,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  position:fixed;top:calc(var(--safe-t) + 12px);right:16px;z-index:1100;
+  display:flex;background:rgba(26,24,23,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-radius:100px;padding:3px;border:1px solid rgba(255,255,255,0.06);
-  box-shadow:0 4px 24px rgba(0,0,0,0.12);
+  box-shadow:0 4px 24px rgba(0,0,0,0.08);
 }
-.view-toggle button{
-  border:none;background:transparent;color:rgba(255,255,255,0.4);
-  padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;
-  cursor:pointer;transition:all 0.3s var(--bez);font-family:'Smartisan C','Noto Sans SC',sans-serif;
-}
-.view-toggle button.active{background:rgba(200,130,66,0.25);color:#E8D5B8}
+.view-toggle button{border:none;background:transparent;color:rgba(255,255,255,0.35);padding:6px 14px;border-radius:100px;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.35s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif;letter-spacing:0.02em}
+.view-toggle button.active{background:rgba(200,130,66,0.2);color:#E8D5B8}
 
-/* ═══ DESKTOP NAV ═══ */
-.top-nav{
-  position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:1000;
-  background:rgba(26,24,23,0.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:100px;padding:0 8px 0 20px;height:50px;
-  display:flex;align-items:center;gap:6px;
-  box-shadow:0 4px 32px rgba(0,0,0,0.1);transition:all 0.6s var(--bez);
-}
-.top-nav-brand{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.92);font-weight:800;font-size:16px;white-space:nowrap}
-.top-nav-brand span{color:#E8D5B8}
-.top-nav-links{display:flex;align-items:center;gap:2px;margin-left:6px}
-.top-nav-links a{color:rgba(255,255,255,0.35);font-size:13px;padding:7px 12px;border-radius:100px;transition:all 0.35s var(--bez);font-weight:400;text-decoration:none;white-space:nowrap}
-.top-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}
-.top-nav-links a.primary{background:rgba(200,130,66,0.15);color:#E8D5B8}
-.top-nav-links a.primary:hover{background:rgba(200,130,66,0.25)}
+/* ─── Desktop Nav ─── */
+.top-nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,0.85);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(0,0,0,0.04);border-radius:100px;padding:0 6px 0 20px;height:48px;display:flex;align-items:center;gap:4px;box-shadow:0 2px 20px rgba(0,0,0,0.03);transition:all 0.6s var(--bez)}
+.top-nav-brand{display:flex;align-items:center;gap:5px;color:var(--t);font-weight:800;font-size:15px;white-space:nowrap}
+.top-nav-brand span{color:var(--amber)}
+.top-nav-links{display:flex;align-items:center;gap:1px;margin-left:4px}
+.top-nav-links a{color:var(--t2);font-size:12px;padding:6px 11px;border-radius:100px;transition:all 0.3s var(--bez);font-weight:400;text-decoration:none;white-space:nowrap}
+.top-nav-links a:hover{color:var(--t);background:rgba(0,0,0,0.03)}
+.top-nav-links a.primary{color:var(--amber)}
 
-/* ═══ MOBILE BOTTOM TAB BAR ═══ */
-.mobile-tab-bar{
-  display:none;
-  position:fixed;bottom:0;left:0;right:0;z-index:1000;
-  background:rgba(255,255,255,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border-top:1px solid var(--bd);
-  padding:6px 0 calc(var(--safe-b) + 6px);
-}
+/* ─── Mobile Tab Bar ─── */
+.mobile-tab-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(0,0,0,0.04);padding:4px 0 calc(var(--safe-b) + 4px)}
 .mobile-tab-bar .tabs{display:flex;justify-content:space-around;align-items:center}
-.mobile-tab-bar .tab{
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  padding:4px 0;border:none;background:transparent;cursor:pointer;
-  color:var(--t2);font-size:10px;font-weight:500;font-family:'Smartisan C','Noto Sans SC',sans-serif;
-  transition:all 0.25s var(--bez);min-width:56px;
-}
+.mobile-tab-bar .tab{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 0;border:none;background:transparent;cursor:pointer;color:var(--t2);font-size:10px;font-weight:500;font-family:'Smartisan C','PingFang SC',sans-serif;transition:all 0.25s var(--bez);min-width:56px}
 .mobile-tab-bar .tab .icon{font-size:20px;line-height:1;transition:transform 0.25s var(--spr)}
-.mobile-tab-bar .tab.active{color:var(--amber)}
-.mobile-tab-bar .tab.active .icon{transform:scale(1.1)}
+.mobile-tab-bar .tab.active{color:var(--t)}
+.mobile-tab-bar .tab.active .icon{transform:scale(1.08)}
 
-/* ═══ MOBILE HERO (compact) ═══ */
-.hero{position:relative;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(150deg,#1A1817 0%,#2A2725 35%,#1A1817 100%)}
-.hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 45% at 30% 30%,rgba(200,130,66,0.07) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 70% 60%,rgba(232,213,184,0.04) 0%,transparent 70%)}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.008) 1px,transparent 1px);background-size:56px 56px}
-.hero-noise{position:absolute;inset:0;opacity:0.02;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px 256px}
-.hero-content{position:relative;z-index:2;text-align:center;padding:0 28px;max-width:700px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 14px;border-radius:100px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);font-size:12px;font-weight:300;color:rgba(232,213,184,0.75);margin-bottom:24px;letter-spacing:0.12em}
-.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.2}}
-.hero h1{font-size:clamp(2.8rem,6vw,5rem);font-weight:800;color:#fff;line-height:1.08;margin-bottom:16px;letter-spacing:-0.05em}
-.hero h1 span{color:#E8D5B8}
-.hero-sub{font-size:clamp(0.95rem,1.3vw,1.1rem);color:rgba(255,255,255,0.3);max-width:480px;margin:0 auto 40px;font-weight:300;line-height:1.7}
-.hero-stats{display:flex;gap:48px;justify-content:center;flex-wrap:wrap}
+/* ─── Hero ─── */
+.hero{position:relative;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 40%,rgba(200,130,66,0.03) 0%,transparent 70%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:580px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px 5px 12px;border-radius:100px;background:var(--amber-bg);font-size:11px;font-weight:400;color:var(--amber);margin-bottom:20px;letter-spacing:0.08em}
+.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--amber);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+.hero h1{font-size:clamp(2.6rem,7vw,4.8rem);font-weight:800;color:var(--t);line-height:1.06;margin-bottom:14px;letter-spacing:-0.05em}
+.hero h1 span{color:var(--amber)}
+.hero-sub{font-size:clamp(0.9rem,1.2vw,1.05rem);color:var(--t2);max-width:420px;margin:0 auto 32px;font-weight:300;line-height:1.7}
+.hero-stats{display:flex;gap:36px;justify-content:center;flex-wrap:wrap}
 .hero-stat{text-align:center}
-.hero-stat-num{font-size:2.8rem;font-weight:800;color:#E8D5B8;line-height:1;letter-spacing:-0.04em}
-.hero-stat-label{font-size:12px;color:rgba(255,255,255,0.28);margin-top:6px;font-weight:300;letter-spacing:0.06em}
+.hero-stat-num{font-size:2.6rem;font-weight:800;color:var(--t);line-height:1;letter-spacing:-0.03em}
+.hero-stat-label{font-size:11px;color:var(--t2);margin-top:4px;font-weight:300;letter-spacing:0.04em}
 
-/* ═══ CONTAINER ═══ */
-.container{max-width:1200px;margin:0 auto;padding:0 28px}
-.section-head{text-align:center;margin-bottom:48px}
-.section-head .eyebrow{font-size:12px;font-weight:400;letter-spacing:0.18em;color:var(--t2);margin-bottom:8px}
-.section-head h2{font-size:clamp(1.5rem,2.4vw,2rem);font-weight:800;letter-spacing:-0.03em}
-.section-head .line{width:28px;height:2px;border-radius:2px;background:var(--amber);margin:12px auto 0;opacity:0.4}
+/* ─── Container ─── */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section-head{text-align:center;margin-bottom:36px}
+.section-head .eyebrow{font-size:11px;font-weight:400;letter-spacing:0.18em;color:var(--t2);margin-bottom:6px}
+.section-head h2{font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;letter-spacing:-0.02em}
+.section-head .line{width:24px;height:2px;border-radius:2px;background:var(--amber);margin:10px auto 0;opacity:0.3}
 
-/* ═══ MAP ═══ */
-#map-section{padding:80px 0 48px;background:var(--bg)}
-.map-wrapper{border-radius:24px;overflow:hidden;border:1px solid var(--bd);height:600px}
+/* ─── Map ─── */
+#map-section{padding:64px 0 40px;background:var(--bg)}
+.map-wrapper{border-radius:20px;overflow:hidden;height:560px}
 #travel-map{width:100%;height:100%}
-.day-buttons{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
-.day-btn{padding:10px 22px;border-radius:100px;border:none;font-size:14px;font-weight:500;cursor:pointer;color:#fff;transition:all 0.4s var(--bez);opacity:0.5;display:flex;align-items:center;gap:6px}
-.day-btn:hover{opacity:0.75;transform:translateY(-2px)}
-.day-btn.active{opacity:1;box-shadow:0 6px 24px rgba(0,0,0,0.1);transform:translateY(-2px)}
-.day-btn .num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.18);font-size:12px;font-weight:700}
-.leaflet-popup-content-wrapper{border-radius:16px!important;box-shadow:0 8px 48px rgba(0,0,0,0.1)!important}
-.leaflet-popup-content{margin:12px 16px!important;font-family:'Smartisan C','Noto Sans SC',sans-serif!important;min-width:180px}
-.poptitle{font-weight:700;font-size:15px;margin-bottom:3px;display:flex;align-items:center;gap:4px}
-.popdesc{font-size:13px;color:var(--t2);line-height:1.4;font-weight:400}
-.popnum{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:700;color:#fff;margin-right:4px}
-.popday{font-size:12px;color:var(--t2);margin-top:4px;font-weight:500}
+.day-buttons{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.day-btn{padding:8px 18px;border-radius:100px;border:none;font-size:13px;font-weight:500;cursor:pointer;color:#fff;transition:all 0.4s var(--bez);opacity:0.45;display:flex;align-items:center;gap:5px}
+.day-btn:hover{opacity:0.7;transform:translateY(-1px)}
+.day-btn.active{opacity:1;box-shadow:0 4px 16px rgba(0,0,0,0.06);transform:translateY(-1px)}
+.day-btn .num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.18);font-size:11px;font-weight:700}
 
-/* ═══ ITINERARY ═══ */
-#itinerary{padding:48px 0 80px;background:var(--bg)}
-.progress-bar{margin-bottom:40px}
-.progress-bar-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.progress-bar-header .label{font-size:15px;font-weight:600}
-.progress-bar-header .count{font-size:14px;color:var(--t2);font-weight:400}
-.progress-track{height:6px;background:var(--div);border-radius:100px;overflow:hidden}
+.leaflet-popup-content-wrapper{border-radius:14px!important;box-shadow:0 6px 32px rgba(0,0,0,0.06)!important}
+.leaflet-popup-content{margin:10px 14px!important;font-family:'Smartisan C','PingFang SC',sans-serif!important;min-width:160px}
+.poptitle{font-weight:700;font-size:14px;margin-bottom:2px;display:flex;align-items:center;gap:4px}
+.popdesc{font-size:12px;color:var(--t2);line-height:1.4;font-weight:400}
+.popnum{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;color:#fff;margin-right:4px}
+.popday{font-size:11px;color:var(--t2);margin-top:3px;font-weight:500}
+
+/* ─── Itinerary ─── */
+#itinerary{padding:40px 0 64px;background:var(--bg)}
+.progress-bar{margin-bottom:32px}
+.progress-bar-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.progress-bar-header .label{font-size:14px;font-weight:600}
+.progress-bar-header .count{font-size:13px;color:var(--t2);font-weight:400}
+.progress-track{height:5px;background:var(--div);border-radius:100px;overflow:hidden}
 .progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--amber),var(--green));transition:width 0.7s var(--bez);width:0%}
 
-.day-section{margin-bottom:28px;border:1px solid var(--bd);border-radius:20px;background:var(--sf);transition:all 0.4s var(--bez)}
-.day-section:hover{border-color:#D6D2CC}
-.day-section-header{padding:22px 28px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--div);flex-wrap:wrap}
-.day-section-header .dnum{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0}
-.day-section-header .dtitle{font-weight:700;font-size:1.1rem;letter-spacing:-0.01em}
-.day-section-header .ddate{font-size:13px;color:var(--t2);margin-left:auto;font-weight:400}
-.day-progress-mini{width:100%;margin-top:10px;display:flex;align-items:center;gap:12px}
-.day-progress-mini .track{flex:1;height:5px;background:var(--div);border-radius:100px;overflow:hidden}
+.day-shell{padding:1px;margin-bottom:20px;border-radius:18px;transition:all 0.4s var(--bez);background:var(--sf)}
+.day-section{border-radius:17px;background:var(--sf);overflow:hidden}
+.day-section-header{padding:18px 22px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--div);flex-wrap:wrap}
+.day-section-header .dnum{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
+.day-section-header .dtitle{font-weight:700;font-size:1rem;letter-spacing:-0.01em}
+.day-section-header .ddate{font-size:12px;color:var(--t2);margin-left:auto;font-weight:400}
+.day-progress-mini{width:100%;margin-top:8px;display:flex;align-items:center;gap:10px}
+.day-progress-mini .track{flex:1;height:4px;background:var(--div);border-radius:100px;overflow:hidden}
 .day-progress-mini .track .fill{height:100%;border-radius:100px;transition:width 0.6s var(--bez);width:0%}
-.day-progress-mini .count{font-size:13px;color:var(--t2);white-space:nowrap;font-weight:400;min-width:32px;text-align:right}
-.day-section-body{padding:16px 24px 24px}
-.ditems{display:grid;gap:4px}
-.ditem{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:12px;background:var(--bg);font-size:15px;font-weight:400;transition:all 0.3s var(--bez)}
-.ditem:hover{background:#F8F7F5}
-.ditem.checked{background:#F4FBF0;opacity:0.6}
+.day-progress-mini .count{font-size:12px;color:var(--t2);white-space:nowrap;font-weight:400;min-width:30px;text-align:right}
+.day-section-body{padding:14px 20px 20px}
+.ditems{display:grid;gap:3px}
+
+.ditem{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,0.015);font-size:15px;font-weight:400;transition:all 0.3s var(--bez)}
+.ditem.checked{background:var(--green-bg);opacity:0.55}
 .ditem.checked .txt{text-decoration:line-through;color:var(--t2)}
-.ditem .cb{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid #D4CDC6;cursor:pointer;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spr);background:var(--sf);font-size:12px;color:transparent}
-.ditem .cb:hover{border-color:var(--amber);background:rgba(200,130,66,0.08)}
+.ditem .cb{flex-shrink:0;width:24px;height:24px;border-radius:6px;border:2px solid rgba(0,0,0,0.08);cursor:pointer;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spr);background:var(--sf);font-size:12px;color:transparent}
 .ditem .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
-.ditem .idx{flex-shrink:0;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-top:1px}
-.ditem .ic{flex-shrink:0;font-size:17px;margin-top:1px}
-.ditem .txt{line-height:1.65;flex:1}
+.ditem .idx{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin-top:1px}
+.ditem .ic{flex-shrink:0;font-size:16px;margin-top:1px;opacity:0.75}
+.ditem .txt{line-height:1.6;flex:1}
 .ditem .txt .hl{font-weight:600}
-.ditem .tags{display:flex;flex-wrap:wrap;gap:4px 8px;margin-top:3px}
-.ditem .tags span{font-size:12px;color:var(--t2);background:var(--div);padding:2px 8px;border-radius:5px;font-weight:400}
+.ditem .tags{display:flex;flex-wrap:wrap;gap:3px 6px;margin-top:2px}
+.ditem .tags span{font-size:11px;color:var(--t2);background:var(--div);padding:2px 7px;border-radius:4px;font-weight:400}
 
-/* ═══ FOOD ═══ */
-#food{padding:80px 0;background:var(--bg);border-top:1px solid var(--div)}
-.food-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.food-card{display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:18px;border:1px solid var(--bd);background:var(--sf);font-size:15px;font-weight:400;transition:all 0.35s var(--bez)}
-.food-card:hover{border-color:#D6D2CC;transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,0,0,0.03)}
-.food-card .brand-logo{width:48px;height:48px;border-radius:14px;object-fit:contain;background:var(--div);padding:6px;flex-shrink:0}
+/* ─── Food ─── */
+#food{padding:64px 0;background:var(--bg)}
+.food-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.food-card{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:16px;background:rgba(0,0,0,0.015);font-size:14px;font-weight:400;transition:all 0.35s var(--bez)}
+.food-card .brand-logo{width:44px;height:44px;border-radius:12px;object-fit:contain;background:rgba(0,0,0,0.02);padding:5px;flex-shrink:0}
 .food-card-info{flex:1;min-width:0}
-.food-card-info .name{font-weight:700;font-size:16px;margin-bottom:2px}
-.food-card-info .place{font-size:13px;color:var(--t2);font-weight:400}
-.food-supermarket{margin-top:36px;padding:24px 28px;border:1px solid var(--bd);border-radius:18px;background:var(--sf);font-size:15px;text-align:center}
-.food-supermarket .title{font-weight:700;font-size:16px;margin-bottom:12px}
-.food-supermarket .items{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.food-supermarket .sm-item{display:inline-flex;align-items:center;gap:6px;background:var(--div);padding:5px 14px 5px 6px;border-radius:10px;font-size:13px;font-weight:400}
-.food-supermarket .sm-item img{width:22px;height:22px;border-radius:5px;object-fit:contain;background:#fff;padding:2px}
+.food-card-info .name{font-weight:700;font-size:15px;margin-bottom:1px}
+.food-card-info .place{font-size:12px;color:var(--t2);font-weight:400}
+.food-supermarket{margin-top:28px;padding:20px 22px;border-radius:16px;background:rgba(0,0,0,0.015);font-size:14px;text-align:center}
+.food-supermarket .title{font-weight:700;font-size:15px;margin-bottom:10px}
+.food-supermarket .items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.food-supermarket .sm-item{display:inline-flex;align-items:center;gap:5px;background:var(--div);padding:4px 12px 4px 5px;border-radius:8px;font-size:12px;font-weight:400}
+.food-supermarket .sm-item img{width:20px;height:20px;border-radius:4px;object-fit:contain;background:#fff;padding:2px}
 
-/* ═══ PACKING ═══ */
-#packing{padding:80px 0;background:var(--bg);border-top:1px solid var(--div)}
-.packing-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
-.packing-header .label{font-weight:700;font-size:1.05rem}
-.packing-header .count{font-size:14px;color:var(--t2);font-weight:400}
-.packing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.packing-item{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:14px;border:1px solid var(--bd);background:var(--sf);font-size:15px;font-weight:400;transition:all 0.3s var(--bez)}
-.packing-item:hover{border-color:#D6D2CC}
-.packing-item.checked{background:#F4FBF0;border-color:rgba(5,150,105,0.2);opacity:0.55}
+/* ─── Packing ─── */
+#packing{padding:64px 0;background:var(--bg)}
+.packing-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.packing-header .label{font-weight:700;font-size:1rem}
+.packing-header .count{font-size:13px;color:var(--t2);font-weight:400}
+.packing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.packing-item{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.015);font-size:14px;font-weight:400;transition:all 0.3s var(--bez)}
+.packing-item.checked{background:var(--green-bg);opacity:0.5}
 .packing-item.checked span{text-decoration:line-through;color:var(--t2)}
-.packing-item .cb{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid #D4CDC6;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spr);background:var(--sf);font-size:12px;color:transparent}
-.packing-item .cb:hover{border-color:var(--amber);background:rgba(200,130,66,0.08)}
+.packing-item .cb{flex-shrink:0;width:24px;height:24px;border-radius:6px;border:2px solid rgba(0,0,0,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spr);background:var(--sf);font-size:12px;color:transparent}
 .packing-item .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
 
-.footer{text-align:center;padding:32px 28px;color:var(--t2);font-size:12px;border-top:1px solid var(--div);font-weight:300}
+.footer{text-align:center;padding:24px 20px;color:var(--t2);font-size:11px;font-weight:300}
 
-/* ═══ MOBILE DAY PILLS (horizontal scroll) ═══ */
-.mobile-day-pills{
-  display:none;
-  position:sticky;top:0;z-index:100;
-  background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  padding:8px 16px;
-  overflow-x:auto;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;gap:8px;
-}
+/* ─── Mobile Day Pills ─── */
+.mobile-day-pills{display:none;position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:8px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px}
 .mobile-day-pills::-webkit-scrollbar{display:none}
-.mobile-day-pills .pill{
-  flex-shrink:0;padding:8px 18px;border-radius:100px;border:1px solid var(--bd);
-  background:var(--sf);font-size:13px;font-weight:500;cursor:pointer;
-  transition:all 0.3s var(--bez);font-family:'Smartisan C','Noto Sans SC',sans-serif;
-  color:var(--t2);display:flex;align-items:center;gap:6px;white-space:nowrap;
-}
-.mobile-day-pills .pill .pnum{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;color:#fff;
-}
-.mobile-day-pills .pill.active{border-color:var(--amber);color:var(--t);background:rgba(200,130,66,0.06)}
+.mobile-day-pills .pill{flex-shrink:0;padding:7px 16px;border-radius:100px;background:rgba(0,0,0,0.02);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.3s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif;color:var(--t2);display:flex;align-items:center;gap:5px;white-space:nowrap;border:none}
+.mobile-day-pills .pill .pnum{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;color:#fff}
+.mobile-day-pills .pill.active{color:var(--t);background:rgba(200,130,66,0.08)}
 
-/* ═══ MOBILE SECTIONS (hidden by default, shown per day pill) ═══ */
-.mobile-section{display:none}
-
-/* ═══════════════════════════════════
-   MOBILE VIEW (iPhone 17 optimized)
-   393pt width, Dynamic Island safe area
-   ═══════════════════════════════════ */
-@media(max-width:430px){
-  html{scroll-padding-top:60px}
-
-  /* Desktop nav hidden, bottom bar shown */
-  .top-nav{display:none}
-  .view-toggle{top:calc(var(--safe-t) + 8px);right:12px}
-  .view-toggle button{padding:5px 12px;font-size:11px}
-  .mobile-tab-bar{display:block}
-
-  /* Hero compact */
-  .hero{min-height:60dvh;padding-top:calc(var(--safe-t) + 40px)}
-  .hero h1{font-size:2.2rem}
-  .hero-sub{font-size:0.9rem;margin-bottom:28px}
-  .hero-stats{gap:24px}
-  .hero-stat-num{font-size:2rem}
-
-  /* Container */
-  .container{padding:0 16px}
-
-  /* Section heads */
-  .section-head{margin-bottom:28px}
-  .section-head h2{font-size:1.4rem}
-
-  /* Map */
-  #map-section{padding:0}
-  #map-section>.container{padding:0}
-  .map-wrapper{border-radius:0;height:45dvh;border-left:none;border-right:none}
-  .day-buttons{display:none} /* Use mobile pills instead */
-
-  /* Mobile day pills shown */
-  .mobile-day-pills{display:flex}
-
-  /* Itinerary */
-  #itinerary{padding:16px 0 calc(80px + var(--safe-b))}
-  .progress-bar{margin-bottom:20px}
-  .day-section{margin-bottom:16px;border-radius:16px}
-  .day-section-header{padding:16px 18px;gap:10px}
-  .day-section-header .dnum{width:32px;height:32px;border-radius:10px;font-size:14px}
-  .day-section-header .dtitle{font-size:0.95rem}
-  .day-section-header .ddate{font-size:12px}
-  .day-section-body{padding:10px 14px 16px}
-  .ditems{gap:3px}
-  .ditem{padding:10px 12px;gap:10px;border-radius:10px;font-size:14px}
-  .ditem .cb{width:26px;height:26px;border-radius:7px;font-size:13px}
-  .ditem .idx{width:22px;height:22px;font-size:11px}
-  .ditem .ic{font-size:15px}
-  .ditem .tags span{font-size:11px;padding:2px 6px}
-
-  /* Food */
-  #food{padding:24px 0 calc(80px + var(--safe-b))}
-  .food-grid{grid-template-columns:1fr;gap:10px}
-  .food-card{padding:14px 16px;gap:14px;border-radius:14px}
-  .food-card .brand-logo{width:44px;height:44px;border-radius:12px}
-  .food-card-info .name{font-size:15px}
-  .food-card-info .place{font-size:12px}
-  .food-supermarket{padding:16px 18px;border-radius:14px;margin-top:20px}
-  .food-supermarket .sm-item{font-size:12px;padding:4px 10px 4px 4px}
-
-  /* Packing */
-  #packing{padding:24px 0 calc(80px + var(--safe-b))}
-  .packing-grid{grid-template-columns:1fr 1fr;gap:8px}
-  .packing-item{padding:12px 14px;border-radius:12px;font-size:13px;gap:10px}
-  .packing-item .cb{width:26px;height:26px;border-radius:7px}
-
-  .footer{padding:20px 16px calc(var(--safe-b) + 20px);font-size:11px}
-}
-
-/* ═══ VIEW MODE STATE ═══ */
-body.mobile-mode .top-nav{display:none}
-body.mobile-mode .mobile-tab-bar{display:block}
-body.mobile-mode .mobile-day-pills{display:flex}
-body.mobile-mode #map-section{padding:0}
-body.mobile-mode #map-section>.container{padding:0}
-body.mobile-mode .map-wrapper{border-radius:0;height:45dvh;border-left:none;border-right:none}
-body.mobile-mode .day-buttons{display:none}
-body.mobile-mode .container{padding:0 16px}
-body.mobile-mode #itinerary{padding:16px 0 calc(80px + var(--safe-b))}
-body.mobile-mode .progress-bar{margin-bottom:20px}
-body.mobile-mode .day-section{margin-bottom:16px;border-radius:16px}
-body.mobile-mode .day-section-header{padding:16px 18px;gap:10px}
-body.mobile-mode .day-section-header .dnum{width:32px;height:32px;border-radius:10px;font-size:14px}
-body.mobile-mode .day-section-header .dtitle{font-size:0.95rem}
-body.mobile-mode .day-section-header .ddate{font-size:12px}
-body.mobile-mode .day-section-body{padding:10px 14px 16px}
-body.mobile-mode .ditems{gap:3px}
-body.mobile-mode .ditem{padding:10px 12px;gap:10px;border-radius:10px;font-size:14px}
-body.mobile-mode .ditem .cb{width:26px;height:26px;border-radius:7px;font-size:13px}
-body.mobile-mode .ditem .idx{width:22px;height:22px;font-size:11px}
-body.mobile-mode .ditem .ic{font-size:15px}
-body.mobile-mode .ditem .tags span{font-size:11px;padding:2px 6px}
-body.mobile-mode #food{padding:24px 0 calc(80px + var(--safe-b))}
-body.mobile-mode .food-grid{grid-template-columns:1fr;gap:10px}
-body.mobile-mode .food-card{padding:14px 16px;gap:14px;border-radius:14px}
-body.mobile-mode .food-card .brand-logo{width:44px;height:44px;border-radius:12px}
-body.mobile-mode .food-card-info .name{font-size:15px}
-body.mobile-mode .food-card-info .place{font-size:12px}
-body.mobile-mode .food-supermarket{padding:16px 18px;border-radius:14px;margin-top:20px}
-body.mobile-mode #packing{padding:24px 0 calc(80px + var(--safe-b))}
-body.mobile-mode .packing-grid{grid-template-columns:1fr 1fr;gap:8px}
-body.mobile-mode .packing-item{padding:12px 14px;border-radius:12px;font-size:13px;gap:10px}
-body.mobile-mode .packing-item .cb{width:26px;height:26px;border-radius:7px}
-body.mobile-mode .footer{padding:20px 16px calc(var(--safe-b) + 20px);font-size:11px}
-body.mobile-mode .view-toggle{top:calc(var(--safe-t) + 8px);right:12px}
-body.mobile-mode .view-toggle button{padding:5px 12px;font-size:11px}
-body.mobile-mode .hero{min-height:60dvh;padding-top:calc(var(--safe-t) + 40px)}
-body.mobile-mode .hero h1{font-size:2.2rem}
-body.mobile-mode .hero-sub{font-size:0.9rem;margin-bottom:28px}
-body.mobile-mode .hero-stats{gap:24px}
-body.mobile-mode .hero-stat-num{font-size:2rem}
-body.mobile-mode .section-head{margin-bottom:28px}
-body.mobile-mode .section-head h2{font-size:1.4rem}
+@media(max-width:640px){.top-nav{display:none}.view-toggle{top:calc(var(--safe-t) + 6px);right:10px}.view-toggle button{padding:5px 10px;font-size:10px}.mobile-tab-bar{display:block}.hero{min-height:70dvh;padding-top:calc(var(--safe-t) + 50px)}.container{padding:0 14px}.section-head{margin-bottom:24px}.section-head h2{font-size:1.25rem}#map-section{padding:0}#map-section>.container{padding:0}.map-wrapper{border-radius:0;height:50dvh}.day-buttons{display:none}.mobile-day-pills{display:flex}#itinerary{padding:12px 0 calc(72px + var(--safe-b))}.progress-bar{margin-bottom:16px}.day-shell{margin-bottom:14px}.day-section-header{padding:14px 16px;gap:8px}.day-section-header .dnum{width:28px;height:28px;border-radius:8px;font-size:12px}.day-section-header .dtitle{font-size:0.9rem}.day-section-header .ddate{font-size:11px}.day-section-body{padding:10px 12px 14px}.ditem{padding:8px 10px;gap:8px;border-radius:8px;font-size:14px}.ditem .cb{width:26px;height:26px;border-radius:7px;font-size:13px}.ditem .idx{width:20px;height:20px;font-size:10px}.ditem .ic{font-size:14px}.ditem .tags span{font-size:10px;padding:1px 6px}#food{padding:20px 0 calc(72px + var(--safe-b))}.food-grid{grid-template-columns:1fr;gap:8px}.food-card{padding:12px 14px;gap:12px;border-radius:14px}.food-card .brand-logo{width:40px;height:40px;border-radius:10px}.food-card-info .name{font-size:14px}.food-card-info .place{font-size:11px}.food-supermarket{padding:14px 16px;border-radius:14px;margin-top:16px}#packing{padding:20px 0 calc(72px + var(--safe-b))}.packing-grid{grid-template-columns:1fr 1fr;gap:6px}.packing-item{padding:10px 12px;border-radius:10px;font-size:13px;gap:8px}.packing-item .cb{width:26px;height:26px;border-radius:7px}.footer{padding:16px 14px calc(var(--safe-b) + 16px);font-size:10px}}
 </style>
 </head>
 <body>
 
-<!-- ═══ VIEW TOGGLE ═══ -->
+<!-- View Toggle -->
 <div class="view-toggle" id="viewToggle">
   <button data-view="desktop" class="active">桌面</button>
   <button data-view="mobile">手机</button>
 </div>
 
-<!-- ═══ DESKTOP NAV ═══ -->
+<!-- Desktop Nav -->
 <nav class="top-nav">
   <div class="top-nav-brand"><span>台</span>湾 · 全景</div>
   <div class="top-nav-links">
@@ -339,7 +186,7 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
   </div>
 </nav>
 
-<!-- ═══ MOBILE BOTTOM TAB BAR ═══ -->
+<!-- Mobile Tab Bar -->
 <div class="mobile-tab-bar" id="mobileTabBar">
   <div class="tabs">
     <button class="tab active" data-tab="itinerary"><span class="icon">📋</span>行程</button>
@@ -349,11 +196,9 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
   </div>
 </div>
 
-<!-- ═══ HERO ═══ -->
+<!-- Hero -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-noise"></div>
   <div class="hero-content reveal">
     <div class="hero-badge"><span class="dot"></span> 2025 · 初夏宝岛之旅</div>
     <h1>台湾·<span>全景行</span></h1>
@@ -367,16 +212,16 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
   </div>
 </section>
 
-<!-- ═══ MOBILE DAY PILLS (sticky, shown in mobile mode) ═══ -->
+<!-- Mobile Day Pills -->
 <div class="mobile-day-pills" id="mobilePills">
-  <button class="pill active" data-day="1"><span class="pnum" style="background:var(--amber)">1</span> 出发 · 6/17</button>
-  <button class="pill" data-day="2"><span class="pnum" style="background:var(--green)">2</span> 花莲 · 6/18</button>
-  <button class="pill" data-day="3"><span class="pnum" style="background:var(--purple)">3</span> 台北 · 6/19</button>
-  <button class="pill" data-day="4"><span class="pnum" style="background:var(--blue)">4</span> 巡礼 · 6/20</button>
-  <button class="pill" data-day="5"><span class="pnum" style="background:var(--grey)">5</span> 返程 · 6/21</button>
+  <button class="pill active" data-day="1"><span class="pnum" style="background:var(--amber)">1</span> 出发</button>
+  <button class="pill" data-day="2"><span class="pnum" style="background:var(--green)">2</span> 花莲</button>
+  <button class="pill" data-day="3"><span class="pnum" style="background:var(--purple)">3</span> 巡礼</button>
+  <button class="pill" data-day="4"><span class="pnum" style="background:var(--blue)">4</span> 深度</button>
+  <button class="pill" data-day="5"><span class="pnum" style="background:var(--grey)">5</span> 返程</button>
 </div>
 
-<!-- ═══ MAP ═══ -->
+<!-- Map -->
 <section id="map-section">
   <div class="container">
     <div class="section-head reveal">
@@ -395,7 +240,7 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
   </div>
 </section>
 
-<!-- ═══ ITINERARY ═══ -->
+<!-- Itinerary -->
 <section id="itinerary">
   <div class="container">
     <div class="section-head reveal">
@@ -412,8 +257,7 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
       <div class="progress-track"><div class="progress-fill" id="totalFill"></div></div>
     </div>
 
-    <!-- Day 1 -->
-    <div class="day-section reveal" id="day-1">
+    <div class="day-shell reveal" id="day-1"><div class="day-section">
       <div class="day-section-header">
         <div class="dnum" style="background:linear-gradient(135deg,var(--amber),#D4A05A)">1</div>
         <div class="dtitle">飞抵台北 → 花莲</div>
@@ -437,10 +281,9 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
           <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">10</div><div class="ic">🥟</div><div class="txt">花莲香扁食 + 曾师傅麻糬<div class="tags"><span>🥜 花生麻糬·红豆麻糬</span><span>🟣 现包紫米·御皇酥</span></div></div></div>
         </div>
       </div>
-    </div>
+    </div></div>
 
-    <!-- Day 2 -->
-    <div class="day-section reveal reveal-d1" id="day-2">
+    <div class="day-shell reveal reveal-d1" id="day-2"><div class="day-section">
       <div class="day-section-header">
         <div class="dnum" style="background:linear-gradient(135deg,var(--green),#34D399)">2</div>
         <div class="dtitle">花莲 · 山海一日</div>
@@ -463,10 +306,9 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
           <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">9</div><div class="ic">🌙</div><div class="txt"><span class="hl">19:00</span> 东大门夜市<div class="tags"><span>🥖 法式棺材饭</span><span>🧋 言可不妙芋头牛奶</span><span>🍠 开运屋手工地瓜球</span><span>🥞 强蛋饼</span></div></div></div>
         </div>
       </div>
-    </div>
+    </div></div>
 
-    <!-- Day 3 -->
-    <div class="day-section reveal reveal-d2" id="day-3">
+    <div class="day-shell reveal reveal-d2" id="day-3"><div class="day-section">
       <div class="day-section-header">
         <div class="dnum" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">3</div>
         <div class="dtitle">花莲→台北 · 经典巡礼</div>
@@ -488,10 +330,9 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
           <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">8</div><div class="ic">🌙</div><div class="txt"><span class="hl">18:00</span> 饶河夜市<div class="tags"><span>🏯 松山慈祐宫</span><span>🫓 福州世祖胡椒饼</span><span>🫘 下港名彭臭豆腐</span><span>🌭 马告肠·好腸好嚐</span></div></div></div>
         </div>
       </div>
-    </div>
+    </div></div>
 
-    <!-- Day 4 -->
-    <div class="day-section reveal reveal-d3" id="day-4">
+    <div class="day-shell reveal reveal-d3" id="day-4"><div class="day-section">
       <div class="day-section-header">
         <div class="dnum" style="background:linear-gradient(135deg,var(--blue),#60A5FA)">4</div>
         <div class="dtitle">台北深度 · 文化巡礼</div>
@@ -511,10 +352,9 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
           <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--blue)">6</div><div class="ic">⏰</div><div class="txt">捷运末班车 12:00</div></div>
         </div>
       </div>
-    </div>
+    </div></div>
 
-    <!-- Day 5 -->
-    <div class="day-section reveal reveal-d4" id="day-5">
+    <div class="day-shell reveal reveal-d4" id="day-5"><div class="day-section">
       <div class="day-section-header">
         <div class="dnum" style="background:linear-gradient(135deg,var(--grey),#A8A29E)">5</div>
         <div class="dtitle">返程 · 台湾→香港</div>
@@ -531,11 +371,11 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
           <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--grey)">3</div><div class="ic">🛬</div><div class="txt"><span class="hl">10:05</span> 抵达香港</div></div>
         </div>
       </div>
-    </div>
+    </div></div>
   </div>
 </section>
 
-<!-- ═══ FOOD ═══ -->
+<!-- Food -->
 <section id="food">
   <div class="container">
     <div class="section-head reveal">
@@ -568,14 +408,14 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
   </div>
 </section>
 
-<!-- ═══ PACKING ═══ -->
+<!-- Packing -->
 <section id="packing">
   <div class="container">
     <div class="packing-header reveal">
       <span class="label">出行清单</span>
       <span class="count">已完成 <span id="packDone">0</span>/<span id="packTotal">0</span></span>
     </div>
-    <div class="progress-track reveal" style="margin-bottom:16px"><div class="progress-fill" id="packFill" style="background:linear-gradient(90deg,#3B82F6,#22C55E)"></div></div>
+    <div class="progress-track reveal" style="margin-bottom:14px"><div class="progress-fill" id="packFill" style="background:linear-gradient(90deg,#3B82F6,#22C55E)"></div></div>
     <div class="packing-grid" id="packingGrid">
       <div class="packing-item reveal"><div class="cb"></div><span>📇 卡针</span></div>
       <div class="packing-item reveal reveal-d1"><div class="cb"></div><span>🔌 转换头</span></div>
@@ -591,124 +431,50 @@ body.mobile-mode .section-head h2{font-size:1.4rem}
   </div>
 </section>
 
-<footer class="footer">台湾全景旅游地图 · 2025年6月17日–21日 · 地图 OpenStreetMap</footer>
+<footer class="footer">台湾全景旅游地图 · 2025年6月17日–21日</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-/* ═══ VIEW TOGGLE ═══ */
 const vt=document.getElementById('viewToggle');
-const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=430;
+const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=640;
 if(isMobile)document.body.classList.add('mobile-mode');
+vt.querySelectorAll('button').forEach(btn=>{btn.addEventListener('click',()=>{vt.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('mobile-mode',btn.dataset.view==='mobile')})});
 
-vt.querySelectorAll('button').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    vt.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    if(btn.dataset.view==='mobile'){document.body.classList.add('mobile-mode')}
-    else{document.body.classList.remove('mobile-mode')}
-  });
-});
+document.querySelectorAll('.mobile-tab-bar .tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.mobile-tab-bar .tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');const target=document.getElementById(tab.dataset.tab);if(target)target.scrollIntoView({behavior:'smooth'})})});
 
-/* ═══ MOBILE TAB BAR ═══ */
-document.querySelectorAll('.mobile-tab-bar .tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.mobile-tab-bar .tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    const target=document.getElementById(tab.dataset.tab);
-    if(target)target.scrollIntoView({behavior:'smooth'});
-  });
-});
+document.querySelectorAll('.mobile-day-pills .pill').forEach(pill=>{pill.addEventListener('click',()=>{document.querySelectorAll('.mobile-day-pills .pill').forEach(p=>p.classList.remove('active'));pill.classList.add('active');const target=document.getElementById('day-'+pill.dataset.day);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});const idx=parseInt(pill.dataset.day)-1;if(typeof sw==='function')sw(idx)}})});
 
-/* ═══ MOBILE DAY PILLS ═══ */
-document.querySelectorAll('.mobile-day-pills .pill').forEach(pill=>{
-  pill.addEventListener('click',()=>{
-    document.querySelectorAll('.mobile-day-pills .pill').forEach(p=>p.classList.remove('active'));
-    pill.classList.add('active');
-    const target=document.getElementById('day-'+pill.dataset.day);
-    if(target){
-      target.scrollIntoView({behavior:'smooth',block:'start'});
-      /* Update map */
-      const idx=parseInt(pill.dataset.day)-1;
-      if(typeof sw==='function')sw(idx);
-    }
-  });
-});
-
-/* ═══ SCROLL REVEAL ═══ */
 const ro=new IntersectionObserver(e=>{e.forEach(n=>{if(n.isIntersecting){n.target.classList.add('revealed');ro.unobserve(n.target)}})},{threshold:0.06,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
-/* ═══ CHECKBOX + PROGRESS ═══ */
-const SK='tw_trip_checks_v2';
+const SK='tw_trip_checks_v3';
 function lc(){try{return JSON.parse(localStorage.getItem(SK))||{}}catch(e){return{}}}
 function sc(c){localStorage.setItem(SK,JSON.stringify(c))}
 function gi(el){const d=el.closest('.ditems')?.dataset?.day||'pack';const t=(el.querySelector('.txt')||el.querySelector('span'))?.textContent?.trim()||'';return d+'_'+t.slice(0,30)}
-
 function up(){
-  document.querySelectorAll('.ditems').forEach(g=>{
-    const it=g.querySelectorAll('.ditem'),dn=g.querySelectorAll('.ditem.checked').length,tt=it.length;
-    const h=g.closest('.day-section').querySelector('.day-progress-mini');
-    if(h){h.querySelector('.d-done').textContent=dn;h.querySelector('.d-total').textContent=tt;h.querySelector('.fill').style.width=(tt>0?(dn/tt*100):0)+'%'}
-  });
+  document.querySelectorAll('.ditems').forEach(g=>{const it=g.querySelectorAll('.ditem'),dn=g.querySelectorAll('.ditem.checked').length,tt=it.length;const h=g.closest('.day-section')?.closest('.day-shell')?.querySelector('.day-progress-mini')||g.closest('.day-section')?.querySelector('.day-progress-mini');if(h){h.querySelector('.d-done').textContent=dn;h.querySelector('.d-total').textContent=tt;h.querySelector('.fill').style.width=(tt>0?(dn/tt*100):0)+'%'}});
   const ai=document.querySelectorAll('.ditem'),ad=document.querySelectorAll('.ditem.checked').length,at=ai.length;
-  document.getElementById('totalDone').textContent=ad;document.getElementById('totalAll').textContent=at;
-  document.getElementById('totalFill').style.width=(at>0?(ad/at*100):0)+'%';
+  document.getElementById('totalDone').textContent=ad;document.getElementById('totalAll').textContent=at;document.getElementById('totalFill').style.width=(at>0?(ad/at*100):0)+'%';
   const pi=document.querySelectorAll('#packingGrid .packing-item'),pd=document.querySelectorAll('#packingGrid .packing-item.checked').length,pt=pi.length;
-  document.getElementById('packDone').textContent=pd;document.getElementById('packTotal').textContent=pt;
-  document.getElementById('packFill').style.width=(pt>0?(pd/pt*100):0)+'%';
+  document.getElementById('packDone').textContent=pd;document.getElementById('packTotal').textContent=pt;document.getElementById('packFill').style.width=(pt>0?(pd/pt*100):0)+'%';
 }
-
-function tg(cb){
-  const it=cb.closest('.ditem,.packing-item');
-  const ck=cb.classList.toggle('checked');it.classList.toggle('checked',ck);
-  const c=lc(),id=gi(it);if(ck)c[id]=true;else delete c[id];sc(c);up();
-}
-
+function tg(cb){const it=cb.closest('.ditem,.packing-item');const ck=cb.classList.toggle('checked');it.classList.toggle('checked',ck);const c=lc(),id=gi(it);if(ck)c[id]=true;else delete c[id];sc(c);up()}
 (function rs(){const c=lc();document.querySelectorAll('.ditem .cb, #packingGrid .packing-item .cb').forEach(cb=>{const it=cb.closest('.ditem,.packing-item');if(c[gi(it)]){cb.classList.add('checked');it.classList.add('checked')}});up()})();
 document.addEventListener('click',e=>{const cb=e.target.closest('.ditem .cb, #packingGrid .packing-item .cb');if(cb)tg(cb)});
 
-/* ═══ MAP ═══ */
 const DAY_DATA=[
-  {color:'#C88242',gradient:'linear-gradient(135deg,#C88242,#D4A05A)',zoom:11,center:[24.9,121.5],
-    points:[{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛫',desc:'10:15 起飞 → 台北'},{name:'桃园机场T1',lat:25.0764,lng:121.2237,icon:'🛄',desc:'12:10 入境 · 电话卡 · 台币 · 悠游卡'},{name:'7-Eleven机场B1',lat:25.0760,lng:121.2245,icon:'🏪',desc:'地瓜洒布雷 · 茶叶蛋 · 麻油鸡 · 木瓜牛奶'},{name:'机场捷运',lat:25.0760,lng:121.2240,icon:'🚇',desc:'15:30 紫色快车/蓝色普通车'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚄',desc:'16:30到站 · 17:05台铁往花莲'},{name:'台铁沿线',lat:24.9400,lng:121.5700,icon:'🚄',desc:'台北→花莲 · 全程约2h'},{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚉',desc:'19:43抵达 · 步行5分钟到酒店'},{name:'酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'国联一路201号'},{name:'花莲香扁食',lat:23.9928,lng:121.6050,icon:'🥟',desc:'国联店 · 招牌扁食'},{name:'曾师傅麻糬',lat:23.9930,lng:121.6070,icon:'🍡',desc:'站前门市 · 花生麻糬 · 御皇酥'}]},
-  {color:'#059669',gradient:'linear-gradient(135deg,#059669,#34D399)',zoom:12,center:[24.08,121.62],
-    points:[{name:'酒店出发',lat:23.9900,lng:121.6060,icon:'🏨',desc:'长袖长裤 · 防晒衣 · 防蚊液'},{name:'赏鲸码头',lat:24.0000,lng:121.6400,icon:'🐳',desc:'08:00出海赏鲸 · 约3h'},{name:'回酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'11:30休整 · 午餐'},{name:'新城老街',lat:24.1200,lng:121.6300,icon:'🏘️',desc:'14:30包车出发'},{name:'清水断崖',lat:24.2167,lng:121.6833,icon:'🏔️',desc:'台湾十景 · 绝壁断崖'},{name:'板下沙滩',lat:24.1900,lng:121.6600,icon:'🏖️',desc:'秘境海滩'},{name:'太鲁阁牌楼',lat:24.1667,lng:121.6333,icon:'🏛️',desc:'太鲁阁国家公园入口'},{name:'七星潭',lat:24.0333,lng:121.6333,icon:'🌊',desc:'月牙形海湾 · 砾石海滩'},{name:'炸弹葱油饼',lat:24.0100,lng:121.6200,icon:'🧅',desc:'花莲必吃小吃'},{name:'东大门夜市',lat:23.9750,lng:121.6110,icon:'🌙',desc:'棺材饭 · 芋头牛奶 · 地瓜球 · 强蛋饼'}]},
-  {color:'#7C3AED',gradient:'linear-gradient(135deg,#7C3AED,#A78BFA)',zoom:12,center:[24.98,121.55],
-    points:[{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚄',desc:'07:30台铁往台北'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚉',desc:'10:09抵达 · 放行李'},{name:'酒店',lat:25.0500,lng:121.5150,icon:'🏨',desc:'民生西路198号2楼'},{name:'老张牛肉面',lat:25.0400,lng:121.5200,icon:'🍜',desc:'11:30牛三宝面 · 盐酥鸡'},{name:'中正纪念堂',lat:25.0345,lng:121.5217,icon:'🏛️',desc:'13:00整点仪队交接'},{name:'西门町',lat:25.0458,lng:121.5072,icon:'🎭',desc:'14:00红楼 · 涂鸦 · 购物'},{name:'赛门邓普拉',lat:25.0500,lng:121.5100,icon:'🍢',desc:'甜不辣'},{name:'饶河夜市',lat:25.0508,lng:121.5767,icon:'🌙',desc:'18:00胡椒饼 · 臭豆腐 · 马告肠'}]},
-  {color:'#2563EB',gradient:'linear-gradient(135deg,#2563EB,#60A5FA)',zoom:12,center:[25.06,121.54],
-    points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'09:00出发'},{name:'国立故宫博物院',lat:25.0972,lng:121.5483,icon:'🏛️',desc:'肉形石 · 翠玉白菜 · 汝窑'},{name:'大稻埕迪化街',lat:25.0597,lng:121.5100,icon:'🏘️',desc:'15:00红砖巴洛克 · 南北货'},{name:'大稻埕码头',lat:25.0580,lng:121.5080,icon:'🌅',desc:'17:30货柜市集 · 卤肉饭 · 夕阳'},{name:'台北101',lat:25.0339,lng:121.5645,icon:'🏢',desc:'18:45买特产 · 退税 · 诚品'},{name:'宁夏夜市',lat:25.0583,lng:121.5144,icon:'🌙',desc:'20:00蛋黄芋饼 · 蚵仔煎 · 鸡排'}]},
-  {color:'#8A847E',gradient:'linear-gradient(135deg,#8A847E,#A8A29E)',zoom:11,center:[25.06,121.40],
-    points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'05:00打车（前一晚预约）'},{name:'桃园机场',lat:25.0764,lng:121.2237,icon:'🛫',desc:'08:00起飞'},{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛬',desc:'10:05抵达'}]}
+  {color:'#C88242',gradient:'linear-gradient(135deg,#C88242,#D4A05A)',zoom:11,center:[24.9,121.5],points:[{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛫',desc:'10:15 起飞 → 台北'},{name:'桃园机场T1',lat:25.0764,lng:121.2237,icon:'🛄',desc:'12:10 入境 · 电话卡 · 台币 · 悠游卡'},{name:'7-Eleven机场B1',lat:25.0760,lng:121.2245,icon:'🏪',desc:'地瓜洒布雷 · 茶叶蛋 · 麻油鸡 · 木瓜牛奶'},{name:'机场捷运',lat:25.0760,lng:121.2240,icon:'🚇',desc:'15:30 紫色快车/蓝色普通车'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚄',desc:'16:30到站 · 17:05台铁往花莲'},{name:'台铁沿线',lat:24.9400,lng:121.5700,icon:'🚄',desc:'台北→花莲 · 全程约2h'},{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚉',desc:'19:43抵达 · 步行5分钟到酒店'},{name:'酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'国联一路201号'},{name:'花莲香扁食',lat:23.9928,lng:121.6050,icon:'🥟',desc:'国联店 · 招牌扁食'},{name:'曾师傅麻糬',lat:23.9930,lng:121.6070,icon:'🍡',desc:'站前门市 · 花生麻糬 · 御皇酥'}]},
+  {color:'#059669',gradient:'linear-gradient(135deg,#059669,#34D399)',zoom:12,center:[24.08,121.62],points:[{name:'酒店出发',lat:23.9900,lng:121.6060,icon:'🏨',desc:'长袖长裤 · 防晒衣 · 防蚊液'},{name:'赏鲸码头',lat:24.0000,lng:121.6400,icon:'🐳',desc:'08:00出海赏鲸 · 约3h'},{name:'回酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'11:30休整 · 午餐'},{name:'新城老街',lat:24.1200,lng:121.6300,icon:'🏘️',desc:'14:30包车出发'},{name:'清水断崖',lat:24.2167,lng:121.6833,icon:'🏔️',desc:'台湾十景 · 绝壁断崖'},{name:'板下沙滩',lat:24.1900,lng:121.6600,icon:'🏖️',desc:'秘境海滩'},{name:'太鲁阁牌楼',lat:24.1667,lng:121.6333,icon:'🏛️',desc:'太鲁阁国家公园入口'},{name:'七星潭',lat:24.0333,lng:121.6333,icon:'🌊',desc:'月牙形海湾 · 砾石海滩'},{name:'炸弹葱油饼',lat:24.0100,lng:121.6200,icon:'🧅',desc:'花莲必吃小吃'},{name:'东大门夜市',lat:23.9750,lng:121.6110,icon:'🌙',desc:'棺材饭 · 芋头牛奶 · 地瓜球 · 强蛋饼'}]},
+  {color:'#7C3AED',gradient:'linear-gradient(135deg,#7C3AED,#A78BFA)',zoom:12,center:[24.98,121.55],points:[{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚄',desc:'07:30台铁往台北'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚉',desc:'10:09抵达 · 放行李'},{name:'酒店',lat:25.0500,lng:121.5150,icon:'🏨',desc:'民生西路198号2楼'},{name:'老张牛肉面',lat:25.0400,lng:121.5200,icon:'🍜',desc:'11:30牛三宝面 · 盐酥鸡'},{name:'中正纪念堂',lat:25.0345,lng:121.5217,icon:'🏛️',desc:'13:00整点仪队交接'},{name:'西门町',lat:25.0458,lng:121.5072,icon:'🎭',desc:'14:00红楼 · 涂鸦 · 购物'},{name:'赛门邓普拉',lat:25.0500,lng:121.5100,icon:'🍢',desc:'甜不辣'},{name:'饶河夜市',lat:25.0508,lng:121.5767,icon:'🌙',desc:'18:00胡椒饼 · 臭豆腐 · 马告肠'}]},
+  {color:'#2563EB',gradient:'linear-gradient(135deg,#2563EB,#60A5FA)',zoom:12,center:[25.06,121.54],points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'09:00出发'},{name:'国立故宫博物院',lat:25.0972,lng:121.5483,icon:'🏛️',desc:'肉形石 · 翠玉白菜 · 汝窑'},{name:'大稻埕迪化街',lat:25.0597,lng:121.5100,icon:'🏘️',desc:'15:00红砖巴洛克 · 南北货'},{name:'大稻埕码头',lat:25.0580,lng:121.5080,icon:'🌅',desc:'17:30货柜市集 · 卤肉饭 · 夕阳'},{name:'台北101',lat:25.0339,lng:121.5645,icon:'🏢',desc:'18:45买特产 · 退税 · 诚品'},{name:'宁夏夜市',lat:25.0583,lng:121.5144,icon:'🌙',desc:'20:00蛋黄芋饼 · 蚵仔煎 · 鸡排'}]},
+  {color:'#8A847E',gradient:'linear-gradient(135deg,#8A847E,#A8A29E)',zoom:11,center:[25.06,121.40],points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'05:00打车（前一晚预约）'},{name:'桃园机场',lat:25.0764,lng:121.2237,icon:'🛫',desc:'08:00起飞'},{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛬',desc:'10:05抵达'}]}
 ];
 
 const map=L.map('travel-map',{center:[24.0,121.4],zoom:10,zoomControl:true,attributionControl:false});
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map);
 const dayLayers=[];
 
-DAY_DATA.forEach((day,di)=>{
-  const g=L.layerGroup(),coords=[];
-  day.points.forEach((pt,pi)=>{
-    coords.push([pt.lat,pt.lng]);
-    const isStart=pi===0,isEnd=pi===day.points.length-1;
-    let s=30,f=13,w=2.5;if(isStart||isEnd){s=36;f=15;w=3}
-    const el=document.createElement('div');
-    el.style.cssText=`width:${s}px;height:${s}px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${f}px;color:#fff;background:${day.gradient};box-shadow:0 2px 10px rgba(0,0,0,0.3);border:${w}px solid #fff;cursor:pointer;`;
-    el.textContent=pi+1;
-    const m=L.marker([pt.lat,pt.lng],{icon:L.divIcon({html:el.outerHTML,className:'',iconSize:[s,s],iconAnchor:[s/2,s/2]})});
-    const es=isStart?'🚩 起点 ':isEnd?'🏁 终点 ':'';
-    m.bindPopup(`<div><div class="poptitle"><span class="popnum" style="background:${day.color}">${pi+1}</span> ${pt.icon} ${pt.name}</div><div class="popdesc">${es}${pt.desc}</div><div class="popday">● 第${di+1}日</div></div>`);
-    g.addLayer(m);
-  });
-  if(coords.length>1){
-    g.addLayer(L.polyline(coords,{color:day.color,weight:3.5,opacity:0.75}));
-    for(let i=1;i<coords.length;i++){
-      const mid=[(coords[i-1][0]+coords[i][0])/2,(coords[i-1][1]+coords[i][1])/2];
-      const ang=Math.atan2(coords[i][1]-coords[i-1][1],coords[i][0]-coords[i-1][0])*180/Math.PI;
-      g.addLayer(L.marker(mid,{icon:L.divIcon({html:`<div style="transform:rotate(${ang}deg);font-size:16px;color:${day.color};text-shadow:0 1px 3px rgba(0,0,0,0.2);opacity:0.7">▶</div>`,className:'',iconSize:[16,16],iconAnchor:[8,8]}),interactive:false}));
-    }
-  }
-  dayLayers.push(g);map.addLayer(g);
-});
+DAY_DATA.forEach((day,di)=>{const g=L.layerGroup(),coords=[];day.points.forEach((pt,pi)=>{coords.push([pt.lat,pt.lng]);const isStart=pi===0,isEnd=pi===day.points.length-1;let s=30,f=13,w=2.5;if(isStart||isEnd){s=36;f=15;w=3}const el=document.createElement('div');el.style.cssText=`width:${s}px;height:${s}px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${f}px;color:#fff;background:${day.gradient};box-shadow:0 2px 10px rgba(0,0,0,0.3);border:${w}px solid #fff;cursor:pointer;`;el.textContent=pi+1;const m=L.marker([pt.lat,pt.lng],{icon:L.divIcon({html:el.outerHTML,className:'',iconSize:[s,s],iconAnchor:[s/2,s/2]})});const es=isStart?'🚩 起点 ':isEnd?'🏁 终点 ':'';m.bindPopup(`<div><div class="poptitle"><span class="popnum" style="background:${day.color}">${pi+1}</span> ${pt.icon} ${pt.name}</div><div class="popdesc">${es}${pt.desc}</div><div class="popday">● 第${di+1}日</div></div>`);g.addLayer(m)});if(coords.length>1){g.addLayer(L.polyline(coords,{color:day.color,weight:3.5,opacity:0.75}));for(let i=1;i<coords.length;i++){const mid=[(coords[i-1][0]+coords[i][0])/2,(coords[i-1][1]+coords[i][1])/2];const ang=Math.atan2(coords[i][1]-coords[i-1][1],coords[i][0]-coords[i-1][0])*180/Math.PI;g.addLayer(L.marker(mid,{icon:L.divIcon({html:`<div style="transform:rotate(${ang}deg);font-size:16px;color:${day.color};text-shadow:0 1px 3px rgba(0,0,0,0.2);opacity:0.7">▶</div>`,className:'',iconSize:[16,16],iconAnchor:[8,8]}),interactive:false}))}}dayLayers.push(g);map.addLayer(g)});
 
 let ad=0;
 function sw(i){dayLayers.forEach((g,j)=>{if(j===i)map.addLayer(g);else map.removeLayer(g)});map.flyTo(DAY_DATA[i].center,DAY_DATA[i].zoom,{duration:1});document.querySelectorAll('.day-btn').forEach((b,j)=>b.classList.toggle('active',j===i));document.querySelectorAll('.mobile-day-pills .pill').forEach((p,j)=>p.classList.toggle('active',j===i));ad=i}
@@ -716,11 +482,7 @@ document.querySelectorAll('.day-btn').forEach((b,i)=>b.addEventListener('click',
 sw(0);
 setTimeout(()=>{const l=dayLayers[0].getLayers();if(l.length>0)l[0].openPopup()},1500);
 
-/* ═══ AUTO MOBILE DETECT ═══ */
-window.addEventListener('resize',()=>{
-  if(window.innerWidth<=430){document.body.classList.add('mobile-mode');vt.querySelectorAll('button').forEach(b=>{b.classList.toggle('active',b.dataset.view==='mobile')})}
-  else{document.body.classList.remove('mobile-mode');vt.querySelectorAll('button').forEach(b=>{b.classList.toggle('active',b.dataset.view==='desktop')})}
-},{passive:true});
+window.addEventListener('resize',()=>{if(window.innerWidth<=640){document.body.classList.add('mobile-mode');vt.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.view==='mobile'))}else{document.body.classList.remove('mobile-mode');vt.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.view==='desktop'))}},{passive:true});
 </script>
 </body>
 </html>
