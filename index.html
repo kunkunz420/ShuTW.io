@@ -463,105 +463,9 @@ body{font-family:'Smartisan C','PingFang SC','Microsoft YaHei',sans-serif;backgr
 <footer class="footer">台湾全景旅游地图 · 2025年6月17日–21日</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import{getDatabase,ref,set,onDisconnect,onValue,update,remove,off}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
-import{getAnalytics}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
-
-const firebaseConfig={apiKey:"AIzaSyB1CpHDKhlKvssrvoYw2W-muwsqq8V_sW4",authDomain:"mapkun-d9daf.firebaseapp.com",projectId:"mapkun-d9daf",storageBucket:"mapkun-d9daf.firebasestorage.app",messagingSenderId:"50759531502",appId:"1:50759531502:web:eadb39bc487988f19e2cff",measurementId:"G-H29WMHSZR9"};
-const app=initializeApp(firebaseConfig);const analytics=getAnalytics(app);const db=getDatabase(app);
-
-/* User identity */
-function genId(){return'u_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-const UID_KEY='tw_user_id';let userId=localStorage.getItem(UID_KEY);if(!userId){userId=genId();localStorage.setItem(UID_KEY,userId)}
-let nickname=localStorage.getItem('tw_nick')||'';while(!nickname.trim()){nickname=prompt('请输入你的昵称（用于旅伴显示）:','')||''}nickname=nickname.trim();localStorage.setItem('tw_nick',nickname)
-function getDevice(){const ua=navigator.userAgent;if(/iPhone/i.test(ua)){const m=ua.match(/iPhone (\d+),(\d+)/);return m?`iPhone ${m[1]}`:'iPhone'}if(/Android/i.test(ua)){const m=ua.match(/Android ([\d.]+)/);return m?`Android ${m[1]}`:'Android'}return'Web'}
-const device=getDevice();
-
-/* Floating panel */
-const panel=document.getElementById('usersPanel');const panelBody=document.getElementById('panelBody');const panelToggle=document.getElementById('panelToggle');const onlineCount=document.getElementById('onlineCount');
-panelToggle.addEventListener('click',e=>{e.stopPropagation();panel.classList.toggle('collapsed');panelToggle.textContent=panel.classList.contains('collapsed')?'▸':'▾'});
-panel.addEventListener('click',()=>{if(panel.classList.contains('collapsed')){panel.classList.remove('collapsed');panelToggle.textContent='▾'}});
-
-let userMarkers={};const userColors={};const palette=['#C88242','#059669','#7C3AED','#2563EB','#E11D48','#0891B2'];
-
-/* Location tracking */
-let watchId=null;let lastPos=null;
-function startTracking(){
-  if(!navigator.geolocation)return;
-  watchId=navigator.geolocation.watchPosition(pos=>{
-    const{latitude:lat,longitude:lng}=pos.coords;lastPos={lat,lng};
-    const userRef=ref(db,'locations/'+userId);
-    set(userRef,{lat,lng,nickname,device,lastSeen:Date.now(),online:true});
-    onDisconnect(userRef).remove();
-    /* Also write to a shared presence node */
-    const presenceRef=ref(db,'presence/'+userId);
-    set(presenceRef,{nickname,device,lat,lng,lastSeen:Date.now()});
-    onDisconnect(presenceRef).remove();
-    updatePanel();
-  },err=>console.warn('Location error:',err.message),{enableHighAccuracy:true,timeout:15000,maximumAge:10000});
-}
-startTracking();
-
-/* Listen for other users */
-onValue(ref(db,'presence'),snap=>{
-  const data=snap.val()||{};const now=Date.now();let count=0;
-  panelBody.innerHTML='';
-  Object.keys(data).forEach((uid,i)=>{
-    const u=data[uid];if(uid===userId)return;
-    if(now-u.lastSeen>120000)return;
-    count++;
-    const color=userColors[uid]||palette[Object.keys(userColors).length%palette.length];userColors[uid]=color;
-    const mins=Math.round((now-u.lastSeen)/60000);const timeStr=mins<1?'刚刚':mins+'分钟前';
-    const row=document.createElement('div');row.className='user-row';
-    row.innerHTML=`<div class="dot" style="background:${color};color:${color}"></div><div class="info"><div class="name">${u.nickname||'旅伴'}</div><div class="meta">${u.device||''} · ${timeStr}</div></div>`;
-    panelBody.appendChild(row);
-
-    /* Update map marker */
-    if(u.lat&&u.lng&&typeof L!=='undefined'){
-      if(userMarkers[uid]){userMarkers[uid].setLatLng([u.lat,u.lng])}
-      else{const pulsing=mins<2;const mk=L.circleMarker([u.lat,u.lng],{radius:9,color:'#fff',weight:2,fillColor:color,fillOpacity:0.85});mk.bindPopup(`<b>${u.nickname||'旅伴'}</b><br>${u.device||''} · ${timeStr}`);mk.addTo(map);userMarkers[uid]=mk;if(pulsing)mk.getElement()?.style.setProperty('animation','userPulse 1.6s ease-in-out infinite')}
-    }
-  });
-  onlineCount.textContent=count;
-  /* Clean up stale markers */
-  const activeUids=new Set(Object.keys(data).filter(uid=>uid!==userId&&now-data[uid].lastSeen<=120000));
-  Object.keys(userMarkers).forEach(uid=>{if(!activeUids.has(uid)){map.removeLayer(userMarkers[uid]);delete userMarkers[uid]}});
-  if(count===0)panel.classList.add('collapsed');
-});
-
-/* Self marker */
-let selfMarker=null;
-function updateSelfMarker(){if(lastPos&&typeof L!=='undefined'){if(selfMarker){selfMarker.setLatLng([lastPos.lat,lastPos.lng])}else{selfMarker=L.circleMarker([lastPos.lat,lastPos.lng],{radius:6,color:'#fff',weight:2,fillColor:'#3B82F6',fillOpacity:1});selfMarker.bindPopup(`<b>${nickname} (你)</b><br>${device}`);selfMarker.addTo(map)}}}
-setInterval(updateSelfMarker,3000);
-
-/* Cross-device checkbox sync */
-const FB_CHECKS_KEY='tw_checks_v3';
-const checksRef=ref(db,'checks');
-let syncing=false;
-onValue(checksRef,snap=>{
-  if(syncing)return;const fb=snap.val()||{};const local=lc();
-  let changed=false;
-  Object.keys(fb).forEach(key=>{if(fb[key]&&!local[key]){local[key]=true;changed=true}});
-  if(changed){sc(local);applyChecks()}
-});
-
-function tg(cb){const it=cb.closest('.ditem,.packing-item');const ck=cb.classList.toggle('checked');it.classList.toggle('checked',ck);const c=lc(),id=gi(it);if(ck)c[id]=true;else delete c[id];sc(c);up();
-  syncing=true;
-  update(ref(db),{[`checks/${id}`]:ck||null}).then(()=>{syncing=false}).catch(()=>{syncing=false})
-}
-
-/* View toggle + UI utils */
-const vt=document.getElementById('viewToggle');
-const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=640;
-if(isMobile)document.body.classList.add('mobile-mode');
-vt.querySelectorAll('button').forEach(btn=>{btn.addEventListener('click',()=>{vt.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('mobile-mode',btn.dataset.view==='mobile')})});
-document.querySelectorAll('.mobile-tab-bar .tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.mobile-tab-bar .tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');const target=document.getElementById(tab.dataset.tab);if(target)target.scrollIntoView({behavior:'smooth'})})});
-document.querySelectorAll('.mobile-day-pills .pill').forEach(pill=>{pill.addEventListener('click',()=>{document.querySelectorAll('.mobile-day-pills .pill').forEach(p=>p.classList.remove('active'));pill.classList.add('active');const target=document.getElementById('day-'+pill.dataset.day);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});const idx=parseInt(pill.dataset.day)-1;if(typeof sw==='function')sw(idx)}})});
-const ro=new IntersectionObserver(e=>{e.forEach(n=>{if(n.isIntersecting){n.target.classList.add('revealed');ro.unobserve(n.target)}})},{threshold:0.06,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
-
-const SK='tw_trip_checks_v3';
+<script>
+/* ─── CHECKBOX + PROGRESS (localStorage, independent of Firebase) ─── */
+const SK='tw_trip_checks_v4';
 function lc(){try{return JSON.parse(localStorage.getItem(SK))||{}}catch(e){return{}}}
 function sc(c){localStorage.setItem(SK,JSON.stringify(c))}
 function gi(el){const d=el.closest('.ditems')?.dataset?.day||'pack';const t=(el.querySelector('.txt')||el.querySelector('span'))?.textContent?.trim()||'';return d+'_'+t.slice(0,30)}
@@ -574,7 +478,103 @@ function up(){
 }
 function applyChecks(){const c=lc();document.querySelectorAll('.ditem .cb, #packingGrid .packing-item .cb').forEach(cb=>{const it=cb.closest('.ditem,.packing-item');if(c[gi(it)]){cb.classList.add('checked');it.classList.add('checked')}else{cb.classList.remove('checked');it.classList.remove('checked')}});up()}
 applyChecks();
-document.addEventListener('click',e=>{const cb=e.target.closest('.ditem .cb, #packingGrid .packing-item .cb');if(cb)tg(cb)});
+
+/* ─── View Toggle + UI ─── */
+const vt=document.getElementById('viewToggle');
+const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=640;
+if(isMobile)document.body.classList.add('mobile-mode');
+vt.querySelectorAll('button').forEach(btn=>{btn.addEventListener('click',()=>{vt.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('mobile-mode',btn.dataset.view==='mobile')})});
+document.querySelectorAll('.mobile-tab-bar .tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.mobile-tab-bar .tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');const target=document.getElementById(tab.dataset.tab);if(target)target.scrollIntoView({behavior:'smooth'})})});
+document.querySelectorAll('.mobile-day-pills .pill').forEach(pill=>{pill.addEventListener('click',()=>{document.querySelectorAll('.mobile-day-pills .pill').forEach(p=>p.classList.remove('active'));pill.classList.add('active');const target=document.getElementById('day-'+pill.dataset.day);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});const idx=parseInt(pill.dataset.day)-1;if(typeof sw==='function')sw(idx)}})});
+const ro=new IntersectionObserver(e=>{e.forEach(n=>{if(n.isIntersecting){n.target.classList.add('revealed');ro.unobserve(n.target)}})},{threshold:0.06,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* ─── Map Data ─── */
+const DAY_DATA=[{color:'#C88242',gradient:'linear-gradient(135deg,#C88242,#D4A05A)',zoom:11,center:[24.9,121.5],points:[{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛫',desc:'10:15 起飞 → 台北'},{name:'桃园机场T1',lat:25.0764,lng:121.2237,icon:'🛄',desc:'12:10 入境 · 电话卡 · 台币 · 悠游卡'},{name:'7-Eleven机场B1',lat:25.0760,lng:121.2245,icon:'🏪',desc:'地瓜洒布雷 · 茶叶蛋 · 麻油鸡 · 木瓜牛奶'},{name:'机场捷运',lat:25.0760,lng:121.2240,icon:'🚇',desc:'15:30 紫色快车/蓝色普通车'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚄',desc:'16:30到站 · 17:05台铁往花莲'},{name:'台铁沿线',lat:24.9400,lng:121.5700,icon:'🚄',desc:'台北→花莲 · 全程约2h'},{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚉',desc:'19:43抵达 · 步行5分钟到酒店'},{name:'酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'国联一路201号'},{name:'花莲香扁食',lat:23.9928,lng:121.6050,icon:'🥟',desc:'国联店 · 招牌扁食'},{name:'曾师傅麻糬',lat:23.9930,lng:121.6070,icon:'🍡',desc:'站前门市 · 花生麻糬 · 御皇酥'}]},{color:'#059669',gradient:'linear-gradient(135deg,#059669,#34D399)',zoom:12,center:[24.08,121.62],points:[{name:'酒店出发',lat:23.9900,lng:121.6060,icon:'🏨',desc:'长袖长裤 · 防晒衣 · 防蚊液'},{name:'赏鲸码头',lat:24.0000,lng:121.6400,icon:'🐳',desc:'08:00出海赏鲸 · 约3h'},{name:'回酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'11:30休整 · 午餐'},{name:'新城老街',lat:24.1200,lng:121.6300,icon:'🏘️',desc:'14:30包车出发'},{name:'清水断崖',lat:24.2167,lng:121.6833,icon:'🏔️',desc:'台湾十景 · 绝壁断崖'},{name:'板下沙滩',lat:24.1900,lng:121.6600,icon:'🏖️',desc:'秘境海滩'},{name:'太鲁阁牌楼',lat:24.1667,lng:121.6333,icon:'🏛️',desc:'太鲁阁国家公园入口'},{name:'七星潭',lat:24.0333,lng:121.6333,icon:'🌊',desc:'月牙形海湾 · 砾石海滩'},{name:'炸弹葱油饼',lat:24.0100,lng:121.6200,icon:'🧅',desc:'花莲必吃小吃'},{name:'东大门夜市',lat:23.9750,lng:121.6110,icon:'🌙',desc:'棺材饭 · 芋头牛奶 · 地瓜球 · 强蛋饼'}]},{color:'#7C3AED',gradient:'linear-gradient(135deg,#7C3AED,#A78BFA)',zoom:12,center:[24.98,121.55],points:[{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚄',desc:'07:30台铁往台北'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚉',desc:'10:09抵达 · 放行李'},{name:'酒店',lat:25.0500,lng:121.5150,icon:'🏨',desc:'民生西路198号2楼'},{name:'老张牛肉面',lat:25.0400,lng:121.5200,icon:'🍜',desc:'11:30牛三宝面 · 盐酥鸡'},{name:'中正纪念堂',lat:25.0345,lng:121.5217,icon:'🏛️',desc:'13:00整点仪队交接'},{name:'西门町',lat:25.0458,lng:121.5072,icon:'🎭',desc:'14:00红楼 · 涂鸦 · 购物'},{name:'赛门邓普拉',lat:25.0500,lng:121.5100,icon:'🍢',desc:'甜不辣'},{name:'饶河夜市',lat:25.0508,lng:121.5767,icon:'🌙',desc:'18:00胡椒饼 · 臭豆腐 · 马告肠'}]},{color:'#2563EB',gradient:'linear-gradient(135deg,#2563EB,#60A5FA)',zoom:12,center:[25.06,121.54],points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'09:00出发'},{name:'国立故宫博物院',lat:25.0972,lng:121.5483,icon:'🏛️',desc:'肉形石 · 翠玉白菜 · 汝窑'},{name:'大稻埕迪化街',lat:25.0597,lng:121.5100,icon:'🏘️',desc:'15:00红砖巴洛克 · 南北货'},{name:'大稻埕码头',lat:25.0580,lng:121.5080,icon:'🌅',desc:'17:30货柜市集 · 卤肉饭 · 夕阳'},{name:'台北101',lat:25.0339,lng:121.5645,icon:'🏢',desc:'18:45买特产 · 退税 · 诚品'},{name:'宁夏夜市',lat:25.0583,lng:121.5144,icon:'🌙',desc:'20:00蛋黄芋饼 · 蚵仔煎 · 鸡排'}]},{color:'#8A847E',gradient:'linear-gradient(135deg,#8A847E,#A8A29E)',zoom:11,center:[25.06,121.40],points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'05:00打车（前一晚预约）'},{name:'桃园机场',lat:25.0764,lng:121.2237,icon:'🛫',desc:'08:00起飞'},{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛬',desc:'10:05抵达'}]}];
+const map=L.map('travel-map',{center:[24.0,121.4],zoom:10,zoomControl:true,attributionControl:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map);
+const dayLayers=[];
+DAY_DATA.forEach((day,di)=>{const g=L.layerGroup(),coords=[];day.points.forEach((pt,pi)=>{coords.push([pt.lat,pt.lng]);const isStart=pi===0,isEnd=pi===day.points.length-1;let s=30,f=13,w=2.5;if(isStart||isEnd){s=36;f=15;w=3}const el=document.createElement('div');el.style.cssText=`width:${s}px;height:${s}px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${f}px;color:#fff;background:${day.gradient};box-shadow:0 2px 10px rgba(0,0,0,0.3);border:${w}px solid #fff;cursor:pointer;`;el.textContent=pi+1;const m=L.marker([pt.lat,pt.lng],{icon:L.divIcon({html:el.outerHTML,className:'',iconSize:[s,s],iconAnchor:[s/2,s/2]})});const es=isStart?'🚩 起点 ':isEnd?'🏁 终点 ':'';m.bindPopup(`<div><div class="poptitle"><span class="popnum" style="background:${day.color}">${pi+1}</span> ${pt.icon} ${pt.name}</div><div class="popdesc">${es}${pt.desc}</div><div class="popday">● 第${di+1}日</div></div>`);g.addLayer(m)});if(coords.length>1){g.addLayer(L.polyline(coords,{color:day.color,weight:3.5,opacity:0.75}));for(let i=1;i<coords.length;i++){const mid=[(coords[i-1][0]+coords[i][0])/2,(coords[i-1][1]+coords[i][1])/2];const ang=Math.atan2(coords[i][1]-coords[i-1][1],coords[i][0]-coords[i-1][0])*180/Math.PI;g.addLayer(L.marker(mid,{icon:L.divIcon({html:`<div style="transform:rotate(${ang}deg);font-size:16px;color:${day.color};text-shadow:0 1px 3px rgba(0,0,0,0.2);opacity:0.7">▶</div>`,className:'',iconSize:[16,16],iconAnchor:[8,8]}),interactive:false}))}}dayLayers.push(g);map.addLayer(g)});
+let ad=0;
+function sw(i){dayLayers.forEach((g,j)=>{if(j===i)map.addLayer(g);else map.removeLayer(g)});map.flyTo(DAY_DATA[i].center,DAY_DATA[i].zoom,{duration:1});document.querySelectorAll('.day-btn').forEach((b,j)=>b.classList.toggle('active',j===i));document.querySelectorAll('.mobile-day-pills .pill').forEach((p,j)=>p.classList.toggle('active',j===i));ad=i}
+document.querySelectorAll('.day-btn').forEach((b,i)=>b.addEventListener('click',()=>sw(i)));
+sw(0);
+setTimeout(()=>{const l=dayLayers[0].getLayers();if(l.length>0)l[0].openPopup()},1500);
+window.addEventListener('resize',()=>{window.innerWidth<=640?document.body.classList.add('mobile-mode'):document.body.classList.remove('mobile-mode')},{passive:true});
+
+/* ─── CLICK HANDLER for checkboxes (calls tg from module) ─── */
+document.addEventListener('click',e=>{const cb=e.target.closest('.ditem .cb, #packingGrid .packing-item .cb');if(cb&&typeof tg==='function')tg(cb);else if(cb){/* fallback: just toggle */const it=cb.closest('.ditem,.packing-item');const ck=cb.classList.toggle('checked');it.classList.toggle('checked',ck);const c=lc(),id=gi(it);if(ck)c[id]=true;else delete c[id];sc(c);up()}});
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import{getDatabase,ref,set,onDisconnect,onValue,update}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import{getAnalytics}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
+
+const firebaseConfig={apiKey:"AIzaSyB1CpHDKhlKvssrvoYw2W-muwsqq8V_sW4",authDomain:"mapkun-d9daf.firebaseapp.com",projectId:"mapkun-d9daf",storageBucket:"mapkun-d9daf.firebasestorage.app",messagingSenderId:"50759531502",appId:"1:50759531502:web:eadb39bc487988f19e2cff",measurementId:"G-H29WMHSZR9"};
+let app,db;
+try{app=initializeApp(firebaseConfig);getAnalytics(app);db=getDatabase(app)}catch(e){console.warn('Firebase init failed:',e);db=null}
+
+/* User */
+function genId(){return'u_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+const UID_KEY='tw_user_id';let userId=localStorage.getItem(UID_KEY);if(!userId){userId=genId();localStorage.setItem(UID_KEY,userId)}
+let nickname=localStorage.getItem('tw_nick')||'';if(!nickname.trim()){nickname=prompt('请输入你的昵称（用于旅伴显示）:','')||'旅伴';localStorage.setItem('tw_nick',nickname)}
+function getDevice(){const ua=navigator.userAgent;if(/iPhone/i.test(ua))return'iPhone';if(/Android/i.test(ua))return'Android';return'Web'}
+const device=getDevice();
+
+/* Floating panel */
+const panel=document.getElementById('usersPanel');const panelBody=document.getElementById('panelBody');const panelToggle=document.getElementById('panelToggle');const onlineCount=document.getElementById('onlineCount');
+panelToggle.addEventListener('click',e=>{e.stopPropagation();panel.classList.toggle('collapsed');panelToggle.textContent=panel.classList.contains('collapsed')?'▸':'▾'});
+panel.addEventListener('click',()=>{if(panel.classList.contains('collapsed')){panel.classList.remove('collapsed');panelToggle.textContent='▾'}});
+let userMarkers={};const palette=['#C88242','#059669','#7C3AED','#2563EB','#E11D48','#0891B2'];let colorIdx=0;
+
+/* Location */
+let lastPos=null;
+if(db&&navigator.geolocation){
+  navigator.geolocation.watchPosition(pos=>{
+    const{latitude:lat,longitude:lng}=pos.coords;lastPos={lat,lng};
+    try{set(ref(db,'presence/'+userId),{nickname,device,lat,lng,lastSeen:Date.now()});onDisconnect(ref(db,'presence/'+userId)).remove()}catch(e){}
+  },()=>{},{enableHighAccuracy:true,timeout:15000,maximumAge:10000});
+  /* Listen for others */
+  onValue(ref(db,'presence'),snap=>{
+    const data=snap.val()||{};const now=Date.now();let count=0;
+    panelBody.innerHTML='';
+    Object.keys(data).forEach(uid=>{
+      const u=data[uid];if(uid===userId||now-u.lastSeen>120000)return;
+      count++;const color=palette[colorIdx++%palette.length];
+      const mins=Math.round((now-u.lastSeen)/60000);
+      const row=document.createElement('div');row.className='user-row';
+      row.innerHTML=`<div class="dot pulse" style="background:${color};color:${color}"></div><div class="info"><div class="name">${u.nickname||'旅伴'}</div><div class="meta">${u.device||''} · ${mins<1?'刚刚':mins+'分钟前'}</div></div>`;
+      panelBody.appendChild(row);
+      if(u.lat&&u.lng&&typeof L!=='undefined'){
+        if(userMarkers[uid])userMarkers[uid].setLatLng([u.lat,u.lng]);
+        else{const mk=L.circleMarker([u.lat,u.lng],{radius:10,color:'#fff',weight:2.5,fillColor:color,fillOpacity:0.9});mk.bindPopup(`<b>${u.nickname||'旅伴'}</b><br>${u.device||''}`);mk.addTo(map);userMarkers[uid]=mk}
+      }
+    });
+    onlineCount.textContent=count;
+    Object.keys(userMarkers).forEach(uid=>{if(!data[uid]||now-(data[uid]?.lastSeen||0)>120000){map.removeLayer(userMarkers[uid]);delete userMarkers[uid]}});
+    if(count===0&&!panel.classList.contains('collapsed'))panel.classList.add('collapsed');
+  });
+  /* Self marker */
+  let selfMarker=null;
+  setInterval(()=>{if(lastPos&&typeof L!=='undefined'){if(selfMarker)selfMarker.setLatLng([lastPos.lat,lastPos.lng]);else{selfMarker=L.circleMarker([lastPos.lat,lastPos.lng],{radius:7,color:'#fff',weight:2.5,fillColor:'#3B82F6',fillOpacity:1});selfMarker.bindPopup(`<b>${nickname} (你)</b><br>${device}`);selfMarker.addTo(map)}}},3000);
+}
+
+/* Cross-device checkbox sync */
+if(db){
+  let syncing=false;
+  onValue(ref(db,'checks'),snap=>{
+    if(syncing)return;const fb=snap.val()||{};const local=lc();
+    let changed=false;
+    Object.keys(fb).forEach(key=>{if(fb[key]&&!local[key]){local[key]=true;changed=true}});
+    if(changed){sc(local);applyChecks()}
+  });
+  window.tg=function(cb){
+    const it=cb.closest('.ditem,.packing-item');const ck=cb.classList.toggle('checked');it.classList.toggle('checked',ck);
+    const c=lc(),id=gi(it);if(ck)c[id]=true;else delete c[id];sc(c);up();
+    syncing=true;try{update(ref(db),{[`checks/${id}`]:ck||null}).then(()=>{syncing=false}).catch(()=>{syncing=false})}catch(e){syncing=false}
+  };
+}
+</script>
 
 /* Panel update helper */
 function updatePanel(){updateSelfMarker()}
