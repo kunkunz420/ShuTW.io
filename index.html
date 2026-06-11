@@ -16,187 +16,181 @@
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --t:#1A1817;--t2:#A09894;--bd:rgba(0,0,0,0.04);--div:rgba(0,0,0,0.03);
-  --sf:#FFFFFF;--bg:#FFFFFF;
-  --amber:#C88242;--green:#059669;--purple:#7C3AED;--blue:#2563EB;--grey:#9A9490;
-  --amber-bg:rgba(200,130,66,0.06);--green-bg:rgba(5,150,105,0.06);--purple-bg:rgba(124,58,237,0.06);--blue-bg:rgba(37,99,235,0.06);--grey-bg:rgba(154,148,144,0.06);
+  --p:#C88242;--p-c:rgba(200,130,66,0.12);--p-o:rgba(200,130,66,0.08);
+  --s:#FFFCFF;--b:#FFFFFF;
+  --t:#1C1B1F;--t2:#49454F;--t3:#79747E;
+  --o:#E7E0EC;--o2:#CAC4D0;
+  --green:#059669;--purple:#7C3AED;--blue:#2563EB;--grey:#9A9490;--green-bg:rgba(5,150,105,0.08);--green-g:linear-gradient(135deg,#059669,#34D399);
+  --e1:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);--e2:0 2px 8px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+  --rd-xl:28px;--rd-lg:16px;--rd-md:12px;--rd-sm:8px;
   --bez:cubic-bezier(0.32,0.72,0,1);--spr:cubic-bezier(0.34,1.56,0.64,1);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 }
-html{scroll-behavior:smooth;scroll-padding-top:80px;background:var(--bg)}
-body{font-family:'Smartisan C','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--t);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:17px}
-
-/* ─── Scroll Reveal ─── */
-.reveal{opacity:0;transform:translateY(24px);transition:all 0.8s var(--bez)}.reveal.revealed{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:0.06s}.reveal-d2{transition-delay:0.12s}.reveal-d3{transition-delay:0.18s}.reveal-d4{transition-delay:0.24s}
-
-/* ─── View Toggle ─── */
-.view-toggle{
-  position:fixed;top:calc(var(--safe-t) + 12px);right:16px;z-index:1100;
-  display:flex;background:rgba(26,24,23,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-radius:100px;padding:3px;border:1px solid rgba(255,255,255,0.06);
-  box-shadow:0 4px 24px rgba(0,0,0,0.08);
-}
-.view-toggle button{border:none;background:transparent;color:rgba(255,255,255,0.35);padding:6px 14px;border-radius:100px;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.35s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif;letter-spacing:0.02em}
-.view-toggle button.active{background:rgba(200,130,66,0.2);color:#E8D5B8}
+html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif;background:var(--b);color:var(--t);line-height:1.5;-webkit-font-smoothing:antialiased;font-size:16px}
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.7s var(--bez)}.reveal.revealed{opacity:1;transform:translateY(0)}
+.vt{position:fixed;top:calc(var(--safe-t) + 10px);right:14px;z-index:1100;display:flex;background:rgba(28,27,31,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:100px;padding:2px;box-shadow:0 2px 16px rgba(0,0,0,0.08)}
+.vt button{border:none;background:transparent;color:rgba(255,255,255,0.3);padding:5px 12px;border-radius:100px;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.3s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif}
+.vt button.active{background:rgba(200,130,66,0.2);color:#E8D5B8}
 
 /* ─── Desktop Nav ─── */
-.top-nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,0.85);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(0,0,0,0.04);border-radius:100px;padding:0 6px 0 20px;height:48px;display:flex;align-items:center;gap:4px;box-shadow:0 2px 20px rgba(0,0,0,0.03);transition:all 0.6s var(--bez)}
-.top-nav-brand{display:flex;align-items:center;gap:5px;color:var(--t);font-weight:800;font-size:15px;white-space:nowrap}
-.top-nav-brand span{color:var(--amber)}
+.top-nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,0.82);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid var(--o);border-radius:100px;padding:0 6px 0 18px;height:46px;display:flex;align-items:center;gap:4px;box-shadow:var(--e1);transition:all 0.5s var(--bez)}
+.top-nav-brand{display:flex;align-items:center;gap:5px;color:var(--t);font-weight:700;font-size:14px;white-space:nowrap}
+.top-nav-brand span{color:var(--p)}
 .top-nav-links{display:flex;align-items:center;gap:1px;margin-left:4px}
-.top-nav-links a{color:var(--t2);font-size:12px;padding:6px 11px;border-radius:100px;transition:all 0.3s var(--bez);font-weight:400;text-decoration:none;white-space:nowrap}
+.top-nav-links a{color:var(--t2);font-size:12px;padding:5px 10px;border-radius:100px;transition:all 0.25s var(--bez);font-weight:400;text-decoration:none;white-space:nowrap}
 .top-nav-links a:hover{color:var(--t);background:rgba(0,0,0,0.03)}
-.top-nav-links a.primary{color:var(--amber)}
+.top-nav-links a.primary{color:var(--p)}
 
-/* ─── Mobile Tab Bar ─── */
-.mobile-tab-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(0,0,0,0.04);padding:4px 0 calc(var(--safe-b) + 4px)}
-.mobile-tab-bar .tabs{display:flex;justify-content:space-around;align-items:center}
-.mobile-tab-bar .tab{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 0;border:none;background:transparent;cursor:pointer;color:var(--t2);font-size:10px;font-weight:500;font-family:'Smartisan C','PingFang SC',sans-serif;transition:all 0.25s var(--bez);min-width:56px}
-.mobile-tab-bar .tab .icon{font-size:20px;line-height:1;transition:transform 0.25s var(--spr)}
-.mobile-tab-bar .tab.active{color:var(--t)}
-.mobile-tab-bar .tab.active .icon{transform:scale(1.08)}
+/* ─── Bottom Nav (M3) ─── */
+.m3-bot{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid var(--o);padding:0 0 calc(var(--safe-b) + 0px)}
+.m3-bot-inner{display:flex;height:64px;align-items:center;justify-content:space-around;padding:0 4px}
+.m3-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:56px;min-width:64px;border:none;background:transparent;cursor:pointer;position:relative;padding:0 12px;border-radius:var(--rd-lg);transition:all 0.25s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif}
+.m3-tab .icon{font-size:22px;line-height:1;transition:transform 0.2s var(--spr)}
+.m3-tab .label{font-size:11px;font-weight:500;color:var(--t2);transition:color 0.2s var(--bez)}
+.m3-tab.active .icon{transform:scale(1.1)}.m3-tab.active{background:var(--p-o)}
+.m3-tab.active .label{color:var(--p);font-weight:600}
+.m3-tab.active::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:2px;background:var(--p)}
 
 /* ─── Hero ─── */
-.hero{position:relative;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 40%,rgba(200,130,66,0.03) 0%,transparent 70%)}
-.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:580px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px 5px 12px;border-radius:100px;background:var(--amber-bg);font-size:11px;font-weight:400;color:var(--amber);margin-bottom:20px;letter-spacing:0.08em}
-.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--amber);animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
-.hero h1{font-size:clamp(2.6rem,7vw,4.8rem);font-weight:800;color:var(--t);line-height:1.06;margin-bottom:14px;letter-spacing:-0.05em}
-.hero h1 span{color:var(--amber)}
-.hero-sub{font-size:clamp(0.9rem,1.2vw,1.05rem);color:var(--t2);max-width:420px;margin:0 auto 32px;font-weight:300;line-height:1.7}
-.hero-stats{display:flex;gap:36px;justify-content:center;flex-wrap:wrap}
+.hero{position:relative;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--b)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 40%,rgba(200,130,66,0.04) 0%,transparent 70%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:520px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px 4px 12px;border-radius:100px;background:var(--p-c);font-size:11px;font-weight:400;color:var(--p);margin-bottom:16px;letter-spacing:0.06em}
+.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--p);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;color:var(--t);line-height:1.05;margin-bottom:12px;letter-spacing:-0.04em}
+.hero h1 span{color:var(--p)}
+.hero-sub{font-size:clamp(0.85rem,1.1vw,1rem);color:var(--t2);max-width:380px;margin:0 auto 28px;font-weight:300;line-height:1.6}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
 .hero-stat{text-align:center}
-.hero-stat-num{font-size:2.6rem;font-weight:800;color:var(--t);line-height:1;letter-spacing:-0.03em}
-.hero-stat-label{font-size:11px;color:var(--t2);margin-top:4px;font-weight:300;letter-spacing:0.04em}
+.hero-stat-num{font-size:2.2rem;font-weight:800;color:var(--t);line-height:1;letter-spacing:-0.03em}
+.hero-stat-label{font-size:11px;color:var(--t2);margin-top:3px;font-weight:300;letter-spacing:0.04em}
 
-/* ─── Container ─── */
-.container{max-width:1200px;margin:0 auto;padding:0 24px}
-.section-head{text-align:center;margin-bottom:36px}
-.section-head .eyebrow{font-size:11px;font-weight:400;letter-spacing:0.18em;color:var(--t2);margin-bottom:6px}
-.section-head h2{font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;letter-spacing:-0.02em}
-.section-head .line{width:24px;height:2px;border-radius:2px;background:var(--amber);margin:10px auto 0;opacity:0.3}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.sh{text-align:center;margin-bottom:28px}
+.sh .eyebrow{font-size:11px;font-weight:400;letter-spacing:0.16em;color:var(--t2);margin-bottom:4px}
+.sh h2{font-size:clamp(1.2rem,1.8vw,1.6rem);font-weight:700;letter-spacing:-0.02em}
 
 /* ─── Map ─── */
-#map-section{padding:64px 0 40px;background:var(--bg)}
-.map-wrapper{border-radius:20px;overflow:hidden;height:560px}
-#travel-map{width:100%;height:100%}
-.day-buttons{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-.day-btn{padding:8px 18px;border-radius:100px;border:none;font-size:13px;font-weight:500;cursor:pointer;color:#fff;transition:all 0.4s var(--bez);opacity:0.45;display:flex;align-items:center;gap:5px}
-.day-btn:hover{opacity:0.7;transform:translateY(-1px)}
-.day-btn.active{opacity:1;box-shadow:0 4px 16px rgba(0,0,0,0.06);transform:translateY(-1px)}
-.day-btn .num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.18);font-size:11px;font-weight:700}
-
-.leaflet-popup-content-wrapper{border-radius:14px!important;box-shadow:0 6px 32px rgba(0,0,0,0.06)!important}
-.leaflet-popup-content{margin:10px 14px!important;font-family:'Smartisan C','PingFang SC',sans-serif!important;min-width:160px}
-.poptitle{font-weight:700;font-size:14px;margin-bottom:2px;display:flex;align-items:center;gap:4px}
+#map-section{padding:56px 0 32px;background:var(--b)}
+.map-wrapper{border-radius:var(--rd-lg);overflow:hidden;height:520px;box-shadow:var(--e1)}
+.day-buttons{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.day-btn{padding:7px 16px;border-radius:100px;border:none;font-size:13px;font-weight:500;cursor:pointer;color:#fff;transition:all 0.35s var(--bez);opacity:0.4;display:flex;align-items:center;gap:4px}
+.day-btn:hover{opacity:0.65;transform:translateY(-1px)}
+.day-btn.active{opacity:1;box-shadow:0 2px 12px rgba(0,0,0,0.06);transform:translateY(-1px)}
+.day-btn .num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.18);font-size:10px;font-weight:700}
+.leaflet-popup-content-wrapper{border-radius:var(--rd-md)!important;box-shadow:var(--e2)!important}
+.leaflet-popup-content{margin:10px 14px!important;font-family:'Smartisan C','PingFang SC',sans-serif!important;min-width:150px}
+.poptitle{font-weight:600;font-size:14px;margin-bottom:2px;display:flex;align-items:center;gap:4px}
 .popdesc{font-size:12px;color:var(--t2);line-height:1.4;font-weight:400}
 .popnum{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;color:#fff;margin-right:4px}
-.popday{font-size:11px;color:var(--t2);margin-top:3px;font-weight:500}
+.popday{font-size:11px;color:var(--t2);margin-top:2px;font-weight:500}
 
-/* ─── Itinerary ─── */
-#itinerary{padding:40px 0 64px;background:var(--bg)}
-.progress-bar{margin-bottom:32px}
-.progress-bar-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
-.progress-bar-header .label{font-size:14px;font-weight:600}
-.progress-bar-header .count{font-size:13px;color:var(--t2);font-weight:400}
-.progress-track{height:5px;background:var(--div);border-radius:100px;overflow:hidden}
-.progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--amber),var(--green));transition:width 0.7s var(--bez);width:0%}
+/* ─── Itinerary (M3 Cards) ─── */
+#itinerary{padding:32px 0 56px;background:var(--b)}
+.pb{margin-bottom:28px}
+.pb-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.pb-header .label{font-size:13px;font-weight:600}
+.pb-header .count{font-size:12px;color:var(--t2);font-weight:400}
+.pb-track{height:4px;background:var(--o);border-radius:100px;overflow:hidden}
+.pb-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--p),var(--green));transition:width 0.6s var(--bez);width:0%}
 
-.day-shell{padding:1px;margin-bottom:20px;border-radius:18px;transition:all 0.4s var(--bez);background:var(--sf)}
-.day-section{border-radius:17px;background:var(--sf);overflow:hidden}
-.day-section-header{padding:18px 22px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--div);flex-wrap:wrap}
-.day-section-header .dnum{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
-.day-section-header .dtitle{font-weight:700;font-size:1rem;letter-spacing:-0.01em}
-.day-section-header .ddate{font-size:12px;color:var(--t2);margin-left:auto;font-weight:400}
-.day-progress-mini{width:100%;margin-top:8px;display:flex;align-items:center;gap:10px}
-.day-progress-mini .track{flex:1;height:4px;background:var(--div);border-radius:100px;overflow:hidden}
-.day-progress-mini .track .fill{height:100%;border-radius:100px;transition:width 0.6s var(--bez);width:0%}
-.day-progress-mini .count{font-size:12px;color:var(--t2);white-space:nowrap;font-weight:400;min-width:30px;text-align:right}
-.day-section-body{padding:14px 20px 20px}
-.ditems{display:grid;gap:3px}
-
-.ditem{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,0.015);font-size:15px;font-weight:400;transition:all 0.3s var(--bez)}
-.ditem.checked{background:var(--green-bg);opacity:0.55}
-.ditem.checked .txt{text-decoration:line-through;color:var(--t2)}
-.ditem .cb{flex-shrink:0;width:24px;height:24px;border-radius:6px;border:2px solid rgba(0,0,0,0.08);cursor:pointer;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spr);background:var(--sf);font-size:12px;color:transparent}
-.ditem .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
-.ditem .idx{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin-top:1px}
-.ditem .ic{flex-shrink:0;font-size:16px;margin-top:1px;opacity:0.75}
-.ditem .txt{line-height:1.6;flex:1}
-.ditem .txt .hl{font-weight:600}
-.ditem .tags{display:flex;flex-wrap:wrap;gap:3px 6px;margin-top:2px}
-.ditem .tags span{font-size:11px;color:var(--t2);background:var(--div);padding:2px 7px;border-radius:4px;font-weight:400}
+.dc{border-radius:var(--rd-lg);background:var(--b);overflow:hidden;margin-bottom:16px;box-shadow:var(--e1);border:1px solid var(--o)}
+.dc-h{padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dc-h .dnum{width:30px;height:30px;border-radius:var(--rd-sm);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.dc-h .dt{font-weight:600;font-size:0.95rem;letter-spacing:-0.01em}
+.dc-h .dd{font-size:11px;color:var(--t2);margin-left:auto;font-weight:400}
+.dc-pm{width:100%;margin-top:6px;display:flex;align-items:center;gap:8px}
+.dc-pm .tr{flex:1;height:3px;background:var(--o);border-radius:100px;overflow:hidden}
+.dc-pm .tr .fl{height:100%;border-radius:100px;transition:width 0.5s var(--bez);width:0%}
+.dc-pm .ct{font-size:11px;color:var(--t2);white-space:nowrap;font-weight:400;min-width:28px;text-align:right}
+.dc-b{padding:8px 14px 14px}
+.di{display:grid;gap:2px}
+.di-i{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:var(--rd-sm);font-size:14px;font-weight:400;transition:all 0.2s var(--bez)}
+.di-i.checked{opacity:0.45}
+.di-i.checked .tx{text-decoration:line-through;color:var(--t2)}
+.di-i .cb{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--t3);cursor:pointer;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--spr);background:var(--b);font-size:12px;color:transparent}
+.di-i .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
+.di-i .idx{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;margin-top:1px}
+.di-i .ic{flex-shrink:0;font-size:14px;margin-top:1px}
+.di-i .tx{line-height:1.5;flex:1}
+.di-i .tx .hl{font-weight:500}
+.di-i .ts{display:flex;flex-wrap:wrap;gap:3px 5px;margin-top:2px}
+.di-i .ts span{font-size:10px;color:var(--t2);background:var(--o);padding:1px 6px;border-radius:4px;font-weight:400}
 
 /* ─── Food ─── */
-#food{padding:64px 0;background:var(--bg)}
-.food-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-.food-card{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:16px;background:rgba(0,0,0,0.015);font-size:14px;font-weight:400;transition:all 0.35s var(--bez)}
-.food-card .brand-logo{width:44px;height:44px;border-radius:12px;object-fit:contain;background:rgba(0,0,0,0.02);padding:5px;flex-shrink:0}
-.food-card-info{flex:1;min-width:0}
-.food-card-info .name{font-weight:700;font-size:15px;margin-bottom:1px}
-.food-card-info .place{font-size:12px;color:var(--t2);font-weight:400}
-.food-supermarket{margin-top:28px;padding:20px 22px;border-radius:16px;background:rgba(0,0,0,0.015);font-size:14px;text-align:center}
-.food-supermarket .title{font-weight:700;font-size:15px;margin-bottom:10px}
-.food-supermarket .items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.food-supermarket .sm-item{display:inline-flex;align-items:center;gap:5px;background:var(--div);padding:4px 12px 4px 5px;border-radius:8px;font-size:12px;font-weight:400}
-.food-supermarket .sm-item img{width:20px;height:20px;border-radius:4px;object-fit:contain;background:#fff;padding:2px}
+#food{padding:56px 0;background:var(--b)}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.fc{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--rd-md);background:var(--b);font-size:14px;font-weight:400;border:1px solid var(--o);transition:all 0.25s var(--bez)}
+.fc .bl{width:42px;height:42px;border-radius:var(--rd-sm);object-fit:contain;background:var(--o);padding:5px;flex-shrink:0}
+.fci{flex:1;min-width:0}
+.fci .nm{font-weight:600;font-size:14px;margin-bottom:1px}
+.fci .pl{font-size:12px;color:var(--t2);font-weight:400}
+.fs{margin-top:24px;padding:18px 20px;border-radius:var(--rd-md);background:var(--b);font-size:14px;text-align:center;border:1px solid var(--o)}
+.fs .tt{font-weight:600;font-size:14px;margin-bottom:8px}
+.fs .it{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.fs .si{display:inline-flex;align-items:center;gap:4px;background:var(--o);padding:3px 10px 3px 4px;border-radius:var(--rd-sm);font-size:11px;font-weight:400}
+.fs .si img{width:18px;height:18px;border-radius:4px;object-fit:contain;background:#fff;padding:2px}
 
 /* ─── Packing ─── */
-#packing{padding:64px 0;background:var(--bg)}
-.packing-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
-.packing-header .label{font-weight:700;font-size:1rem}
-.packing-header .count{font-size:13px;color:var(--t2);font-weight:400}
-.packing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
-.packing-item{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.015);font-size:14px;font-weight:400;transition:all 0.3s var(--bez)}
-.packing-item.checked{background:var(--green-bg);opacity:0.5}
-.packing-item.checked span{text-decoration:line-through;color:var(--t2)}
-.packing-item .cb{flex-shrink:0;width:24px;height:24px;border-radius:6px;border:2px solid rgba(0,0,0,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spr);background:var(--sf);font-size:12px;color:transparent}
-.packing-item .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
+#packing{padding:56px 0;background:var(--b)}
+.pk-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.pk-h .label{font-weight:600;font-size:0.95rem}
+.pk-h .count{font-size:12px;color:var(--t2);font-weight:400}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.pi{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--rd-sm);background:var(--b);font-size:13px;font-weight:400;border:1px solid var(--o);transition:all 0.2s var(--bez)}
+.pi.checked{background:var(--green-bg);border-color:rgba(5,150,105,0.15);opacity:0.45}
+.pi.checked span{text-decoration:line-through;color:var(--t2)}
+.pi .cb{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--spr);background:var(--b);font-size:12px;color:transparent}
+.pi .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
 
-.footer{text-align:center;padding:24px 20px;color:var(--t2);font-size:11px;font-weight:300}
+.ft{text-align:center;padding:20px 20px;color:var(--t2);font-size:11px;font-weight:300}
 
-/* ─── Floating Users Panel ─── */
-.floating-panel{position:fixed;bottom:calc(80px + var(--safe-b) + 16px);right:16px;z-index:900;background:rgba(255,255,255,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:16px;padding:12px 16px;min-width:180px;max-width:260px;box-shadow:0 4px 28px rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.04);font-size:12px;transition:all 0.4s var(--bez)}
-.floating-panel.collapsed{min-width:auto;padding:8px 12px;cursor:pointer}
-.floating-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.floating-panel-header .title{font-weight:700;font-size:12px;display:flex;align-items:center;gap:4px}
-.floating-panel-header .title .count{font-weight:400;color:var(--t2);font-size:11px}
-.floating-panel-toggle{border:none;background:rgba(0,0,0,0.03);border-radius:6px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--t2);transition:all 0.25s var(--bez)}
-.floating-panel-toggle:hover{background:rgba(0,0,0,0.06)}
-.floating-panel-body{display:flex;flex-direction:column;gap:6px}
-.floating-panel-body .user-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,0.015)}
-.floating-panel-body .user-row .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.floating-panel-body .user-row .dot.pulse{animation:userPulse 1.6s ease-in-out infinite}
-@keyframes userPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 currentColor}50%{opacity:0.6;box-shadow:0 0 0 4px currentColor}}
-.floating-panel-body .user-row .info{flex:1;min-width:0}
-.floating-panel-body .user-row .info .name{font-weight:600;font-size:12px}
-.floating-panel-body .user-row .info .meta{font-weight:300;color:var(--t2);font-size:10px}
-.floating-panel-body .user-row .badge{font-size:9px;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,0.04);color:var(--t2);white-space:nowrap}
-.floating-panel.collapsed .floating-panel-body{display:none}
-@media(max-width:640px){.floating-panel{right:10px;bottom:calc(76px + var(--safe-b));min-width:150px;padding:10px 12px}}
+/* ─── M3 Floating Panel ─── */
+.fp{position:fixed;bottom:calc(72px + var(--safe-b));right:12px;z-index:900;background:rgba(255,255,255,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:var(--rd-md);padding:10px 14px;min-width:160px;max-width:240px;box-shadow:var(--e2);font-size:12px;transition:all 0.35s var(--bez);border:1px solid var(--o)}
+.fp.collapsed{min-width:auto;padding:6px 10px;cursor:pointer}
+.fp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.fp-h .ti{font-weight:600;font-size:11px;display:flex;align-items:center;gap:4px;color:var(--t)}
+.fp-h .ti .cnt{font-weight:400;color:var(--t2);font-size:11px}
+.fp-tg{border:none;background:var(--o);border-radius:4px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;color:var(--t2);transition:all 0.2s var(--bez)}
+.fp-b{display:flex;flex-direction:column;gap:4px}
+.fp-b .ur{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:6px;background:rgba(0,0,0,0.015)}
+.fp-b .ur .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.fp-b .ur .dot.pls{animation:up 1.5s ease-in-out infinite}
+@keyframes up{0%,100%{opacity:1}50%{opacity:0.4}}
+.fp-b .ur .if{flex:1;min-width:0}
+.fp-b .ur .if .nm{font-weight:500;font-size:11px}
+.fp-b .ur .if .mt{font-weight:300;color:var(--t2);font-size:10px}
+.fp.collapsed .fp-b{display:none}
 
-/* ─── Mobile Day Pills ─── */
-.mobile-day-pills{display:none;position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:8px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px}
-.mobile-day-pills::-webkit-scrollbar{display:none}
-.mobile-day-pills .pill{flex-shrink:0;padding:7px 16px;border-radius:100px;background:rgba(0,0,0,0.02);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.3s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif;color:var(--t2);display:flex;align-items:center;gap:5px;white-space:nowrap;border:none}
-.mobile-day-pills .pill .pnum{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;color:#fff}
-.mobile-day-pills .pill.active{color:var(--t);background:rgba(200,130,66,0.08)}
+/* ─── M3 Day Pills ─── */
+.m3-pills{display:none;position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:6px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px}
+.m3-pills::-webkit-scrollbar{display:none}
+.m3-pills .p{flex-shrink:0;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.25s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif;color:var(--t2);display:flex;align-items:center;gap:4px;white-space:nowrap;border:1px solid var(--o);background:var(--b)}
+.m3-pills .p .pn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:700;color:#fff}
+.m3-pills .p.active{color:var(--p);border-color:var(--p);background:var(--p-c)}
 
-@media(max-width:640px){.top-nav{display:none}.view-toggle{top:calc(var(--safe-t) + 6px);right:10px}.view-toggle button{padding:5px 10px;font-size:10px}.mobile-tab-bar{display:block}.hero{min-height:70dvh;padding-top:calc(var(--safe-t) + 50px)}.container{padding:0 14px}.section-head{margin-bottom:24px}.section-head h2{font-size:1.25rem}#map-section{padding:0}#map-section>.container{padding:0}.map-wrapper{border-radius:0;height:50dvh}.day-buttons{display:none}.mobile-day-pills{display:flex}#itinerary{padding:12px 0 calc(72px + var(--safe-b))}.progress-bar{margin-bottom:16px}.day-shell{margin-bottom:14px}.day-section-header{padding:14px 16px;gap:8px}.day-section-header .dnum{width:28px;height:28px;border-radius:8px;font-size:12px}.day-section-header .dtitle{font-size:0.9rem}.day-section-header .ddate{font-size:11px}.day-section-body{padding:10px 12px 14px}.ditem{padding:8px 10px;gap:8px;border-radius:8px;font-size:14px}.ditem .cb{width:26px;height:26px;border-radius:7px;font-size:13px}.ditem .idx{width:20px;height:20px;font-size:10px}.ditem .ic{font-size:14px}.ditem .tags span{font-size:10px;padding:1px 6px}#food{padding:20px 0 calc(72px + var(--safe-b))}.food-grid{grid-template-columns:1fr;gap:8px}.food-card{padding:12px 14px;gap:12px;border-radius:14px}.food-card .brand-logo{width:40px;height:40px;border-radius:10px}.food-card-info .name{font-size:14px}.food-card-info .place{font-size:11px}.food-supermarket{padding:14px 16px;border-radius:14px;margin-top:16px}#packing{padding:20px 0 calc(72px + var(--safe-b))}.packing-grid{grid-template-columns:1fr 1fr;gap:6px}.packing-item{padding:10px 12px;border-radius:10px;font-size:13px;gap:8px}.packing-item .cb{width:26px;height:26px;border-radius:7px}.footer{padding:16px 14px calc(var(--safe-b) + 16px);font-size:10px}}
+@media(max-width:640px){
+  .top-nav{display:none}.vt{top:calc(var(--safe-t) + 6px);right:10px}.vt button{padding:4px 10px;font-size:10px}.m3-bot{display:block}
+  .hero{min-height:65dvh;padding-top:calc(var(--safe-t) + 40px)}.hero h1{font-size:2rem}.hero-sub{font-size:0.85rem;margin-bottom:24px}.hero-stats{gap:20px}.hero-stat-num{font-size:1.8rem}
+  .container{padding:0 12px}.sh{margin-bottom:20px}.sh h2{font-size:1.15rem}
+  #map-section{padding:0}#map-section>.container{padding:0}.map-wrapper{border-radius:0;height:45dvh;box-shadow:none}.day-buttons{display:none}.m3-pills{display:flex}
+  #itinerary{padding:8px 0 calc(72px + var(--safe-b))}.pb{margin-bottom:16px}
+  .dc{margin-bottom:12px;border-radius:var(--rd-md)}.dc-h{padding:12px 14px;gap:8px}.dc-h .dnum{width:26px;height:26px;border-radius:6px;font-size:11px}.dc-h .dt{font-size:0.85rem}.dc-h .dd{font-size:10px}.dc-b{padding:6px 10px 10px}
+  .di-i{padding:6px 8px;gap:8px;font-size:13px}.di-i .cb{width:24px;height:24px;border-radius:6px;font-size:12px}.di-i .idx{width:18px;height:18px;font-size:9px}.di-i .ic{font-size:13px}.di-i .ts span{font-size:10px;padding:1px 5px}
+  #food{padding:16px 0 calc(72px + var(--safe-b))}.fg{grid-template-columns:1fr;gap:8px}.fc{padding:10px 12px;gap:10px;border-radius:var(--rd-sm)}.fc .bl{width:36px;height:36px;border-radius:6px;padding:4px}.fci .nm{font-size:13px}.fci .pl{font-size:11px}.fs{padding:12px 14px;border-radius:var(--rd-sm);margin-top:16px}
+  #packing{padding:16px 0 calc(72px + var(--safe-b))}.pg{grid-template-columns:1fr 1fr;gap:6px}.pi{padding:8px 10px;border-radius:6px;font-size:12px;gap:8px}.pi .cb{width:24px;height:24px;border-radius:6px}
+  .ft{padding:14px 12px calc(var(--safe-b) + 14px);font-size:10px}.fp{bottom:calc(72px + var(--safe-b));right:8px;min-width:140px;padding:8px 10px;border-radius:var(--rd-sm)}
+}
 </style>
 </head>
 <body>
 
-<!-- View Toggle -->
-<div class="view-toggle" id="viewToggle">
+<div class="vt" id="viewToggle">
   <button data-view="desktop" class="active">桌面</button>
   <button data-view="mobile">手机</button>
 </div>
 
-<!-- Desktop Nav -->
 <nav class="top-nav">
   <div class="top-nav-brand"><span>台</span>湾 · 全景</div>
   <div class="top-nav-links">
@@ -206,17 +200,15 @@ body{font-family:'Smartisan C','PingFang SC','Microsoft YaHei',sans-serif;backgr
   </div>
 </nav>
 
-<!-- Mobile Tab Bar -->
-<div class="mobile-tab-bar" id="mobileTabBar">
-  <div class="tabs">
-    <button class="tab active" data-tab="itinerary"><span class="icon">📋</span>行程</button>
-    <button class="tab" data-tab="map-section"><span class="icon">🗺️</span>地图</button>
-    <button class="tab" data-tab="food"><span class="icon">🍜</span>美食</button>
-    <button class="tab" data-tab="packing"><span class="icon">🎒</span>清单</button>
+<div class="m3-bot" id="mobileTabBar">
+  <div class="m3-bot-inner">
+    <button class="m3-tab active" data-tab="itinerary"><span class="icon">📋</span><span class="label">行程</span></button>
+    <button class="m3-tab" data-tab="map-section"><span class="icon">🗺️</span><span class="label">地图</span></button>
+    <button class="m3-tab" data-tab="food"><span class="icon">🍜</span><span class="label">美食</span></button>
+    <button class="m3-tab" data-tab="packing"><span class="icon">🎒</span><span class="label">清单</span></button>
   </div>
 </div>
 
-<!-- Hero -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-content reveal">
@@ -232,26 +224,20 @@ body{font-family:'Smartisan C','PingFang SC','Microsoft YaHei',sans-serif;backgr
   </div>
 </section>
 
-<!-- Mobile Day Pills -->
-<div class="mobile-day-pills" id="mobilePills">
-  <button class="pill active" data-day="1"><span class="pnum" style="background:var(--amber)">1</span> 出发</button>
-  <button class="pill" data-day="2"><span class="pnum" style="background:var(--green)">2</span> 花莲</button>
-  <button class="pill" data-day="3"><span class="pnum" style="background:var(--purple)">3</span> 巡礼</button>
-  <button class="pill" data-day="4"><span class="pnum" style="background:var(--blue)">4</span> 深度</button>
-  <button class="pill" data-day="5"><span class="pnum" style="background:var(--grey)">5</span> 返程</button>
+<div class="m3-pills" id="mobilePills">
+  <button class="p active" data-day="1"><span class="pn" style="background:var(--p)">1</span> 出发</button>
+  <button class="p" data-day="2"><span class="pn" style="background:var(--green)">2</span> 花莲</button>
+  <button class="p" data-day="3"><span class="pn" style="background:var(--purple)">3</span> 巡礼</button>
+  <button class="p" data-day="4"><span class="pn" style="background:var(--blue)">4</span> 深度</button>
+  <button class="p" data-day="5"><span class="pn" style="background:var(--grey)">5</span> 返程</button>
 </div>
 
-<!-- Map -->
 <section id="map-section">
   <div class="container">
-    <div class="section-head reveal">
-      <div class="eyebrow">Navigation</div>
-      <h2>路线地图</h2>
-      <div class="line"></div>
-    </div>
+    <div class="sh reveal"><div class="eyebrow">Navigation</div><h2>路线地图</h2></div>
     <div class="map-wrapper reveal"><div id="travel-map"></div></div>
     <div class="day-buttons reveal" id="dayButtons">
-      <button class="day-btn active" style="background:var(--amber)" data-day="1"><span class="num">1</span> 出发</button>
+      <button class="day-btn active" style="background:var(--p)" data-day="1"><span class="num">1</span> 出发</button>
       <button class="day-btn" style="background:var(--green)" data-day="2"><span class="num">2</span> 花莲</button>
       <button class="day-btn" style="background:var(--purple)" data-day="3"><span class="num">3</span> 经典</button>
       <button class="day-btn" style="background:var(--blue)" data-day="4"><span class="num">4</span> 巡礼</button>
@@ -260,335 +246,177 @@ body{font-family:'Smartisan C','PingFang SC','Microsoft YaHei',sans-serif;backgr
   </div>
 </section>
 
-<!-- Itinerary -->
 <section id="itinerary">
   <div class="container">
-    <div class="section-head reveal">
-      <div class="eyebrow">Itinerary</div>
-      <h2>完整行程</h2>
-      <div class="line"></div>
+    <div class="sh reveal"><div class="eyebrow">Itinerary</div><h2>完整行程</h2></div>
+
+    <div class="pb reveal">
+      <div class="pb-header"><span class="label">总进度</span><span class="count"><span id="totalDone">0</span> / <span id="totalAll">0</span></span></div>
+      <div class="pb-track"><div class="pb-fill" id="totalFill"></div></div>
     </div>
 
-    <div class="progress-bar reveal">
-      <div class="progress-bar-header">
-        <span class="label">总进度</span>
-        <span class="count"><span id="totalDone">0</span> / <span id="totalAll">0</span></span>
-      </div>
-      <div class="progress-track"><div class="progress-fill" id="totalFill"></div></div>
-    </div>
+    <div class="dc reveal" id="day-1"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--p),#D4A05A)">1</div><div class="dt">飞抵台北 → 花莲</div><div class="dd">6月17日·周三</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--p)"></div></div></div></div><div class="dc-b"><div class="di" data-day="1">
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">1</div><div class="ic">🏠</div><div class="tx"><span class="hl">06:20</span> 从家出发</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">2</div><div class="ic">🛂</div><div class="tx"><span class="hl">07:00</span> 到达口岸</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">3</div><div class="ic">🛫</div><div class="tx"><span class="hl">08:15</span> 抵达香港机场 · <span class="hl">10:15</span> 起飞</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">4</div><div class="ic">🛄</div><div class="tx"><span class="hl">12:10</span> 桃园机场T1入境<div class="ts"><span>📱 Klook电话卡现场取</span><span>💳 兆丰银行取台币五千</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">5</div><div class="ic">🏪</div><div class="tx"><span class="hl">B1层 7-Eleven</span> 买悠游卡<div class="ts"><span>🍠 地瓜洒布雷</span><span>🥚 茶叶蛋</span><span>🍗 麻油鸡</span><span>🧋 木瓜牛奶+寒天QQ</span><span>🍪 法式奶香夹心饼干</span><span>💧 买水</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">6</div><div class="ic">🦟</div><div class="tx">叮宁 派卡瑞丁 10小时长效防蚊液</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">7</div><div class="ic">🚇</div><div class="tx"><span class="hl">15:30</span> 机场捷运 → 台北车站<div class="ts"><span>紫色快车/蓝色普通车</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">8</div><div class="ic">🚄</div><div class="tx"><span class="hl">17:05</span> 台铁 台北→花莲<div class="ts"><span>16:30到站·自助机取票</span><span>车票2054735OZESU</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">9</div><div class="ic">🏨</div><div class="tx"><span class="hl">19:43</span> 抵达花莲 · 国联一路201号</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">10</div><div class="ic">🥟</div><div class="tx">花莲香扁食 + 曾师傅麻糬<div class="ts"><span>🥜 花生麻糬·红豆麻糬</span><span>🟣 现包紫米·御皇酥</span></div></div></div>
+    </div></div></div>
 
-    <div class="day-shell reveal" id="day-1"><div class="day-section">
-      <div class="day-section-header">
-        <div class="dnum" style="background:linear-gradient(135deg,var(--amber),#D4A05A)">1</div>
-        <div class="dtitle">飞抵台北 → 花莲</div>
-        <div class="ddate">6月17日·周三</div>
-        <div class="day-progress-mini">
-          <span class="count"><span class="d-done">0</span>/<span class="d-total">0</span></span>
-          <div class="track"><div class="fill" style="background:var(--amber)"></div></div>
-        </div>
-      </div>
-      <div class="day-section-body">
-        <div class="ditems" data-day="1">
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">1</div><div class="ic">🏠</div><div class="txt"><span class="hl">06:20</span> 从家出发</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">2</div><div class="ic">🛂</div><div class="txt"><span class="hl">07:00</span> 到达口岸</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">3</div><div class="ic">🛫</div><div class="txt"><span class="hl">08:15</span> 抵达香港机场 · <span class="hl">10:15</span> 起飞</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">4</div><div class="ic">🛄</div><div class="txt"><span class="hl">12:10</span> 桃园机场T1入境<div class="tags"><span>📱 Klook电话卡现场取</span><span>💳 兆丰银行取台币五千</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">5</div><div class="ic">🏪</div><div class="txt"><span class="hl">B1层 7-Eleven</span> 买悠游卡<div class="tags"><span>🍠 地瓜洒布雷</span><span>🥚 茶叶蛋</span><span>🍗 麻油鸡</span><span>🧋 木瓜牛奶+寒天QQ</span><span>🍪 法式奶香夹心饼干</span><span>💧 买水</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">6</div><div class="ic">🦟</div><div class="txt">叮宁 派卡瑞丁 10小时长效防蚊液</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">7</div><div class="ic">🚇</div><div class="txt"><span class="hl">15:30</span> 机场捷运 → 台北车站<div class="tags"><span>紫色快车/蓝色普通车</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">8</div><div class="ic">🚄</div><div class="txt"><span class="hl">17:05</span> 台铁 台北→花莲<div class="tags"><span>16:30到站·自助机取票</span><span>车票2054735OZESU</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">9</div><div class="ic">🏨</div><div class="txt"><span class="hl">19:43</span> 抵达花莲 · 国联一路201号</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--amber)">10</div><div class="ic">🥟</div><div class="txt">花莲香扁食 + 曾师傅麻糬<div class="tags"><span>🥜 花生麻糬·红豆麻糬</span><span>🟣 现包紫米·御皇酥</span></div></div></div>
-        </div>
-      </div>
-    </div></div>
+    <div class="dc reveal reveal-d1" id="day-2"><div class="dc-h"><div class="dnum" style="background:var(--green-g)">2</div><div class="dt">花莲 · 山海一日</div><div class="dd">6月18日·周四</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--green)"></div></div></div></div><div class="dc-b"><div class="di" data-day="2">
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">1</div><div class="ic">🐳</div><div class="tx"><span class="hl">08:00</span> 出海赏鲸<div class="ts"><span>👖 长袖长裤+防晒衣</span><span>🦟 防蚊液+伞</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">2</div><div class="ic">🏨</div><div class="tx"><span class="hl">11:30</span> 回酒店<div class="ts"><span>🥟 花莲香扁食买奶茶</span><span>🍡 曾师傅麻糬</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">3</div><div class="ic">🏘️</div><div class="tx"><span class="hl">14:30</span> 新城老街 · 包车出发</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">4</div><div class="ic">🏔️</div><div class="tx">清水断崖</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">5</div><div class="ic">🏖️</div><div class="tx">板下沙滩</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">6</div><div class="ic">🏛️</div><div class="tx">太鲁阁牌楼</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">7</div><div class="ic">🌊</div><div class="tx">七星潭</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">8</div><div class="ic">🧅</div><div class="tx">炸弹葱油饼</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">9</div><div class="ic">🌙</div><div class="tx"><span class="hl">19:00</span> 东大门夜市<div class="ts"><span>🥖 法式棺材饭</span><span>🧋 言可不妙芋头牛奶</span><span>🍠 开运屋手工地瓜球</span><span>🥞 强蛋饼</span></div></div></div>
+    </div></div></div>
 
-    <div class="day-shell reveal reveal-d1" id="day-2"><div class="day-section">
-      <div class="day-section-header">
-        <div class="dnum" style="background:linear-gradient(135deg,var(--green),#34D399)">2</div>
-        <div class="dtitle">花莲 · 山海一日</div>
-        <div class="ddate">6月18日·周四</div>
-        <div class="day-progress-mini">
-          <span class="count"><span class="d-done">0</span>/<span class="d-total">0</span></span>
-          <div class="track"><div class="fill" style="background:var(--green)"></div></div>
-        </div>
-      </div>
-      <div class="day-section-body">
-        <div class="ditems" data-day="2">
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">1</div><div class="ic">🐳</div><div class="txt"><span class="hl">08:00</span> 出海赏鲸<div class="tags"><span>👖 长袖长裤+防晒衣</span><span>🦟 防蚊液+伞</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">2</div><div class="ic">🏨</div><div class="txt"><span class="hl">11:30</span> 回酒店<div class="tags"><span>🥟 花莲香扁食买奶茶</span><span>🍡 曾师傅麻糬</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">3</div><div class="ic">🏘️</div><div class="txt"><span class="hl">14:30</span> 新城老街 · 包车出发</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">4</div><div class="ic">🏔️</div><div class="txt">清水断崖</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">5</div><div class="ic">🏖️</div><div class="txt">板下沙滩</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">6</div><div class="ic">🏛️</div><div class="txt">太鲁阁牌楼</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">7</div><div class="ic">🌊</div><div class="txt">七星潭</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">8</div><div class="ic">🧅</div><div class="txt">炸弹葱油饼</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--green)">9</div><div class="ic">🌙</div><div class="txt"><span class="hl">19:00</span> 东大门夜市<div class="tags"><span>🥖 法式棺材饭</span><span>🧋 言可不妙芋头牛奶</span><span>🍠 开运屋手工地瓜球</span><span>🥞 强蛋饼</span></div></div></div>
-        </div>
-      </div>
-    </div></div>
+    <div class="dc reveal reveal-d2" id="day-3"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">3</div><div class="dt">花莲→台北 · 经典巡礼</div><div class="dd">6月19日·周五</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--purple)"></div></div></div></div><div class="dc-b"><div class="di" data-day="3">
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">1</div><div class="ic">🚄</div><div class="tx"><span class="hl">07:30</span> 台铁 花莲→台北<div class="ts"><span>车票20547244FFAA</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">2</div><div class="ic">🏨</div><div class="tx"><span class="hl">10:09</span> 抵达台北 · 放行李<div class="ts"><span>🧋 买奶茶</span><span>大同区民生西路198号2楼</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">3</div><div class="ic">🍜</div><div class="tx"><span class="hl">11:30</span> 老张牛肉面 · 牛三宝面+盐酥鸡</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">4</div><div class="ic">🏛️</div><div class="tx"><span class="hl">13:00</span> 中正纪念堂<div class="ts"><span>🎖️ 整点国军仪队交接</span><span>🖼️ 一楼展厅</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">5</div><div class="ic">🎭</div><div class="tx"><span class="hl">14:00</span> 西门町 捷运绿线2站<div class="ts"><span>🏮 西门红楼</span><span>🎨 街头涂鸦</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">6</div><div class="ic">🛍️</div><div class="tx">购物<div class="ts"><span>🧇 三统香葱牛轧饼</span><span>💧 康是美霓净思超爆水</span><span>🎭 提提研面膜</span><span>🏪 宝雅</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">7</div><div class="ic">🍢</div><div class="tx">赛门邓普拉（甜不辣）</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">8</div><div class="ic">🌙</div><div class="tx"><span class="hl">18:00</span> 饶河夜市<div class="ts"><span>🏯 松山慈祐宫</span><span>🫓 福州世祖胡椒饼</span><span>🫘 下港名彭臭豆腐</span><span>🌭 马告肠·好腸好嚐</span></div></div></div>
+    </div></div></div>
 
-    <div class="day-shell reveal reveal-d2" id="day-3"><div class="day-section">
-      <div class="day-section-header">
-        <div class="dnum" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">3</div>
-        <div class="dtitle">花莲→台北 · 经典巡礼</div>
-        <div class="ddate">6月19日·周五</div>
-        <div class="day-progress-mini">
-          <span class="count"><span class="d-done">0</span>/<span class="d-total">0</span></span>
-          <div class="track"><div class="fill" style="background:var(--purple)"></div></div>
-        </div>
-      </div>
-      <div class="day-section-body">
-        <div class="ditems" data-day="3">
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">1</div><div class="ic">🚄</div><div class="txt"><span class="hl">07:30</span> 台铁 花莲→台北<div class="tags"><span>车票20547244FFAA</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">2</div><div class="ic">🏨</div><div class="txt"><span class="hl">10:09</span> 抵达台北 · 放行李<div class="tags"><span>🧋 买奶茶</span><span>大同区民生西路198号2楼</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">3</div><div class="ic">🍜</div><div class="txt"><span class="hl">11:30</span> 老张牛肉面 · 牛三宝面+盐酥鸡</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">4</div><div class="ic">🏛️</div><div class="txt"><span class="hl">13:00</span> 中正纪念堂<div class="tags"><span>🎖️ 整点国军仪队交接</span><span>🖼️ 一楼展厅</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">5</div><div class="ic">🎭</div><div class="txt"><span class="hl">14:00</span> 西门町 捷运绿线2站<div class="tags"><span>🏮 西门红楼</span><span>🎨 街头涂鸦</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">6</div><div class="ic">🛍️</div><div class="txt">购物<div class="tags"><span>🧇 三统香葱牛轧饼</span><span>💧 康是美霓净思超爆水</span><span>🎭 提提研面膜</span><span>🏪 宝雅</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">7</div><div class="ic">🍢</div><div class="txt">赛门邓普拉（甜不辣）</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--purple)">8</div><div class="ic">🌙</div><div class="txt"><span class="hl">18:00</span> 饶河夜市<div class="tags"><span>🏯 松山慈祐宫</span><span>🫓 福州世祖胡椒饼</span><span>🫘 下港名彭臭豆腐</span><span>🌭 马告肠·好腸好嚐</span></div></div></div>
-        </div>
-      </div>
-    </div></div>
+    <div class="dc reveal reveal-d3" id="day-4"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--blue),#60A5FA)">4</div><div class="dt">台北深度 · 文化巡礼</div><div class="dd">6月20日·周六</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--blue)"></div></div></div></div><div class="dc-b"><div class="di" data-day="4">
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">1</div><div class="ic">🏛️</div><div class="tx"><span class="hl">09:00</span> 国立故宫博物院<div class="ts"><span>🥩 肉形石</span><span>🥬 翠玉白菜</span><span>🏺 宋代汝窑青瓷</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">2</div><div class="ic">🏘️</div><div class="tx"><span class="hl">15:00</span> 大稻埕 & 迪化街<div class="ts"><span>🧱 红砖巴洛克老洋楼</span><span>🛒 南北货行</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">3</div><div class="ic">🌅</div><div class="tx"><span class="hl">17:30</span> 大稻埕码头货柜市集<div class="ts"><span>🍚 卤肉饭+半熟蛋</span><span>🌇 淡水河畔夕阳</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">4</div><div class="ic">🏢</div><div class="tx"><span class="hl">18:45</span> 台北101 买特产<div class="ts"><span>🍍 微热山丘</span><span>🥮 佳德·如邑堂·三统汉果子</span><span>📍 B1退税</span><span>📚 诚品松烟</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">5</div><div class="ic">🌙</div><div class="tx"><span class="hl">20:00</span> 宁夏夜市<div class="ts"><span>🥟 刘芋仔蛋黄芋饼</span><span>🦪 圆环边蚵仔煎</span><span>🍮 豆花庄</span><span>🍗 FUN SUN G鸡排</span></div></div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">6</div><div class="ic">⏰</div><div class="tx">捷运末班车 12:00</div></div>
+    </div></div></div>
 
-    <div class="day-shell reveal reveal-d3" id="day-4"><div class="day-section">
-      <div class="day-section-header">
-        <div class="dnum" style="background:linear-gradient(135deg,var(--blue),#60A5FA)">4</div>
-        <div class="dtitle">台北深度 · 文化巡礼</div>
-        <div class="ddate">6月20日·周六</div>
-        <div class="day-progress-mini">
-          <span class="count"><span class="d-done">0</span>/<span class="d-total">0</span></span>
-          <div class="track"><div class="fill" style="background:var(--blue)"></div></div>
-        </div>
-      </div>
-      <div class="day-section-body">
-        <div class="ditems" data-day="4">
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--blue)">1</div><div class="ic">🏛️</div><div class="txt"><span class="hl">09:00</span> 国立故宫博物院<div class="tags"><span>🥩 肉形石</span><span>🥬 翠玉白菜</span><span>🏺 宋代汝窑青瓷</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--blue)">2</div><div class="ic">🏘️</div><div class="txt"><span class="hl">15:00</span> 大稻埕 & 迪化街<div class="tags"><span>🧱 红砖巴洛克老洋楼</span><span>🛒 南北货行</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--blue)">3</div><div class="ic">🌅</div><div class="txt"><span class="hl">17:30</span> 大稻埕码头货柜市集<div class="tags"><span>🍚 卤肉饭+半熟蛋</span><span>🌇 淡水河畔夕阳</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--blue)">4</div><div class="ic">🏢</div><div class="txt"><span class="hl">18:45</span> 台北101 买特产<div class="tags"><span>🍍 微热山丘</span><span>🥮 佳德·如邑堂·三统汉果子</span><span>📍 B1退税</span><span>📚 诚品松烟</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--blue)">5</div><div class="ic">🌙</div><div class="txt"><span class="hl">20:00</span> 宁夏夜市<div class="tags"><span>🥟 刘芋仔蛋黄芋饼</span><span>🦪 圆环边蚵仔煎</span><span>🍮 豆花庄</span><span>🍗 FUN SUN G鸡排</span></div></div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--blue)">6</div><div class="ic">⏰</div><div class="txt">捷运末班车 12:00</div></div>
-        </div>
-      </div>
-    </div></div>
-
-    <div class="day-shell reveal reveal-d4" id="day-5"><div class="day-section">
-      <div class="day-section-header">
-        <div class="dnum" style="background:linear-gradient(135deg,var(--grey),#A8A29E)">5</div>
-        <div class="dtitle">返程 · 台湾→香港</div>
-        <div class="ddate">6月21日·周日</div>
-        <div class="day-progress-mini">
-          <span class="count"><span class="d-done">0</span>/<span class="d-total">0</span></span>
-          <div class="track"><div class="fill" style="background:var(--grey)"></div></div>
-        </div>
-      </div>
-      <div class="day-section-body">
-        <div class="ditems" data-day="5">
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--grey)">1</div><div class="ic">🚕</div><div class="txt"><span class="hl">05:00</span> 打车前往桃园机场（前一晚预约）</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--grey)">2</div><div class="ic">🛫</div><div class="txt"><span class="hl">08:00</span> 起飞</div></div>
-          <div class="ditem"><div class="cb"></div><div class="idx" style="background:var(--grey)">3</div><div class="ic">🛬</div><div class="txt"><span class="hl">10:05</span> 抵达香港</div></div>
-        </div>
-      </div>
-    </div></div>
+    <div class="dc reveal reveal-d4" id="day-5"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--grey),#A8A29E)">5</div><div class="dt">返程 · 台湾→香港</div><div class="dd">6月21日·周日</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--grey)"></div></div></div></div><div class="dc-b"><div class="di" data-day="5">
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--grey)">1</div><div class="ic">🚕</div><div class="tx"><span class="hl">05:00</span> 打车前往桃园机场（前一晚预约）</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--grey)">2</div><div class="ic">🛫</div><div class="tx"><span class="hl">08:00</span> 起飞</div></div>
+      <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--grey)">3</div><div class="ic">🛬</div><div class="tx"><span class="hl">10:05</span> 抵达香港</div></div>
+    </div></div></div>
   </div>
 </section>
 
-<!-- Food -->
 <section id="food">
   <div class="container">
-    <div class="section-head reveal">
-      <div class="eyebrow">Cuisine</div>
-      <h2>必喝手摇 & 必买零食</h2>
-      <div class="line"></div>
+    <div class="sh reveal"><div class="eyebrow">Cuisine</div><h2>必喝手摇 & 必买零食</h2></div>
+    <div class="fg">
+      <div class="fc reveal"><img class="bl" src="https://dejeng.com/assets/img/logo_for_loader.svg" alt="得正" loading="lazy"><div class="fci"><div class="nm">得正</div><div class="pl">焙烏龍奶茶+茶凍</div></div></div>
+      <div class="fc reveal reveal-d1"><img class="bl" src="https://www.damingtea.com.tw/images/touch-icon/apple-icon-60x60_b.png" alt="大茗" loading="lazy"><div class="fci"><div class="nm">大茗</div><div class="pl">烤糖荞麦冻奶青(无糖) · 酪梨奶蓋+純茶</div></div></div>
+      <div class="fc reveal reveal-d2"><img class="bl" src="https://upload.wikimedia.org/wikipedia/zh/7/7a/50_Lan_logo.png" alt="五十岚" loading="lazy"><div class="fci"><div class="nm">五十岚</div><div class="pl">波霸奶茶 · 少冰微糖</div></div></div>
+      <div class="fc reveal reveal-d3"><img class="bl" src="https://www.chingshin.tw/favicon.ico" alt="清心福全" loading="lazy"><div class="fci"><div class="nm">清心福全</div><div class="pl">珍珠蜂蜜鲜奶普洱 · 半蜜微冰</div></div></div>
+      <div class="fc reveal reveal-d1"><img class="bl" src="https://www.aniceholiday.com.tw/static/images/logo.svg?v=20240326" alt="一沐日" loading="lazy"><div class="fci"><div class="nm">一沐日</div><div class="pl">油切荞麦茶加粉粿 · 无糖微冰</div></div></div>
+      <div class="fc reveal reveal-d2"><img class="bl" src="https://www.milksha.com/image/logo.jpg" alt="迷可夏" loading="lazy"><div class="fci"><div class="nm">milk sha 迷可夏</div><div class="pl">芋圆芋泥鲜奶</div></div></div>
     </div>
-    <div class="food-grid">
-      <div class="food-card reveal"><img class="brand-logo" src="https://dejeng.com/assets/img/logo_for_loader.svg" alt="得正" loading="lazy"><div class="food-card-info"><div class="name">得正</div><div class="place">焙烏龍奶茶+茶凍</div></div></div>
-      <div class="food-card reveal reveal-d1"><img class="brand-logo" src="https://www.damingtea.com.tw/images/touch-icon/apple-icon-60x60_b.png" alt="大茗" loading="lazy"><div class="food-card-info"><div class="name">大茗</div><div class="place">烤糖荞麦冻奶青(无糖) · 酪梨奶蓋+純茶</div></div></div>
-      <div class="food-card reveal reveal-d2"><img class="brand-logo" src="https://upload.wikimedia.org/wikipedia/zh/7/7a/50_Lan_logo.png" alt="五十岚" loading="lazy"><div class="food-card-info"><div class="name">五十岚</div><div class="place">波霸奶茶 · 少冰微糖</div></div></div>
-      <div class="food-card reveal reveal-d3"><img class="brand-logo" src="https://www.chingshin.tw/favicon.ico" alt="清心福全" loading="lazy"><div class="food-card-info"><div class="name">清心福全</div><div class="place">珍珠蜂蜜鲜奶普洱 · 半蜜微冰</div></div></div>
-      <div class="food-card reveal reveal-d1"><img class="brand-logo" src="https://www.aniceholiday.com.tw/static/images/logo.svg?v=20240326" alt="一沐日" loading="lazy"><div class="food-card-info"><div class="name">一沐日</div><div class="place">油切荞麦茶加粉粿 · 无糖微冰</div></div></div>
-      <div class="food-card reveal reveal-d2"><img class="brand-logo" src="https://www.milksha.com/image/logo.jpg" alt="迷可夏" loading="lazy"><div class="food-card-info"><div class="name">milk sha 迷可夏</div><div class="place">芋圆芋泥鲜奶</div></div></div>
-    </div>
-    <div class="food-supermarket reveal">
-      <div class="title">全联超市必买</div>
-      <div class="items">
-        <span class="sm-item">綠色乖乖</span>
-        <span class="sm-item">冬筍餅</span>
-        <span class="sm-item"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/I-Mei_Logo.svg" alt="" loading="lazy" onerror="this.style.display='none'">義美小泡芙</span>
-        <span class="sm-item">蚵仔煎洋芋片</span>
-        <span class="sm-item">新贵派花生味</span>
-        <span class="sm-item"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Lipton_logo.svg/320px-Lipton_logo.svg.png" alt="" loading="lazy" onerror="this.style.display='none'">立顿培香乌龙奶茶</span>
-        <span class="sm-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/President_%28Uni-President%29_logo.svg/320px-President_%28Uni-President%29_logo.svg.png" alt="" loading="lazy" onerror="this.style.display='none'">统一布丁</span>
-        <span class="sm-item">新東陽鳳梨酥</span>
-        <span class="sm-item">台鳳鳳梨酥</span>
-      </div>
-    </div>
+    <div class="fs reveal"><div class="tt">全联超市必买</div><div class="it">
+      <span class="si">綠色乖乖</span><span class="si">冬筍餅</span>
+      <span class="si"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/I-Mei_Logo.svg" alt="" loading="lazy" onerror="this.style.display='none'">義美小泡芙</span>
+      <span class="si">蚵仔煎洋芋片</span><span class="si">新贵派花生味</span>
+      <span class="si"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Lipton_logo.svg/320px-Lipton_logo.svg.png" alt="" loading="lazy" onerror="this.style.display='none'">立顿培香乌龙奶茶</span>
+      <span class="si"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/President_%28Uni-President%29_logo.svg/320px-President_%28Uni-President%29_logo.svg.png" alt="" loading="lazy" onerror="this.style.display='none'">统一布丁</span>
+      <span class="si">新東陽鳳梨酥</span><span class="si">台鳳鳳梨酥</span>
+    </div></div>
   </div>
 </section>
 
-<!-- Packing -->
 <section id="packing">
   <div class="container">
-    <div class="packing-header reveal">
-      <span class="label">出行清单</span>
-      <span class="count">已完成 <span id="packDone">0</span>/<span id="packTotal">0</span></span>
-    </div>
-    <div class="progress-track reveal" style="margin-bottom:14px"><div class="progress-fill" id="packFill" style="background:linear-gradient(90deg,#3B82F6,#22C55E)"></div></div>
-    <div class="packing-grid" id="packingGrid">
-      <div class="packing-item reveal"><div class="cb"></div><span>📇 卡针</span></div>
-      <div class="packing-item reveal reveal-d1"><div class="cb"></div><span>🔌 转换头</span></div>
-      <div class="packing-item reveal reveal-d2"><div class="cb"></div><span>💳 银联卡</span></div>
-      <div class="packing-item reveal reveal-d3"><div class="cb"></div><span>💳 Visa</span></div>
-      <div class="packing-item reveal reveal-d1"><div class="cb"></div><span>🧴 洗发水沐浴露小样</span></div>
-      <div class="packing-item reveal reveal-d2"><div class="cb"></div><span>🦟 防蚊液</span></div>
-      <div class="packing-item reveal reveal-d3"><div class="cb"></div><span>☂️ 伞</span></div>
-      <div class="packing-item reveal reveal-d4"><div class="cb"></div><span>🧴 防晒衣</span></div>
-      <div class="packing-item reveal reveal-d2"><div class="cb"></div><span>👖 长袖长裤(花莲)</span></div>
-      <div class="packing-item reveal reveal-d3"><div class="cb"></div><span>👗 白裙/牛仔裙</span></div>
+    <div class="pk-h reveal"><span class="label">出行清单</span><span class="count">已完成 <span id="packDone">0</span>/<span id="packTotal">0</span></span></div>
+    <div class="pb-track reveal" style="margin-bottom:12px"><div class="pb-fill" id="packFill" style="background:linear-gradient(90deg,#3B82F6,#22C55E)"></div></div>
+    <div class="pg" id="packingGrid">
+      <div class="pi reveal"><div class="cb"></div><span>📇 卡针</span></div>
+      <div class="pi reveal reveal-d1"><div class="cb"></div><span>🔌 转换头</span></div>
+      <div class="pi reveal reveal-d2"><div class="cb"></div><span>💳 银联卡</span></div>
+      <div class="pi reveal reveal-d3"><div class="cb"></div><span>💳 Visa</span></div>
+      <div class="pi reveal reveal-d1"><div class="cb"></div><span>🧴 洗发水沐浴露小样</span></div>
+      <div class="pi reveal reveal-d2"><div class="cb"></div><span>🦟 防蚊液</span></div>
+      <div class="pi reveal reveal-d3"><div class="cb"></div><span>☂️ 伞</span></div>
+      <div class="pi reveal reveal-d4"><div class="cb"></div><span>🧴 防晒衣</span></div>
+      <div class="pi reveal reveal-d2"><div class="cb"></div><span>👖 长袖长裤(花莲)</span></div>
+      <div class="pi reveal reveal-d3"><div class="cb"></div><span>👗 白裙/牛仔裙</span></div>
     </div>
   </div>
 </section>
 
-<!-- Floating Users Panel -->
-<div class="floating-panel collapsed" id="usersPanel">
-  <div class="floating-panel-header">
-    <div class="title">📍 在线旅伴 <span class="count" id="onlineCount">0</span></div>
-    <button class="floating-panel-toggle" id="panelToggle">▸</button>
-  </div>
-  <div class="floating-panel-body" id="panelBody"></div>
+<div class="fp collapsed" id="usersPanel">
+  <div class="fp-h"><div class="ti">📍 在线 <span class="cnt" id="onlineCount">0</span></div><button class="fp-tg" id="panelToggle">▸</button></div>
+  <div class="fp-b" id="panelBody"></div>
 </div>
 
-<footer class="footer">台湾全景旅游地图 · 2025年6月17日–21日</footer>
+<footer class="ft">台湾全景旅游地图 · 2025年6月17日–21日</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-/* ─── GLOBAL CHECKBOX UTILS (no localStorage, all in Firebase) ─── */
-function gi(el){const d=el.closest('.ditems')?.dataset?.day||'pack';const t=(el.querySelector('.txt')||el.querySelector('span'))?.textContent?.trim()||'';return d+'_'+t.slice(0,30)}
+/* ─── CHECKBOX + PROGRESS ─── */
+function gi(el){const d=el.closest('.di')?.dataset?.day||'pack';const t=(el.querySelector('.tx')||el.querySelector('span'))?.textContent?.trim()||'';return d+'_'+t.slice(0,30)}
 function up(){
-  document.querySelectorAll('.ditems').forEach(g=>{const it=g.querySelectorAll('.ditem'),dn=g.querySelectorAll('.ditem.checked').length,tt=it.length;const h=g.closest('.day-section')?.closest('.day-shell')?.querySelector('.day-progress-mini')||g.closest('.day-section')?.querySelector('.day-progress-mini');if(h){h.querySelector('.d-done').textContent=dn;h.querySelector('.d-total').textContent=tt;h.querySelector('.fill').style.width=(tt>0?(dn/tt*100):0)+'%'}});
-  const ai=document.querySelectorAll('.ditem'),ad=document.querySelectorAll('.ditem.checked').length,at=ai.length;
+  document.querySelectorAll('.di').forEach(g=>{const it=g.querySelectorAll('.di-i'),dn=g.querySelectorAll('.di-i.checked').length,tt=it.length;const h=g.closest('.dc')?.querySelector('.dc-pm');if(h){h.querySelector('.d-done').textContent=dn;h.querySelector('.d-total').textContent=tt;h.querySelector('.fl').style.width=(tt>0?(dn/tt*100):0)+'%'}});
+  const ai=document.querySelectorAll('.di-i'),ad=document.querySelectorAll('.di-i.checked').length,at=ai.length;
   document.getElementById('totalDone').textContent=ad;document.getElementById('totalAll').textContent=at;document.getElementById('totalFill').style.width=(at>0?(ad/at*100):0)+'%';
-  const pi=document.querySelectorAll('#packingGrid .packing-item'),pd=document.querySelectorAll('#packingGrid .packing-item.checked').length,pt=pi.length;
+  const pi=document.querySelectorAll('#packingGrid .pi'),pd=document.querySelectorAll('#packingGrid .pi.checked').length,pt=pi.length;
   document.getElementById('packDone').textContent=pd;document.getElementById('packTotal').textContent=pt;document.getElementById('packFill').style.width=(pt>0?(pd/pt*100):0)+'%';
 }
 window._checks={};
-function applyChecks(){document.querySelectorAll('.ditem .cb, #packingGrid .packing-item .cb').forEach(cb=>{const it=cb.closest('.ditem,.packing-item');const id=gi(it);if(window._checks[id]){cb.classList.add('checked');it.classList.add('checked')}else{cb.classList.remove('checked');it.classList.remove('checked')}});up()}
+function applyChecks(){document.querySelectorAll('.di-i .cb, #packingGrid .pi .cb').forEach(cb=>{const it=cb.closest('.di-i,.pi');const id=gi(it);if(window._checks[id]){cb.classList.add('checked');it.classList.add('checked')}else{cb.classList.remove('checked');it.classList.remove('checked')}});up()}
+if(typeof window._tg==='undefined'){window._tg=function(cb){const it=cb.closest('.di-i,.pi');const id=gi(it);const ck=!cb.classList.contains('checked');cb.classList.toggle('checked',ck);it.classList.toggle('checked',ck);if(ck)window._checks[id]=true;else delete window._checks[id];up()}}
+document.addEventListener('click',e=>{const cb=e.target.closest('.di-i .cb, #packingGrid .pi .cb');if(cb&&typeof window._tg==='function')window._tg(cb)});
 
-/* ─── View Toggle + UI ─── */
-const vt=document.getElementById('viewToggle');
-const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=640;
+/* ─── UI ─── */
+const vt=document.getElementById('viewToggle');const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=640;
 if(isMobile)document.body.classList.add('mobile-mode');
 vt.querySelectorAll('button').forEach(btn=>{btn.addEventListener('click',()=>{vt.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('mobile-mode',btn.dataset.view==='mobile')})});
-document.querySelectorAll('.mobile-tab-bar .tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.mobile-tab-bar .tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');const target=document.getElementById(tab.dataset.tab);if(target)target.scrollIntoView({behavior:'smooth'})})});
-document.querySelectorAll('.mobile-day-pills .pill').forEach(pill=>{pill.addEventListener('click',()=>{document.querySelectorAll('.mobile-day-pills .pill').forEach(p=>p.classList.remove('active'));pill.classList.add('active');const target=document.getElementById('day-'+pill.dataset.day);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});const idx=parseInt(pill.dataset.day)-1;if(typeof sw==='function')sw(idx)}})});
+document.querySelectorAll('.m3-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.m3-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');const tgt=document.getElementById(tab.dataset.tab);if(tgt)tgt.scrollIntoView({behavior:'smooth'})})});
+document.querySelectorAll('.m3-pills .p').forEach(pill=>{pill.addEventListener('click',()=>{document.querySelectorAll('.m3-pills .p').forEach(p=>p.classList.remove('active'));pill.classList.add('active');const tgt=document.getElementById('day-'+pill.dataset.day);if(tgt){tgt.scrollIntoView({behavior:'smooth',block:'start'});const idx=parseInt(pill.dataset.day)-1;if(typeof sw==='function')sw(idx)}})});
 const ro=new IntersectionObserver(e=>{e.forEach(n=>{if(n.isIntersecting){n.target.classList.add('revealed');ro.unobserve(n.target)}})},{threshold:0.06,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
-/* ─── Map Data ─── */
 const DAY_DATA=[{color:'#C88242',gradient:'linear-gradient(135deg,#C88242,#D4A05A)',zoom:11,center:[24.9,121.5],points:[{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛫',desc:'10:15 起飞 → 台北'},{name:'桃园机场T1',lat:25.0764,lng:121.2237,icon:'🛄',desc:'12:10 入境 · 电话卡 · 台币 · 悠游卡'},{name:'7-Eleven机场B1',lat:25.0760,lng:121.2245,icon:'🏪',desc:'地瓜洒布雷 · 茶叶蛋 · 麻油鸡 · 木瓜牛奶'},{name:'机场捷运',lat:25.0760,lng:121.2240,icon:'🚇',desc:'15:30 紫色快车/蓝色普通车'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚄',desc:'16:30到站 · 17:05台铁往花莲'},{name:'台铁沿线',lat:24.9400,lng:121.5700,icon:'🚄',desc:'台北→花莲 · 全程约2h'},{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚉',desc:'19:43抵达 · 步行5分钟到酒店'},{name:'酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'国联一路201号'},{name:'花莲香扁食',lat:23.9928,lng:121.6050,icon:'🥟',desc:'国联店 · 招牌扁食'},{name:'曾师傅麻糬',lat:23.9930,lng:121.6070,icon:'🍡',desc:'站前门市 · 花生麻糬 · 御皇酥'}]},{color:'#059669',gradient:'linear-gradient(135deg,#059669,#34D399)',zoom:12,center:[24.08,121.62],points:[{name:'酒店出发',lat:23.9900,lng:121.6060,icon:'🏨',desc:'长袖长裤 · 防晒衣 · 防蚊液'},{name:'赏鲸码头',lat:24.0000,lng:121.6400,icon:'🐳',desc:'08:00出海赏鲸 · 约3h'},{name:'回酒店',lat:23.9900,lng:121.6060,icon:'🏨',desc:'11:30休整 · 午餐'},{name:'新城老街',lat:24.1200,lng:121.6300,icon:'🏘️',desc:'14:30包车出发'},{name:'清水断崖',lat:24.2167,lng:121.6833,icon:'🏔️',desc:'台湾十景 · 绝壁断崖'},{name:'板下沙滩',lat:24.1900,lng:121.6600,icon:'🏖️',desc:'秘境海滩'},{name:'太鲁阁牌楼',lat:24.1667,lng:121.6333,icon:'🏛️',desc:'太鲁阁国家公园入口'},{name:'七星潭',lat:24.0333,lng:121.6333,icon:'🌊',desc:'月牙形海湾 · 砾石海滩'},{name:'炸弹葱油饼',lat:24.0100,lng:121.6200,icon:'🧅',desc:'花莲必吃小吃'},{name:'东大门夜市',lat:23.9750,lng:121.6110,icon:'🌙',desc:'棺材饭 · 芋头牛奶 · 地瓜球 · 强蛋饼'}]},{color:'#7C3AED',gradient:'linear-gradient(135deg,#7C3AED,#A78BFA)',zoom:12,center:[24.98,121.55],points:[{name:'花莲车站',lat:23.9920,lng:121.6080,icon:'🚄',desc:'07:30台铁往台北'},{name:'台北车站',lat:25.0478,lng:121.5170,icon:'🚉',desc:'10:09抵达 · 放行李'},{name:'酒店',lat:25.0500,lng:121.5150,icon:'🏨',desc:'民生西路198号2楼'},{name:'老张牛肉面',lat:25.0400,lng:121.5200,icon:'🍜',desc:'11:30牛三宝面 · 盐酥鸡'},{name:'中正纪念堂',lat:25.0345,lng:121.5217,icon:'🏛️',desc:'13:00整点仪队交接'},{name:'西门町',lat:25.0458,lng:121.5072,icon:'🎭',desc:'14:00红楼 · 涂鸦 · 购物'},{name:'赛门邓普拉',lat:25.0500,lng:121.5100,icon:'🍢',desc:'甜不辣'},{name:'饶河夜市',lat:25.0508,lng:121.5767,icon:'🌙',desc:'18:00胡椒饼 · 臭豆腐 · 马告肠'}]},{color:'#2563EB',gradient:'linear-gradient(135deg,#2563EB,#60A5FA)',zoom:12,center:[25.06,121.54],points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'09:00出发'},{name:'国立故宫博物院',lat:25.0972,lng:121.5483,icon:'🏛️',desc:'肉形石 · 翠玉白菜 · 汝窑'},{name:'大稻埕迪化街',lat:25.0597,lng:121.5100,icon:'🏘️',desc:'15:00红砖巴洛克 · 南北货'},{name:'大稻埕码头',lat:25.0580,lng:121.5080,icon:'🌅',desc:'17:30货柜市集 · 卤肉饭 · 夕阳'},{name:'台北101',lat:25.0339,lng:121.5645,icon:'🏢',desc:'18:45买特产 · 退税 · 诚品'},{name:'宁夏夜市',lat:25.0583,lng:121.5144,icon:'🌙',desc:'20:00蛋黄芋饼 · 蚵仔煎 · 鸡排'}]},{color:'#8A847E',gradient:'linear-gradient(135deg,#8A847E,#A8A29E)',zoom:11,center:[25.06,121.40],points:[{name:'酒店出发',lat:25.0500,lng:121.5150,icon:'🏨',desc:'05:00打车（前一晚预约）'},{name:'桃园机场',lat:25.0764,lng:121.2237,icon:'🛫',desc:'08:00起飞'},{name:'香港国际机场',lat:22.3080,lng:113.9185,icon:'🛬',desc:'10:05抵达'}]}];
 const map=L.map('travel-map',{center:[24.0,121.4],zoom:10,zoomControl:true,attributionControl:false});
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map);
 const dayLayers=[];
 DAY_DATA.forEach((day,di)=>{const g=L.layerGroup(),coords=[];day.points.forEach((pt,pi)=>{coords.push([pt.lat,pt.lng]);const isStart=pi===0,isEnd=pi===day.points.length-1;let s=30,f=13,w=2.5;if(isStart||isEnd){s=36;f=15;w=3}const el=document.createElement('div');el.style.cssText=`width:${s}px;height:${s}px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${f}px;color:#fff;background:${day.gradient};box-shadow:0 2px 10px rgba(0,0,0,0.3);border:${w}px solid #fff;cursor:pointer;`;el.textContent=pi+1;const m=L.marker([pt.lat,pt.lng],{icon:L.divIcon({html:el.outerHTML,className:'',iconSize:[s,s],iconAnchor:[s/2,s/2]})});const es=isStart?'🚩 起点 ':isEnd?'🏁 终点 ':'';m.bindPopup(`<div><div class="poptitle"><span class="popnum" style="background:${day.color}">${pi+1}</span> ${pt.icon} ${pt.name}</div><div class="popdesc">${es}${pt.desc}</div><div class="popday">● 第${di+1}日</div></div>`);g.addLayer(m)});if(coords.length>1){g.addLayer(L.polyline(coords,{color:day.color,weight:3.5,opacity:0.75}));for(let i=1;i<coords.length;i++){const mid=[(coords[i-1][0]+coords[i][0])/2,(coords[i-1][1]+coords[i][1])/2];const ang=Math.atan2(coords[i][1]-coords[i-1][1],coords[i][0]-coords[i-1][0])*180/Math.PI;g.addLayer(L.marker(mid,{icon:L.divIcon({html:`<div style="transform:rotate(${ang}deg);font-size:16px;color:${day.color};text-shadow:0 1px 3px rgba(0,0,0,0.2);opacity:0.7">▶</div>`,className:'',iconSize:[16,16],iconAnchor:[8,8]}),interactive:false}))}}dayLayers.push(g);map.addLayer(g)});
 let ad=0;
-function sw(i){dayLayers.forEach((g,j)=>{if(j===i)map.addLayer(g);else map.removeLayer(g)});map.flyTo(DAY_DATA[i].center,DAY_DATA[i].zoom,{duration:1});document.querySelectorAll('.day-btn').forEach((b,j)=>b.classList.toggle('active',j===i));document.querySelectorAll('.mobile-day-pills .pill').forEach((p,j)=>p.classList.toggle('active',j===i));ad=i}
+function sw(i){dayLayers.forEach((g,j)=>{if(j===i)map.addLayer(g);else map.removeLayer(g)});map.flyTo(DAY_DATA[i].center,DAY_DATA[i].zoom,{duration:1});document.querySelectorAll('.day-btn').forEach((b,j)=>b.classList.toggle('active',j===i));document.querySelectorAll('.m3-pills .p').forEach((p,j)=>p.classList.toggle('active',j===i));ad=i}
 document.querySelectorAll('.day-btn').forEach((b,i)=>b.addEventListener('click',()=>sw(i)));
 sw(0);
 setTimeout(()=>{const l=dayLayers[0].getLayers();if(l.length>0)l[0].openPopup()},1500);
 window.addEventListener('resize',()=>{window.innerWidth<=640?document.body.classList.add('mobile-mode'):document.body.classList.remove('mobile-mode')},{passive:true});
-
-/* ─── CLICK HANDLER for checkboxes ─── */
-if(typeof window._tg==='undefined'){
-  window._tg=function(cb){
-    const it=cb.closest('.ditem,.packing-item');const id=gi(it);const ck=!cb.classList.contains('checked');
-    cb.classList.toggle('checked',ck);it.classList.toggle('checked',ck);
-    if(ck)window._checks[id]=true;else delete window._checks[id];up();
-  }
-}
-document.addEventListener('click',e=>{const cb=e.target.closest('.ditem .cb, #packingGrid .packing-item .cb');if(cb&&typeof window._tg==='function')window._tg(cb)});
 </script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import{getDatabase,ref,set,onDisconnect,onValue,update}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 import{getAnalytics}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
-
 const firebaseConfig={apiKey:"AIzaSyB1CpHDKhlKvssrvoYw2W-muwsqq8V_sW4",authDomain:"mapkun-d9daf.firebaseapp.com",projectId:"mapkun-d9daf",storageBucket:"mapkun-d9daf.firebasestorage.app",messagingSenderId:"50759531502",appId:"1:50759531502:web:eadb39bc487988f19e2cff",measurementId:"G-H29WMHSZR9"};
-let app,db;
-try{app=initializeApp(firebaseConfig);getAnalytics(app);db=getDatabase(app)}catch(e){console.warn('Firebase init failed:',e);db=null}
-
-/* User */
+let app,db;try{app=initializeApp(firebaseConfig);getAnalytics(app);db=getDatabase(app)}catch(e){console.warn('FB init fail:',e);db=null}
 function genId(){return'u_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 const UID_KEY='tw_user_id';let userId=localStorage.getItem(UID_KEY);if(!userId){userId=genId();localStorage.setItem(UID_KEY,userId)}
-let nickname=localStorage.getItem('tw_nick')||'';if(!nickname.trim()){nickname=prompt('请输入你的昵称（用于旅伴显示）:','')||'旅伴';localStorage.setItem('tw_nick',nickname)}
+let nickname=localStorage.getItem('tw_nick')||'';if(!nickname.trim()){nickname=prompt('昵称:','')||'旅伴';localStorage.setItem('tw_nick',nickname)}
 function getDevice(){const ua=navigator.userAgent;if(/iPhone/i.test(ua))return'iPhone';if(/Android/i.test(ua))return'Android';return'Web'}
 const device=getDevice();
-
-/* Floating panel */
 const panel=document.getElementById('usersPanel');const panelBody=document.getElementById('panelBody');const panelToggle=document.getElementById('panelToggle');const onlineCount=document.getElementById('onlineCount');
 panelToggle.addEventListener('click',e=>{e.stopPropagation();panel.classList.toggle('collapsed');panelToggle.textContent=panel.classList.contains('collapsed')?'▸':'▾'});
 panel.addEventListener('click',()=>{if(panel.classList.contains('collapsed')){panel.classList.remove('collapsed');panelToggle.textContent='▾'}});
-let userMarkers={};const palette=['#C88242','#059669','#7C3AED','#2563EB','#E11D48','#0891B2'];let colorIdx=0;
-
-/* Location */
-let lastPos=null;
+let userMarkers={};const palette=['#C88242','#059669','#7C3AED','#2563EB','#E11D48','#0891B2'];let colorIdx=0;let lastPos=null;
 if(db&&navigator.geolocation){
-  navigator.geolocation.watchPosition(pos=>{
-    const{latitude:lat,longitude:lng}=pos.coords;lastPos={lat,lng};
-    try{set(ref(db,'presence/'+userId),{nickname,device,lat,lng,lastSeen:Date.now()});onDisconnect(ref(db,'presence/'+userId)).remove()}catch(e){}
-  },()=>{},{enableHighAccuracy:true,timeout:15000,maximumAge:10000});
-  /* Listen for others */
-  onValue(ref(db,'presence'),snap=>{
-    const data=snap.val()||{};const now=Date.now();let count=0;
-    panelBody.innerHTML='';
-    Object.keys(data).forEach(uid=>{
-      const u=data[uid];if(uid===userId||now-u.lastSeen>120000)return;
-      count++;const color=palette[colorIdx++%palette.length];
-      const mins=Math.round((now-u.lastSeen)/60000);
-      const row=document.createElement('div');row.className='user-row';
-      row.innerHTML=`<div class="dot pulse" style="background:${color};color:${color}"></div><div class="info"><div class="name">${u.nickname||'旅伴'}</div><div class="meta">${u.device||''} · ${mins<1?'刚刚':mins+'分钟前'}</div></div>`;
-      panelBody.appendChild(row);
-      if(u.lat&&u.lng&&typeof L!=='undefined'){
-        if(userMarkers[uid])userMarkers[uid].setLatLng([u.lat,u.lng]);
-        else{const mk=L.circleMarker([u.lat,u.lng],{radius:10,color:'#fff',weight:2.5,fillColor:color,fillOpacity:0.9});mk.bindPopup(`<b>${u.nickname||'旅伴'}</b><br>${u.device||''}`);mk.addTo(map);userMarkers[uid]=mk}
-      }
-    });
-    onlineCount.textContent=count;
-    Object.keys(userMarkers).forEach(uid=>{if(!data[uid]||now-(data[uid]?.lastSeen||0)>120000){map.removeLayer(userMarkers[uid]);delete userMarkers[uid]}});
-    if(count===0&&!panel.classList.contains('collapsed'))panel.classList.add('collapsed');
-  });
-  /* Self marker */
-  let selfMarker=null;
-  setInterval(()=>{if(lastPos&&typeof L!=='undefined'){if(selfMarker)selfMarker.setLatLng([lastPos.lat,lastPos.lng]);else{selfMarker=L.circleMarker([lastPos.lat,lastPos.lng],{radius:7,color:'#fff',weight:2.5,fillColor:'#3B82F6',fillOpacity:1});selfMarker.bindPopup(`<b>${nickname} (你)</b><br>${device}`);selfMarker.addTo(map)}}},3000);
+  navigator.geolocation.watchPosition(pos=>{const{latitude:lat,longitude:lng}=pos.coords;lastPos={lat,lng};try{set(ref(db,'presence/'+userId),{nickname,device,lat,lng,lastSeen:Date.now()});onDisconnect(ref(db,'presence/'+userId)).remove()}catch(e){}},()=>{},{enableHighAccuracy:true,timeout:15000,maximumAge:10000});
+  onValue(ref(db,'presence'),snap=>{const data=snap.val()||{};const now=Date.now();let count=0;panelBody.innerHTML='';Object.keys(data).forEach(uid=>{const u=data[uid];if(uid===userId||now-u.lastSeen>120000)return;count++;const color=palette[colorIdx++%palette.length];const mins=Math.round((now-u.lastSeen)/60000);const r=document.createElement('div');r.className='ur';r.innerHTML=`<div class="dot pls" style="background:${color};color:${color}"></div><div class="if"><div class="nm">${u.nickname||'旅伴'}</div><div class="mt">${u.device||''} · ${mins<1?'刚刚':mins+'分钟前'}</div></div>`;panelBody.appendChild(r);if(u.lat&&u.lng&&typeof L!=='undefined'){if(userMarkers[uid])userMarkers[uid].setLatLng([u.lat,u.lng]);else{const mk=L.circleMarker([u.lat,u.lng],{radius:9,color:'#fff',weight:2,fillColor:color,fillOpacity:0.9});mk.bindPopup(`<b>${u.nickname||'旅伴'}</b><br>${u.device||''}`);mk.addTo(map);userMarkers[uid]=mk}}});onlineCount.textContent=count;Object.keys(userMarkers).forEach(uid=>{if(!data[uid]||now-(data[uid]?.lastSeen||0)>120000){map.removeLayer(userMarkers[uid]);delete userMarkers[uid]}});if(count===0&&!panel.classList.contains('collapsed'))panel.classList.add('collapsed')});
+  let selfMarker=null;setInterval(()=>{if(lastPos&&typeof L!=='undefined'){if(selfMarker)selfMarker.setLatLng([lastPos.lat,lastPos.lng]);else{selfMarker=L.circleMarker([lastPos.lat,lastPos.lng],{radius:6,color:'#fff',weight:2,fillColor:'#3B82F6',fillOpacity:1});selfMarker.bindPopup(`<b>${nickname} (你)</b><br>${device}`);selfMarker.addTo(map)}}},3000);
 }
-
-/* ─── CHECKBOX SYNC (Firebase as source of truth) ─── */
-if(db){
-  let initialLoad=true;
-
-  /* Override _tg to also write to Firebase */
-  const origTg=window._tg;
-  window._tg=function(cb){
-    const it=cb.closest('.ditem,.packing-item');const id=gi(it);const ck=!cb.classList.contains('checked');
-    cb.classList.toggle('checked',ck);it.classList.toggle('checked',ck);
-    if(ck)window._checks[id]=true;else delete window._checks[id];up();
-    try{update(ref(db),{[`checks/${id}`]:ck||null})}catch(e){}
-  };
-
-  /* Load all checks from Firebase on startup */
-  onValue(ref(db,'checks'),snap=>{
-    const fb=snap.val()||{};
-    window._checks={};
-    Object.keys(fb).forEach(key=>{if(fb[key])window._checks[key]=true});
-    initialLoad=false;applyChecks();
-  });
-  /* Fallback: if Firebase fails to load, at least show something after 3s */
+if(db){let initialLoad=true;const origTg=window._tg;window._tg=function(cb){const it=cb.closest('.di-i,.pi');const id=gi(it);const ck=!cb.classList.contains('checked');cb.classList.toggle('checked',ck);it.classList.toggle('checked',ck);if(ck)window._checks[id]=true;else delete window._checks[id];up();try{update(ref(db),{[`checks/${id}`]:ck||null})}catch(e){}};
+  onValue(ref(db,'checks'),snap=>{const fb=snap.val()||{};window._checks={};Object.keys(fb).forEach(key=>{if(fb[key])window._checks[key]=true});initialLoad=false;applyChecks()});
   setTimeout(()=>{if(initialLoad){initialLoad=false;applyChecks()}},3000);
-} else {
-  /* No Firebase at all (init failed). Just show empty checks. */
-  setTimeout(()=>applyChecks(),500);
-}
+}else{setTimeout(()=>applyChecks(),500)}
 </script>
 </body>
 </html>
