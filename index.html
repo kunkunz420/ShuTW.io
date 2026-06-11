@@ -464,10 +464,7 @@ body{font-family:'Smartisan C','PingFang SC','Microsoft YaHei',sans-serif;backgr
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-/* ─── CHECKBOX + PROGRESS (localStorage, independent of Firebase) ─── */
-const SK='tw_trip_checks_v4';
-function lc(){try{return JSON.parse(localStorage.getItem(SK))||{}}catch(e){return{}}}
-function sc(c){localStorage.setItem(SK,JSON.stringify(c))}
+/* ─── GLOBAL CHECKBOX UTILS (no localStorage, all in Firebase) ─── */
 function gi(el){const d=el.closest('.ditems')?.dataset?.day||'pack';const t=(el.querySelector('.txt')||el.querySelector('span'))?.textContent?.trim()||'';return d+'_'+t.slice(0,30)}
 function up(){
   document.querySelectorAll('.ditems').forEach(g=>{const it=g.querySelectorAll('.ditem'),dn=g.querySelectorAll('.ditem.checked').length,tt=it.length;const h=g.closest('.day-section')?.closest('.day-shell')?.querySelector('.day-progress-mini')||g.closest('.day-section')?.querySelector('.day-progress-mini');if(h){h.querySelector('.d-done').textContent=dn;h.querySelector('.d-total').textContent=tt;h.querySelector('.fill').style.width=(tt>0?(dn/tt*100):0)+'%'}});
@@ -476,8 +473,8 @@ function up(){
   const pi=document.querySelectorAll('#packingGrid .packing-item'),pd=document.querySelectorAll('#packingGrid .packing-item.checked').length,pt=pi.length;
   document.getElementById('packDone').textContent=pd;document.getElementById('packTotal').textContent=pt;document.getElementById('packFill').style.width=(pt>0?(pd/pt*100):0)+'%';
 }
-function applyChecks(){const c=lc();document.querySelectorAll('.ditem .cb, #packingGrid .packing-item .cb').forEach(cb=>{const it=cb.closest('.ditem,.packing-item');if(c[gi(it)]){cb.classList.add('checked');it.classList.add('checked')}else{cb.classList.remove('checked');it.classList.remove('checked')}});up()}
-applyChecks();
+window._checks={};
+function applyChecks(){document.querySelectorAll('.ditem .cb, #packingGrid .packing-item .cb').forEach(cb=>{const it=cb.closest('.ditem,.packing-item');const id=gi(it);if(window._checks[id]){cb.classList.add('checked');it.classList.add('checked')}else{cb.classList.remove('checked');it.classList.remove('checked')}});up()}
 
 /* ─── View Toggle + UI ─── */
 const vt=document.getElementById('viewToggle');
@@ -502,8 +499,15 @@ sw(0);
 setTimeout(()=>{const l=dayLayers[0].getLayers();if(l.length>0)l[0].openPopup()},1500);
 window.addEventListener('resize',()=>{window.innerWidth<=640?document.body.classList.add('mobile-mode'):document.body.classList.remove('mobile-mode')},{passive:true});
 
-/* ─── CLICK HANDLER for checkboxes (calls tg from module) ─── */
-document.addEventListener('click',e=>{const cb=e.target.closest('.ditem .cb, #packingGrid .packing-item .cb');if(cb&&typeof tg==='function')tg(cb);else if(cb){/* fallback: just toggle */const it=cb.closest('.ditem,.packing-item');const ck=cb.classList.toggle('checked');it.classList.toggle('checked',ck);const c=lc(),id=gi(it);if(ck)c[id]=true;else delete c[id];sc(c);up()}});
+/* ─── CLICK HANDLER for checkboxes ─── */
+if(typeof window._tg==='undefined'){
+  window._tg=function(cb){
+    const it=cb.closest('.ditem,.packing-item');const id=gi(it);const ck=!cb.classList.contains('checked');
+    cb.classList.toggle('checked',ck);it.classList.toggle('checked',ck);
+    if(ck)window._checks[id]=true;else delete window._checks[id];up();
+  }
+}
+document.addEventListener('click',e=>{const cb=e.target.closest('.ditem .cb, #packingGrid .packing-item .cb');if(cb&&typeof window._tg==='function')window._tg(cb)});
 </script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -559,20 +563,28 @@ if(db&&navigator.geolocation){
   setInterval(()=>{if(lastPos&&typeof L!=='undefined'){if(selfMarker)selfMarker.setLatLng([lastPos.lat,lastPos.lng]);else{selfMarker=L.circleMarker([lastPos.lat,lastPos.lng],{radius:7,color:'#fff',weight:2.5,fillColor:'#3B82F6',fillOpacity:1});selfMarker.bindPopup(`<b>${nickname} (你)</b><br>${device}`);selfMarker.addTo(map)}}},3000);
 }
 
-/* Cross-device checkbox sync */
+/* ─── CHECKBOX SYNC (Firebase as source of truth) ─── */
 if(db){
-  let syncing=false;
-  onValue(ref(db,'checks'),snap=>{
-    if(syncing)return;const fb=snap.val()||{};const local=lc();
-    let changed=false;
-    Object.keys(fb).forEach(key=>{if(fb[key]&&!local[key]){local[key]=true;changed=true}});
-    if(changed){sc(local);applyChecks()}
-  });
-  window.tg=function(cb){
-    const it=cb.closest('.ditem,.packing-item');const ck=cb.classList.toggle('checked');it.classList.toggle('checked',ck);
-    const c=lc(),id=gi(it);if(ck)c[id]=true;else delete c[id];sc(c);up();
-    syncing=true;try{update(ref(db),{[`checks/${id}`]:ck||null}).then(()=>{syncing=false}).catch(()=>{syncing=false})}catch(e){syncing=false}
+  let initialLoad=true;
+
+  /* Override _tg to also write to Firebase */
+  const origTg=window._tg;
+  window._tg=function(cb){
+    const it=cb.closest('.ditem,.packing-item');const id=gi(it);const ck=!cb.classList.contains('checked');
+    cb.classList.toggle('checked',ck);it.classList.toggle('checked',ck);
+    if(ck)window._checks[id]=true;else delete window._checks[id];up();
+    try{update(ref(db),{[`checks/${id}`]:ck||null})}catch(e){}
   };
+
+  /* Load all checks from Firebase on startup */
+  onValue(ref(db,'checks'),snap=>{
+    const fb=snap.val()||{};
+    window._checks={};
+    Object.keys(fb).forEach(key=>{if(fb[key])window._checks[key]=true});
+    if(initialLoad){initialLoad=false;applyChecks();return}
+    /* Subsequent updates from other devices: apply immediately */
+    applyChecks();
+  });
 }
 </script>
 
