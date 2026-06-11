@@ -12,227 +12,223 @@
 @font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
 @font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Heavy.ttf') format('truetype');font-weight:800;font-display:swap}
 @font-face{font-family:'Smartisan C';src:url('fonts/(lxgw)Smartisan_Compact-Light.ttf') format('truetype');font-weight:300;font-display:swap}
-
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --p:#C88242;--p-c:rgba(200,130,66,0.12);--p-o:rgba(200,130,66,0.08);
-  --s:#FFFCFF;--b:#FFFFFF;
+  --p:#C88242;--p-c:rgba(200,130,66,0.12);--p-o:rgba(200,130,66,0.08);--p-h:rgba(200,130,66,0.18);
+  --b:#FFFFFF;--s:#F8F7F4;
   --t:#1C1B1F;--t2:#49454F;--t3:#79747E;
-  --o:#E7E0EC;--o2:#CAC4D0;
+  --o:#E7E0EC;--div:#EFEBE8;
   --green:#059669;--purple:#7C3AED;--blue:#2563EB;--grey:#9A9490;--green-bg:rgba(5,150,105,0.08);--green-g:linear-gradient(135deg,#059669,#34D399);
-  --e1:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);--e2:0 2px 8px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
-  --rd-xl:28px;--rd-lg:16px;--rd-md:12px;--rd-sm:8px;
+  --e1:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.02);--e2:0 2px 8px rgba(0,0,0,0.04);
+  --rd:12px;--rd-sm:8px;
   --bez:cubic-bezier(0.32,0.72,0,1);--spr:cubic-bezier(0.34,1.56,0.64,1);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+  --side:240px;--hdr:56px;
 }
-html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif;background:var(--b);color:var(--t);line-height:1.5;-webkit-font-smoothing:antialiased;font-size:16px}
-.reveal{opacity:0;transform:translateY(20px);transition:all 0.7s var(--bez)}.reveal.revealed{opacity:1;transform:translateY(0)}
-.vt{position:fixed;top:calc(var(--safe-t) + 10px);right:14px;z-index:1100;display:flex;background:rgba(28,27,31,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:100px;padding:2px;box-shadow:0 2px 16px rgba(0,0,0,0.08)}
-.vt button{border:none;background:transparent;color:rgba(255,255,255,0.3);padding:5px 12px;border-radius:100px;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.3s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif}
-.vt button.active{background:rgba(200,130,66,0.2);color:#E8D5B8}
+html{background:var(--s)}body{font-family:'Smartisan C','PingFang SC',sans-serif;background:var(--s);color:var(--t);line-height:1.5;-webkit-font-smoothing:antialiased;font-size:15px}
+.reveal{opacity:0;transform:translateY(16px);transition:all 0.6s var(--bez)}.reveal.revealed{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:0.06s}.reveal-d2{transition-delay:0.12s}.reveal-d3{transition-delay:0.18s}.reveal-d4{transition-delay:0.24s}
 
-/* ─── Desktop Nav ─── */
-.top-nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,0.82);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid var(--o);border-radius:100px;padding:0 6px 0 18px;height:46px;display:flex;align-items:center;gap:4px;box-shadow:var(--e1);transition:all 0.5s var(--bez)}
-.top-nav-brand{display:flex;align-items:center;gap:5px;color:var(--t);font-weight:700;font-size:14px;white-space:nowrap}
-.top-nav-brand span{color:var(--p)}
-.top-nav-links{display:flex;align-items:center;gap:1px;margin-left:4px}
-.top-nav-links a{color:var(--t2);font-size:12px;padding:5px 10px;border-radius:100px;transition:all 0.25s var(--bez);font-weight:400;text-decoration:none;white-space:nowrap}
-.top-nav-links a:hover{color:var(--t);background:rgba(0,0,0,0.03)}
-.top-nav-links a.primary{color:var(--p)}
+/* ─── Sidebar ─── */
+.side{position:fixed;top:0;left:0;width:var(--side);height:100dvh;background:var(--b);border-right:1px solid var(--o);display:flex;flex-direction:column;z-index:100;overflow:hidden}
+.side-logo{padding:18px 16px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--div)}
+.side-logo .mark{width:32px;height:32px;border-radius:8px;background:var(--p);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+.side-logo .name{font-weight:700;font-size:14px;color:var(--t)}
+.side-logo .name span{color:var(--p)}
+.side-nav{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.side-nav .sec{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.08em;padding:12px 12px 4px}
+.side-nav a{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--rd-sm);text-decoration:none;color:var(--t2);font-size:13px;font-weight:500;transition:all 0.15s var(--bez)}
+.side-nav a:hover{background:rgba(0,0,0,0.03);color:var(--t)}
+.side-nav a.act{background:var(--p-c);color:var(--p);font-weight:600}
+.side-nav a .badge{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.side-nav .spacer{flex:1}
+.side-user{padding:12px 16px;border-top:1px solid var(--div);display:flex;align-items:center;gap:10px}
+.side-user .av{width:32px;height:32px;border-radius:50%;background:var(--o);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.side-user .info{flex:1;min-width:0}
+.side-user .info .nm{font-size:13px;font-weight:500}
+.side-user .info .st{font-size:11px;color:var(--t2)}
+.side-user .on{width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0}
 
-/* ─── Bottom Nav (M3) ─── */
-.m3-bot{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid var(--o);padding:0 0 calc(var(--safe-b) + 0px)}
-.m3-bot-inner{display:flex;height:64px;align-items:center;justify-content:space-around;padding:0 4px}
-.m3-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:56px;min-width:64px;border:none;background:transparent;cursor:pointer;position:relative;padding:0 12px;border-radius:var(--rd-lg);transition:all 0.25s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif}
-.m3-tab .icon{font-size:22px;line-height:1;transition:transform 0.2s var(--spr)}
-.m3-tab .label{font-size:11px;font-weight:500;color:var(--t2);transition:color 0.2s var(--bez)}
-.m3-tab.active .icon{transform:scale(1.1)}.m3-tab.active{background:var(--p-o)}
-.m3-tab.active .label{color:var(--p);font-weight:600}
-.m3-tab.active::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:2px;background:var(--p)}
+/* ─── Top Header ─── */
+.hdr{position:fixed;top:0;left:0;right:0;height:var(--hdr);background:rgba(248,247,244,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--o);display:none;align-items:center;padding:0 16px;z-index:200;gap:8px}
+.hdr .hamb{width:32px;height:32px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--t2);flex-shrink:0}
+.hdr .hamb:hover{background:rgba(0,0,0,0.03)}
+.hdr .ht{flex:1;font-weight:600;font-size:15px}
+.hdr .ht span{color:var(--p)}
 
-/* ─── Hero ─── */
-.hero{position:relative;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--b)}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 40%,rgba(200,130,66,0.04) 0%,transparent 70%)}
-.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:520px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px 4px 12px;border-radius:100px;background:var(--p-c);font-size:11px;font-weight:400;color:var(--p);margin-bottom:16px;letter-spacing:0.06em}
-.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--p);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
-.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;color:var(--t);line-height:1.05;margin-bottom:12px;letter-spacing:-0.04em}
-.hero h1 span{color:var(--p)}
-.hero-sub{font-size:clamp(0.85rem,1.1vw,1rem);color:var(--t2);max-width:380px;margin:0 auto 28px;font-weight:300;line-height:1.6}
-.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
-.hero-stat{text-align:center}
-.hero-stat-num{font-size:2.2rem;font-weight:800;color:var(--t);line-height:1;letter-spacing:-0.03em}
-.hero-stat-label{font-size:11px;color:var(--t2);margin-top:3px;font-weight:300;letter-spacing:0.04em}
+/* ─── Main Content ─── */
+.main{margin-left:var(--side);min-height:100dvh;background:var(--s)}
+.main-inner{max-width:1200px;margin:0 auto;padding:24px 28px}
+.page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.page-head .ph-left{display:flex;align-items:center;gap:8px}
+.page-head .ph-left .ph-icon{width:36px;height:36px;border-radius:var(--rd-sm);background:var(--p-c);display:flex;align-items:center;justify-content:center;font-size:18px}
+.page-head .ph-left .ph-text{font-weight:600;font-size:16px;color:var(--t)}
+.page-head .ph-right{display:flex;align-items:center;gap:8px}
+.page-head .ph-right .ph-stat{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--t2);background:var(--b);padding:4px 10px;border-radius:100px;border:1px solid var(--o)}
+.page-head .ph-right .ph-stat .num{font-weight:600;color:var(--t)}
+.vt{display:flex;background:var(--b);border:1px solid var(--o);border-radius:100px;padding:2px}
+.vt button{border:none;background:transparent;color:var(--t2);padding:4px 10px;border-radius:100px;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.2s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif}
+.vt button.active{background:var(--p);color:#fff}
 
-.container{max-width:1200px;margin:0 auto;padding:0 20px}
-.sh{text-align:center;margin-bottom:28px}
-.sh .eyebrow{font-size:11px;font-weight:400;letter-spacing:0.16em;color:var(--t2);margin-bottom:4px}
-.sh h2{font-size:clamp(1.2rem,1.8vw,1.6rem);font-weight:700;letter-spacing:-0.02em}
+/* ─── Cards ─── */
+.card{background:var(--b);border-radius:var(--rd);border:1px solid var(--o);overflow:hidden;transition:all 0.2s var(--bez)}
+.card-h{padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--div);flex-wrap:wrap}
+.card-h .cn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;flex-shrink:0}
+.card-h .ct{font-weight:600;font-size:0.9rem}
+.card-h .cd{font-size:11px;color:var(--t2);margin-left:auto}
+.card-b{padding:10px 14px 14px}
+.card-pm{width:100%;margin-top:4px;display:flex;align-items:center;gap:8px}
+.card-pm .tr{flex:1;height:3px;background:var(--div);border-radius:100px;overflow:hidden}
+.card-pm .tr .fl{height:100%;border-radius:100px;transition:width 0.5s var(--bez);width:0%}
+.card-pm .ct{font-size:11px;color:var(--t2);white-space:nowrap;min-width:28px;text-align:right}
 
-/* ─── Map ─── */
-#map-section{padding:56px 0 32px;background:var(--b)}
-.map-wrapper{border-radius:var(--rd-lg);overflow:hidden;height:520px;box-shadow:var(--e1)}
-#travel-map{width:100%;height:100%}
-.day-buttons{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.day-btn{padding:7px 16px;border-radius:100px;border:none;font-size:13px;font-weight:500;cursor:pointer;color:#fff;transition:all 0.35s var(--bez);opacity:0.4;display:flex;align-items:center;gap:4px}
-.day-btn:hover{opacity:0.65;transform:translateY(-1px)}
-.day-btn.active{opacity:1;box-shadow:0 2px 12px rgba(0,0,0,0.06);transform:translateY(-1px)}
-.day-btn .num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.18);font-size:10px;font-weight:700}
-.poptitle{font-weight:600;font-size:14px;margin-bottom:2px;display:flex;align-items:center;gap:4px}
-.popdesc{font-size:12px;color:var(--t2);line-height:1.4;font-weight:400}
-.popnum{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;color:#fff;margin-right:4px}
-.popday{font-size:11px;color:var(--t2);margin-top:2px;font-weight:500}
+/* ─── Progress Bar ─── */
+.pb{margin-bottom:20px}
+.pb-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.pb-h .l{font-size:13px;font-weight:500}
+.pb-h .c{font-size:12px;color:var(--t2)}
+.pb-t{height:4px;background:var(--div);border-radius:100px;overflow:hidden}
+.pb-f{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--p),var(--green));transition:width 0.6s var(--bez);width:0%}
 
-/* ─── Itinerary (M3 Cards) ─── */
-#itinerary{padding:32px 0 56px;background:var(--b)}
-.pb{margin-bottom:28px}
-.pb-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
-.pb-header .label{font-size:13px;font-weight:600}
-.pb-header .count{font-size:12px;color:var(--t2);font-weight:400}
-.pb-track{height:4px;background:var(--o);border-radius:100px;overflow:hidden}
-.pb-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--p),var(--green));transition:width 0.6s var(--bez);width:0%}
-
-.dc{border-radius:var(--rd-lg);background:var(--b);overflow:hidden;margin-bottom:16px;box-shadow:var(--e1);border:1px solid var(--o)}
-.dc-h{padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.dc-h .dnum{width:30px;height:30px;border-radius:var(--rd-sm);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
-.dc-h .dt{font-weight:600;font-size:0.95rem;letter-spacing:-0.01em}
-.dc-h .dd{font-size:11px;color:var(--t2);margin-left:auto;font-weight:400}
-.dc-pm{width:100%;margin-top:6px;display:flex;align-items:center;gap:8px}
-.dc-pm .tr{flex:1;height:3px;background:var(--o);border-radius:100px;overflow:hidden}
-.dc-pm .tr .fl{height:100%;border-radius:100px;transition:width 0.5s var(--bez);width:0%}
-.dc-pm .ct{font-size:11px;color:var(--t2);white-space:nowrap;font-weight:400;min-width:28px;text-align:right}
-.dc-b{padding:8px 14px 14px}
+/* ─── Day Items ─── */
 .di{display:grid;gap:2px}
-.di-i{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:var(--rd-sm);font-size:14px;font-weight:400;transition:all 0.2s var(--bez)}
-.di-i.checked{opacity:0.45}
+.di-i{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:6px;font-size:13px;font-weight:400;transition:all 0.15s var(--bez)}
+.di-i:hover{background:rgba(0,0,0,0.015)}
+.di-i.checked{opacity:0.4}
 .di-i.checked .tx{text-decoration:line-through;color:var(--t2)}
-.di-i .cb{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--t3);cursor:pointer;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--spr);background:var(--b);font-size:12px;color:transparent}
+.di-i .cb{flex-shrink:0;width:20px;height:20px;border-radius:5px;border:2px solid var(--t3);cursor:pointer;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s var(--spr);background:var(--b);font-size:11px;color:transparent}
 .di-i .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
-.di-i .idx{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;margin-top:1px}
-.di-i .ic{flex-shrink:0;font-size:14px;margin-top:1px}
+.di-i .idx{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;margin-top:1px}
+.di-i .ic{flex-shrink:0;font-size:13px;margin-top:1px}
 .di-i .tx{line-height:1.5;flex:1}
 .di-i .tx .hl{font-weight:500}
-.di-i .ts{display:flex;flex-wrap:wrap;gap:3px 5px;margin-top:2px}
-.di-i .ts span{font-size:10px;color:var(--t2);background:var(--o);padding:1px 6px;border-radius:4px;font-weight:400}
+.di-i .ts{display:flex;flex-wrap:wrap;gap:2px 4px;margin-top:1px}
+.di-i .ts span{font-size:10px;color:var(--t2);background:var(--div);padding:1px 5px;border-radius:3px;font-weight:400}
+
+/* ─── Map ─── */
+#map-section{margin-bottom:20px}
+.map-wrapper{border-radius:var(--rd);overflow:hidden;height:480px;border:1px solid var(--o)}
+#travel-map{width:100%;height:100%}
+.day-buttons{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.day-btn{padding:5px 12px;border-radius:100px;border:none;font-size:12px;font-weight:500;cursor:pointer;color:#fff;transition:all 0.25s var(--bez);opacity:0.35;display:flex;align-items:center;gap:3px}
+.day-btn:hover{opacity:0.6}
+.day-btn.active{opacity:1}
+.day-btn .num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.18);font-size:9px;font-weight:700}
 
 /* ─── Food ─── */
-#food{padding:56px 0;background:var(--b)}
-.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
-.fc{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--rd-md);background:var(--b);font-size:14px;font-weight:400;border:1px solid var(--o);transition:all 0.25s var(--bez)}
-.fc .bl{width:42px;height:42px;border-radius:var(--rd-sm);object-fit:contain;background:var(--o);padding:5px;flex-shrink:0}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.fc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rd-sm);background:var(--b);font-size:13px;font-weight:400;border:1px solid var(--o);transition:all 0.15s var(--bez)}
+.fc .bl{width:36px;height:36px;border-radius:6px;object-fit:contain;background:var(--div);padding:4px;flex-shrink:0}
 .fci{flex:1;min-width:0}
-.fci .nm{font-weight:600;font-size:14px;margin-bottom:1px}
-.fci .pl{font-size:12px;color:var(--t2);font-weight:400}
-.fs{margin-top:24px;padding:18px 20px;border-radius:var(--rd-md);background:var(--b);font-size:14px;text-align:center;border:1px solid var(--o)}
-.fs .tt{font-weight:600;font-size:14px;margin-bottom:8px}
-.fs .it{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.fs .si{display:inline-flex;align-items:center;gap:4px;background:var(--o);padding:3px 10px 3px 4px;border-radius:var(--rd-sm);font-size:11px;font-weight:400}
-.fs .si img{width:18px;height:18px;border-radius:4px;object-fit:contain;background:#fff;padding:2px}
+.fci .nm{font-weight:600;font-size:13px}
+.fci .pl{font-size:11px;color:var(--t2)}
+.fs{margin-top:16px;padding:14px 16px;border-radius:var(--rd-sm);background:var(--b);font-size:13px;text-align:center;border:1px solid var(--o)}
+.fs .tt{font-weight:600;font-size:13px;margin-bottom:6px}
+.fs .it{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.fs .si{display:inline-flex;align-items:center;gap:3px;background:var(--div);padding:2px 8px 2px 3px;border-radius:4px;font-size:11px;font-weight:400}
+.fs .si img{width:16px;height:16px;border-radius:3px;object-fit:contain;background:#fff;padding:1px}
 
 /* ─── Packing ─── */
-#packing{padding:56px 0;background:var(--b)}
-.pk-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.pk-h .label{font-weight:600;font-size:0.95rem}
-.pk-h .count{font-size:12px;color:var(--t2);font-weight:400}
-.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
-.pi{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--rd-sm);background:var(--b);font-size:13px;font-weight:400;border:1px solid var(--o);transition:all 0.2s var(--bez)}
-.pi.checked{background:var(--green-bg);border-color:rgba(5,150,105,0.15);opacity:0.45}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px}
+.pi{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:6px;background:var(--b);font-size:13px;font-weight:400;border:1px solid var(--o);transition:all 0.15s var(--bez)}
+.pi.checked{background:var(--green-bg);border-color:rgba(5,150,105,0.12);opacity:0.4}
 .pi.checked span{text-decoration:line-through;color:var(--t2)}
-.pi .cb{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--spr);background:var(--b);font-size:12px;color:transparent}
+.pi .cb{flex-shrink:0;width:20px;height:20px;border-radius:5px;border:2px solid var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s var(--spr);background:var(--b);font-size:11px;color:transparent}
 .pi .cb.checked{border-color:var(--green);background:var(--green);color:#fff}
+.pk-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.pk-h .l{font-weight:600;font-size:0.9rem}
+.pk-h .c{font-size:12px;color:var(--t2)}
 
-.ft{text-align:center;padding:20px 20px;color:var(--t2);font-size:11px;font-weight:300}
+.ft{text-align:center;padding:24px 0;color:var(--t2);font-size:11px}
 
-/* ─── M3 Floating Panel ─── */
-.fp{position:fixed;bottom:calc(72px + var(--safe-b));right:12px;z-index:900;background:rgba(255,255,255,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:var(--rd-md);padding:10px 14px;min-width:160px;max-width:240px;box-shadow:var(--e2);font-size:12px;transition:all 0.35s var(--bez);border:1px solid var(--o)}
-.fp.collapsed{min-width:auto;padding:6px 10px;cursor:pointer}
-.fp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.fp-h .ti{font-weight:600;font-size:11px;display:flex;align-items:center;gap:4px;color:var(--t)}
-.fp-h .ti .cnt{font-weight:400;color:var(--t2);font-size:11px}
-.fp-tg{border:none;background:var(--o);border-radius:4px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;color:var(--t2);transition:all 0.2s var(--bez)}
-.fp-b{display:flex;flex-direction:column;gap:4px}
-.fp-b .ur{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:6px;background:rgba(0,0,0,0.015)}
-.fp-b .ur .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.fp-b .ur .dot.pls{animation:up 1.5s ease-in-out infinite}
+/* ─── FP ─── */
+.fp{position:fixed;bottom:16px;right:16px;z-index:900;background:rgba(255,255,255,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:var(--rd-sm);padding:8px 12px;min-width:140px;max-width:220px;box-shadow:var(--e2);font-size:11px;border:1px solid var(--o)}
+.fp.collapsed{min-width:auto;padding:5px 8px;cursor:pointer}
+.fp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.fp-h .ti{font-weight:500;font-size:11px;display:flex;align-items:center;gap:3px;color:var(--t)}
+.fp-h .ti .cnt{font-weight:400;color:var(--t2);font-size:10px}
+.fp-tg{border:none;background:var(--div);border-radius:3px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:8px;color:var(--t2)}
+.fp-b{display:flex;flex-direction:column;gap:3px}
+.fp-b .ur{display:flex;align-items:center;gap:4px;padding:3px 5px;border-radius:4px}
+.fp-b .ur .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;animation:up 1.5s ease-in-out infinite}
 @keyframes up{0%,100%{opacity:1}50%{opacity:0.4}}
-.fp-b .ur .if{flex:1;min-width:0}
-.fp-b .ur .if .nm{font-weight:500;font-size:11px}
-.fp-b .ur .if .mt{font-weight:300;color:var(--t2);font-size:10px}
+.fp-b .ur .if{flex:1}
+.fp-b .ur .if .nm{font-weight:500;font-size:10px}
+.fp-b .ur .if .mt{font-size:9px;color:var(--t2)}
 .fp.collapsed .fp-b{display:none}
 
-/* ─── M3 Day Pills ─── */
-.m3-pills{display:none;position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:6px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px}
-.m3-pills::-webkit-scrollbar{display:none}
-.m3-pills .p{flex-shrink:0;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.25s var(--bez);font-family:'Smartisan C','PingFang SC',sans-serif;color:var(--t2);display:flex;align-items:center;gap:4px;white-space:nowrap;border:1px solid var(--o);background:var(--b)}
-.m3-pills .p .pn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:700;color:#fff}
-.m3-pills .p.active{color:var(--p);border-color:var(--p);background:var(--p-c)}
-
+@media(max-width:900px){
+  .side{display:none}
+  .hdr{display:flex}
+  .main{margin-left:0}
+  .main-inner{padding:calc(var(--hdr) + 12px) 14px 20px}
+  .map-wrapper{height:360px}
+  .page-head{display:none}
+  .vt{position:fixed;top:calc(var(--safe-t) + 8px);right:12px;z-index:300}
+}
 @media(max-width:640px){
-  .top-nav{display:none}.vt{top:calc(var(--safe-t) + 6px);right:10px}.vt button{padding:4px 10px;font-size:10px}.m3-bot{display:block}
-  .hero{min-height:65dvh;padding-top:calc(var(--safe-t) + 40px)}.hero h1{font-size:2rem}.hero-sub{font-size:0.85rem;margin-bottom:24px}.hero-stats{gap:20px}.hero-stat-num{font-size:1.8rem}
-  .container{padding:0 12px}.sh{margin-bottom:20px}.sh h2{font-size:1.15rem}
-  #map-section{padding:0}#map-section>.container{padding:0}.map-wrapper{border-radius:0;height:45dvh;box-shadow:none}.day-buttons{display:none}.m3-pills{display:flex}
-  #itinerary{padding:8px 0 calc(72px + var(--safe-b))}.pb{margin-bottom:16px}
-  .dc{margin-bottom:12px;border-radius:var(--rd-md)}.dc-h{padding:12px 14px;gap:8px}.dc-h .dnum{width:26px;height:26px;border-radius:6px;font-size:11px}.dc-h .dt{font-size:0.85rem}.dc-h .dd{font-size:10px}.dc-b{padding:6px 10px 10px}
-  .di-i{padding:6px 8px;gap:8px;font-size:13px}.di-i .cb{width:24px;height:24px;border-radius:6px;font-size:12px}.di-i .idx{width:18px;height:18px;font-size:9px}.di-i .ic{font-size:13px}.di-i .ts span{font-size:10px;padding:1px 5px}
-  #food{padding:16px 0 calc(72px + var(--safe-b))}.fg{grid-template-columns:1fr;gap:8px}.fc{padding:10px 12px;gap:10px;border-radius:var(--rd-sm)}.fc .bl{width:36px;height:36px;border-radius:6px;padding:4px}.fci .nm{font-size:13px}.fci .pl{font-size:11px}.fs{padding:12px 14px;border-radius:var(--rd-sm);margin-top:16px}
-  #packing{padding:16px 0 calc(72px + var(--safe-b))}.pg{grid-template-columns:1fr 1fr;gap:6px}.pi{padding:8px 10px;border-radius:6px;font-size:12px;gap:8px}.pi .cb{width:24px;height:24px;border-radius:6px}
-  .ft{padding:14px 12px calc(var(--safe-b) + 14px);font-size:10px}.fp{bottom:calc(72px + var(--safe-b));right:8px;min-width:140px;padding:8px 10px;border-radius:var(--rd-sm)}
+  .map-wrapper{border-radius:0;height:40dvh;margin:0 -14px;border-left:none;border-right:none;border-radius:0;width:calc(100% + 28px)}.day-buttons{display:none}
 }
 </style>
 </head>
 <body>
 
+<!-- Sidebar -->
+<aside class="side">
+  <div class="side-logo">
+    <div class="mark">台</div>
+    <div class="name"><span>台湾</span> · 全景</div>
+  </div>
+  <nav class="side-nav">
+    <div class="sec">路线</div>
+    <a href="#map-section" class="act"><span>🗺️</span> 路线地图</a>
+    <a href="#day-1"><span class="badge" style="background:var(--p)">1</span> 飞抵台北 → 花莲</a>
+    <a href="#day-2"><span class="badge" style="background:var(--green)">2</span> 花莲 · 山海一日</a>
+    <a href="#day-3"><span class="badge" style="background:var(--purple)">3</span> 花莲→台北巡礼</a>
+    <a href="#day-4"><span class="badge" style="background:var(--blue)">4</span> 台北文化深度</a>
+    <a href="#day-5"><span class="badge" style="background:var(--grey)">5</span> 返程 · 台北→香港</a>
+    <div class="sec" style="margin-top:4px">探索</div>
+    <a href="#food">🍜 美食指南</a>
+    <a href="#packing">🎒 出行清单</a>
+    <div class="spacer"></div>
+  </nav>
+  <div class="side-user" id="sideUser">
+    <div class="av">🧑</div>
+    <div class="info"><div class="nm" id="sideNick">加载中...</div><div class="st" id="sideStatus">在线</div></div>
+    <div class="on"></div>
+  </div>
+</aside>
+
+<!-- Mobile Header -->
+<header class="hdr" id="mobileHdr">
+  <button class="hamb" id="hambBtn">☰</button>
+  <div class="ht"><span>台</span>湾 · 全景行</div>
+</header>
+
+<!-- View Toggle -->
 <div class="vt" id="viewToggle">
   <button data-view="desktop" class="active">桌面</button>
   <button data-view="mobile">手机</button>
 </div>
 
-<nav class="top-nav">
-  <div class="top-nav-brand"><span>台</span>湾 · 全景</div>
-  <div class="top-nav-links">
-    <a href="#map-section" class="primary">📍 地图</a>
-    <a href="#day-1">D1</a><a href="#day-2">D2</a><a href="#day-3">D3</a><a href="#day-4">D4</a><a href="#day-5">D5</a>
-    <a href="#food">🍜</a><a href="#packing">🎒</a>
-  </div>
-</nav>
+<!-- Main Content -->
+<main class="main">
+<div class="main-inner">
 
-<div class="m3-bot" id="mobileTabBar">
-  <div class="m3-bot-inner">
-    <button class="m3-tab active" data-tab="itinerary"><span class="icon">📋</span><span class="label">行程</span></button>
-    <button class="m3-tab" data-tab="map-section"><span class="icon">🗺️</span><span class="label">地图</span></button>
-    <button class="m3-tab" data-tab="food"><span class="icon">🍜</span><span class="label">美食</span></button>
-    <button class="m3-tab" data-tab="packing"><span class="icon">🎒</span><span class="label">清单</span></button>
-  </div>
-</div>
-
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content reveal">
-    <div class="hero-badge"><span class="dot"></span> 2025 · 初夏宝岛之旅</div>
-    <h1>台湾·<span>全景行</span></h1>
-    <p class="hero-sub">台北都会 · 花莲山海 · 四大夜市 · 三十余道美食 — 5日4夜完整路线</p>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">天数</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">2</div><div class="hero-stat-label">城市</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">18</div><div class="hero-stat-label">景点</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">30</div><div class="hero-stat-label">美食</div></div>
+  <!-- Page Head -->
+  <div class="page-head reveal">
+    <div class="ph-left">
+      <div class="ph-icon">🗺️</div>
+      <div class="ph-text">台湾全景旅游 · 2025</div>
+    </div>
+    <div class="ph-right">
+      <span class="ph-stat">📅 <span class="num">6.17</span> → <span class="num">6.21</span></span>
+      <span class="ph-stat">📍 <span class="num" id="totalDonePH">0</span>/<span id="totalAllPH">45</span></span>
     </div>
   </div>
-</section>
 
-<div class="m3-pills" id="mobilePills">
-  <button class="p active" data-day="1"><span class="pn" style="background:var(--p)">1</span> 出发</button>
-  <button class="p" data-day="2"><span class="pn" style="background:var(--green)">2</span> 花莲</button>
-  <button class="p" data-day="3"><span class="pn" style="background:var(--purple)">3</span> 巡礼</button>
-  <button class="p" data-day="4"><span class="pn" style="background:var(--blue)">4</span> 深度</button>
-  <button class="p" data-day="5"><span class="pn" style="background:var(--grey)">5</span> 返程</button>
-</div>
-
-<section id="map-section">
-  <div class="container">
-    <div class="sh reveal"><div class="eyebrow">Navigation</div><h2>路线地图</h2></div>
+  <!-- Map -->
+  <section id="map-section">
     <div class="map-wrapper reveal"><div id="travel-map"></div></div>
     <div class="day-buttons reveal" id="dayButtons">
       <button class="day-btn active" style="background:var(--p)" data-day="1"><span class="num">1</span> 出发</button>
@@ -241,19 +237,18 @@ html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif
       <button class="day-btn" style="background:var(--blue)" data-day="4"><span class="num">4</span> 巡礼</button>
       <button class="day-btn" style="background:var(--grey)" data-day="5"><span class="num">5</span> 返程</button>
     </div>
+  </section>
+
+  <!-- Progress -->
+  <div class="pb reveal">
+    <div class="pb-h"><span class="l">总进度</span><span class="c"><span id="totalDone">0</span> / <span id="totalAll">45</span></span></div>
+    <div class="pb-t"><div class="pb-f" id="totalFill"></div></div>
   </div>
-</section>
 
-<section id="itinerary">
-  <div class="container">
-    <div class="sh reveal"><div class="eyebrow">Itinerary</div><h2>完整行程</h2></div>
-
-    <div class="pb reveal">
-      <div class="pb-header"><span class="label">总进度</span><span class="count"><span id="totalDone">0</span> / <span id="totalAll">0</span></span></div>
-      <div class="pb-track"><div class="pb-fill" id="totalFill"></div></div>
-    </div>
-
-    <div class="dc reveal" id="day-1"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--p),#D4A05A)">1</div><div class="dt">飞抵台北 → 花莲</div><div class="dd">6月17日·周三</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--p)"></div></div></div></div><div class="dc-b"><div class="di" data-day="1">
+  <!-- Day 1 -->
+  <div class="card reveal" id="day-1" style="margin-bottom:12px">
+    <div class="card-h"><div class="cn" style="background:linear-gradient(135deg,var(--p),#D4A05A)">1</div><div class="ct">飞抵台北 → 花莲</div><div class="cd">6月17日·周三</div><div class="card-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">10</span></span><div class="tr"><div class="fl" style="background:var(--p)"></div></div></div></div>
+    <div class="card-b"><div class="di" data-day="1">
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">1</div><div class="ic">🏠</div><div class="tx"><span class="hl">06:20</span> 从家出发</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">2</div><div class="ic">🛂</div><div class="tx"><span class="hl">07:00</span> 到达口岸</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">3</div><div class="ic">🛫</div><div class="tx"><span class="hl">08:15</span> 抵达香港机场 · <span class="hl">10:15</span> 起飞</div></div>
@@ -264,9 +259,13 @@ html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">8</div><div class="ic">🚄</div><div class="tx"><span class="hl">17:05</span> 台铁 台北→花莲<div class="ts"><span>16:30到站·自助机取票</span><span>车票2054735OZESU</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">9</div><div class="ic">🏨</div><div class="tx"><span class="hl">19:43</span> 抵达花莲 · 国联一路201号</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--p)">10</div><div class="ic">🥟</div><div class="tx">花莲香扁食 + 曾师傅麻糬<div class="ts"><span>🥜 花生麻糬·红豆麻糬</span><span>🟣 现包紫米·御皇酥</span></div></div></div>
-    </div></div></div>
+    </div></div>
+  </div>
 
-    <div class="dc reveal reveal-d1" id="day-2"><div class="dc-h"><div class="dnum" style="background:var(--green-g)">2</div><div class="dt">花莲 · 山海一日</div><div class="dd">6月18日·周四</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--green)"></div></div></div></div><div class="dc-b"><div class="di" data-day="2">
+  <!-- Day 2 -->
+  <div class="card reveal reveal-d1" id="day-2" style="margin-bottom:12px">
+    <div class="card-h"><div class="cn" style="background:var(--green-g)">2</div><div class="ct">花莲 · 山海一日</div><div class="cd">6月18日·周四</div><div class="card-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">9</span></span><div class="tr"><div class="fl" style="background:var(--green)"></div></div></div></div>
+    <div class="card-b"><div class="di" data-day="2">
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">1</div><div class="ic">🐳</div><div class="tx"><span class="hl">08:00</span> 出海赏鲸<div class="ts"><span>👖 长袖长裤+防晒衣</span><span>🦟 防蚊液+伞</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">2</div><div class="ic">🏨</div><div class="tx"><span class="hl">11:30</span> 回酒店<div class="ts"><span>🥟 花莲香扁食买奶茶</span><span>🍡 曾师傅麻糬</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">3</div><div class="ic">🏘️</div><div class="tx"><span class="hl">14:30</span> 新城老街 · 包车出发</div></div>
@@ -276,9 +275,13 @@ html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">7</div><div class="ic">🌊</div><div class="tx">七星潭</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">8</div><div class="ic">🧅</div><div class="tx">炸弹葱油饼</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--green)">9</div><div class="ic">🌙</div><div class="tx"><span class="hl">19:00</span> 东大门夜市<div class="ts"><span>🥖 法式棺材饭</span><span>🧋 言可不妙芋头牛奶</span><span>🍠 开运屋手工地瓜球</span><span>🥞 强蛋饼</span></div></div></div>
-    </div></div></div>
+    </div></div>
+  </div>
 
-    <div class="dc reveal reveal-d2" id="day-3"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">3</div><div class="dt">花莲→台北 · 经典巡礼</div><div class="dd">6月19日·周五</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--purple)"></div></div></div></div><div class="dc-b"><div class="di" data-day="3">
+  <!-- Day 3 -->
+  <div class="card reveal reveal-d2" id="day-3" style="margin-bottom:12px">
+    <div class="card-h"><div class="cn" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">3</div><div class="ct">花莲→台北 · 经典巡礼</div><div class="cd">6月19日·周五</div><div class="card-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">8</span></span><div class="tr"><div class="fl" style="background:var(--purple)"></div></div></div></div>
+    <div class="card-b"><div class="di" data-day="3">
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">1</div><div class="ic">🚄</div><div class="tx"><span class="hl">07:30</span> 台铁 花莲→台北<div class="ts"><span>车票20547244FFAA</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">2</div><div class="ic">🏨</div><div class="tx"><span class="hl">10:09</span> 抵达台北 · 放行李<div class="ts"><span>🧋 买奶茶</span><span>大同区民生西路198号2楼</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">3</div><div class="ic">🍜</div><div class="tx"><span class="hl">11:30</span> 老张牛肉面 · 牛三宝面+盐酥鸡</div></div>
@@ -287,28 +290,37 @@ html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">6</div><div class="ic">🛍️</div><div class="tx">购物<div class="ts"><span>🧇 三统香葱牛轧饼</span><span>💧 康是美霓净思超爆水</span><span>🎭 提提研面膜</span><span>🏪 宝雅</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">7</div><div class="ic">🍢</div><div class="tx">赛门邓普拉（甜不辣）</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--purple)">8</div><div class="ic">🌙</div><div class="tx"><span class="hl">18:00</span> 饶河夜市<div class="ts"><span>🏯 松山慈祐宫</span><span>🫓 福州世祖胡椒饼</span><span>🫘 下港名彭臭豆腐</span><span>🌭 马告肠·好腸好嚐</span></div></div></div>
-    </div></div></div>
+    </div></div>
+  </div>
 
-    <div class="dc reveal reveal-d3" id="day-4"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--blue),#60A5FA)">4</div><div class="dt">台北深度 · 文化巡礼</div><div class="dd">6月20日·周六</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--blue)"></div></div></div></div><div class="dc-b"><div class="di" data-day="4">
+  <!-- Day 4 -->
+  <div class="card reveal reveal-d3" id="day-4" style="margin-bottom:12px">
+    <div class="card-h"><div class="cn" style="background:linear-gradient(135deg,var(--blue),#60A5FA)">4</div><div class="ct">台北深度 · 文化巡礼</div><div class="cd">6月20日·周六</div><div class="card-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">6</span></span><div class="tr"><div class="fl" style="background:var(--blue)"></div></div></div></div>
+    <div class="card-b"><div class="di" data-day="4">
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">1</div><div class="ic">🏛️</div><div class="tx"><span class="hl">09:00</span> 国立故宫博物院<div class="ts"><span>🥩 肉形石</span><span>🥬 翠玉白菜</span><span>🏺 宋代汝窑青瓷</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">2</div><div class="ic">🏘️</div><div class="tx"><span class="hl">15:00</span> 大稻埕 & 迪化街<div class="ts"><span>🧱 红砖巴洛克老洋楼</span><span>🛒 南北货行</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">3</div><div class="ic">🌅</div><div class="tx"><span class="hl">17:30</span> 大稻埕码头货柜市集<div class="ts"><span>🍚 卤肉饭+半熟蛋</span><span>🌇 淡水河畔夕阳</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">4</div><div class="ic">🏢</div><div class="tx"><span class="hl">18:45</span> 台北101 买特产<div class="ts"><span>🍍 微热山丘</span><span>🥮 佳德·如邑堂·三统汉果子</span><span>📍 B1退税</span><span>📚 诚品松烟</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">5</div><div class="ic">🌙</div><div class="tx"><span class="hl">20:00</span> 宁夏夜市<div class="ts"><span>🥟 刘芋仔蛋黄芋饼</span><span>🦪 圆环边蚵仔煎</span><span>🍮 豆花庄</span><span>🍗 FUN SUN G鸡排</span></div></div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--blue)">6</div><div class="ic">⏰</div><div class="tx">捷运末班车 12:00</div></div>
-    </div></div></div>
+    </div></div>
+  </div>
 
-    <div class="dc reveal reveal-d4" id="day-5"><div class="dc-h"><div class="dnum" style="background:linear-gradient(135deg,var(--grey),#A8A29E)">5</div><div class="dt">返程 · 台湾→香港</div><div class="dd">6月21日·周日</div><div class="dc-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">0</span></span><div class="tr"><div class="fl" style="background:var(--grey)"></div></div></div></div><div class="dc-b"><div class="di" data-day="5">
+  <!-- Day 5 -->
+  <div class="card reveal reveal-d4" id="day-5" style="margin-bottom:16px">
+    <div class="card-h"><div class="cn" style="background:linear-gradient(135deg,var(--grey),#A8A29E)">5</div><div class="ct">返程 · 台湾→香港</div><div class="cd">6月21日·周日</div><div class="card-pm"><span class="ct"><span class="d-done">0</span>/<span class="d-total">3</span></span><div class="tr"><div class="fl" style="background:var(--grey)"></div></div></div></div>
+    <div class="card-b"><div class="di" data-day="5">
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--grey)">1</div><div class="ic">🚕</div><div class="tx"><span class="hl">05:00</span> 打车前往桃园机场（前一晚预约）</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--grey)">2</div><div class="ic">🛫</div><div class="tx"><span class="hl">08:00</span> 起飞</div></div>
       <div class="di-i"><div class="cb"></div><div class="idx" style="background:var(--grey)">3</div><div class="ic">🛬</div><div class="tx"><span class="hl">10:05</span> 抵达香港</div></div>
-    </div></div></div>
+    </div></div>
   </div>
-</section>
 
-<section id="food">
-  <div class="container">
-    <div class="sh reveal"><div class="eyebrow">Cuisine</div><h2>必喝手摇 & 必买零食</h2></div>
+  <!-- Food -->
+  <section id="food" style="margin-bottom:20px">
+    <div class="card reveal" style="border:none;background:transparent;padding:0">
+      <div class="card-h" style="padding-left:0"><div class="cn" style="background:var(--p-c);color:var(--p);font-size:16px">🍜</div><div class="ct">必喝手摇 & 必买零食</div></div>
+    </div>
     <div class="fg">
       <div class="fc reveal"><img class="bl" src="https://dejeng.com/assets/img/logo_for_loader.svg" alt="得正" loading="lazy"><div class="fci"><div class="nm">得正</div><div class="pl">焙烏龍奶茶+茶凍</div></div></div>
       <div class="fc reveal reveal-d1"><img class="bl" src="https://www.damingtea.com.tw/images/touch-icon/apple-icon-60x60_b.png" alt="大茗" loading="lazy"><div class="fci"><div class="nm">大茗</div><div class="pl">烤糖荞麦冻奶青(无糖) · 酪梨奶蓋+純茶</div></div></div>
@@ -325,13 +337,15 @@ html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif
       <span class="si"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/President_%28Uni-President%29_logo.svg/320px-President_%28Uni-President%29_logo.svg.png" alt="" loading="lazy" onerror="this.style.display='none'">统一布丁</span>
       <span class="si">新東陽鳳梨酥</span><span class="si">台鳳鳳梨酥</span>
     </div></div>
-  </div>
-</section>
+  </section>
 
-<section id="packing">
-  <div class="container">
-    <div class="pk-h reveal"><span class="label">出行清单</span><span class="count">已完成 <span id="packDone">0</span>/<span id="packTotal">0</span></span></div>
-    <div class="pb-track reveal" style="margin-bottom:12px"><div class="pb-fill" id="packFill" style="background:linear-gradient(90deg,#3B82F6,#22C55E)"></div></div>
+  <!-- Packing -->
+  <section id="packing" style="margin-bottom:20px">
+    <div class="card reveal" style="border:none;background:transparent;padding:0">
+      <div class="card-h" style="padding-left:0"><div class="cn" style="background:var(--p-c);color:var(--p);font-size:16px">🎒</div><div class="ct">出行清单</div></div>
+    </div>
+    <div class="pk-h reveal"><span class="l"></span><span class="c">已完成 <span id="packDone">0</span>/<span id="packTotal">10</span></span></div>
+    <div class="pb-t reveal" style="margin-bottom:10px"><div class="pb-f" id="packFill" style="background:linear-gradient(90deg,#3B82F6,#22C55E)"></div></div>
     <div class="pg" id="packingGrid">
       <div class="pi reveal"><div class="cb"></div><span>📇 卡针</span></div>
       <div class="pi reveal reveal-d1"><div class="cb"></div><span>🔌 转换头</span></div>
@@ -344,34 +358,46 @@ html{background:var(--b)}body{font-family:'Smartisan C','PingFang SC',sans-serif
       <div class="pi reveal reveal-d2"><div class="cb"></div><span>👖 长袖长裤(花莲)</span></div>
       <div class="pi reveal reveal-d3"><div class="cb"></div><span>👗 白裙/牛仔裙</span></div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <footer class="ft">台湾全景旅游地图 · 2025年6月17日–21日</footer>
+</div>
+</main>
+
+<!-- Floating Panel -->
 <div class="fp collapsed" id="usersPanel">
-  <div class="fp-h"><div class="ti">📍 在线 <span class="cnt" id="onlineCount">0</span></div><button class="fp-tg" id="panelToggle">▸</button></div>
+  <div class="fp-h"><div class="ti">📍 <span class="cnt" id="onlineCount">0</span></div><button class="fp-tg" id="panelToggle">▸</button></div>
   <div class="fp-b" id="panelBody"></div>
 </div>
 
-<footer class="ft">台湾全景旅游地图 · 2025年6月17日–21日</footer>
-
 <script>
-function gi(el){const d=el.closest(".di")?.dataset?.day||"pack";const t=(el.querySelector(".tx")||el.querySelector("span"))?.textContent?.trim()||"";return d+"_"+t.slice(0,30)}
-function up(){document.querySelectorAll(".di").forEach(g=>{const it=g.querySelectorAll(".di-i"),dn=g.querySelectorAll(".di-i.checked").length,tt=it.length;const h=g.closest(".dc")?.querySelector(".dc-pm");if(h){h.querySelector(".d-done").textContent=dn;h.querySelector(".d-total").textContent=tt;h.querySelector(".fl").style.width=(tt>0?(dn/tt*100):0)+"%"}});const ai=document.querySelectorAll(".di-i"),ad=document.querySelectorAll(".di-i.checked").length,at=ai.length;document.getElementById("totalDone").textContent=ad;document.getElementById("totalAll").textContent=at;document.getElementById("totalFill").style.width=(at>0?(ad/at*100):0)+"%";const pi=document.querySelectorAll("#packingGrid .pi"),pd=document.querySelectorAll("#packingGrid .pi.checked").length,pt=pi.length;document.getElementById("packDone").textContent=pd;document.getElementById("packTotal").textContent=pt;document.getElementById("packFill").style.width=(pt>0?(pd/pt*100):0)+"%"}
-window._checks={};function applyChecks(){document.querySelectorAll(".di-i .cb, #packingGrid .pi .cb").forEach(cb=>{const it=cb.closest(".di-i,.pi"),id=gi(it);if(window._checks[id]){cb.classList.add("checked");it.classList.add("checked")}else{cb.classList.remove("checked");it.classList.remove("checked")}});up()}
-if(typeof window._tg==="undefined"){window._tg=function(cb){const it=cb.closest(".di-i,.pi"),id=gi(it),ck=!cb.classList.contains("checked");cb.classList.toggle("checked",ck);it.classList.toggle("checked",ck);if(ck)window._checks[id]=true;else delete window._checks[id];up()}}
-document.addEventListener("click",e=>{const cb=e.target.closest(".di-i .cb, #packingGrid .pi .cb");if(cb&&typeof window._tg==="function")window._tg(cb)});
-const vt=document.getElementById("viewToggle");const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=640;if(isMobile)document.body.classList.add("mobile-mode");
-vt.querySelectorAll("button").forEach(btn=>{btn.addEventListener("click",()=>{vt.querySelectorAll("button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.body.classList.toggle("mobile-mode",btn.dataset.view==="mobile")})});
-document.querySelectorAll(".m3-tab").forEach(tab=>{tab.addEventListener("click",()=>{document.querySelectorAll(".m3-tab").forEach(t=>t.classList.remove("active"));tab.classList.add("active");const tgt=document.getElementById(tab.dataset.tab);if(tgt)tgt.scrollIntoView({behavior:"smooth"})})});
-document.querySelectorAll(".m3-pills .p").forEach(pill=>{pill.addEventListener("click",()=>{document.querySelectorAll(".m3-pills .p").forEach(p=>p.classList.remove("active"));pill.classList.add("active");const tgt=document.getElementById("day-"+pill.dataset.day);if(tgt){tgt.scrollIntoView({behavior:"smooth",block:"start"});const idx=parseInt(pill.dataset.day)-1;if(typeof sw==="function")sw(idx)}})});
-const ro=new IntersectionObserver(e=>{e.forEach(n=>{if(n.isIntersecting){n.target.classList.add("revealed");ro.unobserve(n.target)}})},{threshold:0.06,rootMargin:"0px 0px -40px 0px"});
-document.querySelectorAll(".reveal").forEach(el=>ro.observe(el));
+function gi(el){const d=el.closest('.di')?.dataset?.day||'pack';const t=(el.querySelector('.tx')||el.querySelector('span'))?.textContent?.trim()||'';return d+'_'+t.slice(0,30)}
+function up(){
+  document.querySelectorAll('.di').forEach(g=>{const it=g.querySelectorAll('.di-i'),dn=g.querySelectorAll('.di-i.checked').length,tt=it.length;const h=g.closest('.card')?.querySelector('.card-pm');if(h){h.querySelector('.d-done').textContent=dn;h.querySelector('.d-total').textContent=tt;h.querySelector('.fl').style.width=(tt>0?(dn/tt*100):0)+'%'}});
+  const ai=document.querySelectorAll('.di-i'),ad=document.querySelectorAll('.di-i.checked').length,at=ai.length;
+  const totalEl=document.getElementById('totalDone');if(totalEl)totalEl.textContent=ad;
+  const totalAllEl=document.getElementById('totalAll');if(totalAllEl)totalAllEl.textContent=at;
+  const phDone=document.getElementById('totalDonePH');if(phDone)phDone.textContent=ad;
+  const phAll=document.getElementById('totalAllPH');if(phAll)phAll.textContent=at;
+  const fill=document.getElementById('totalFill');if(fill)fill.style.width=(at>0?(ad/at*100):0)+'%';
+  const pi=document.querySelectorAll('#packingGrid .pi'),pd=document.querySelectorAll('#packingGrid .pi.checked').length,pt=pi.length;
+  document.getElementById('packDone').textContent=pd;document.getElementById('packTotal').textContent=pt;document.getElementById('packFill').style.width=(pt>0?(pd/pt*100):0)+'%';
+}
+window._checks={};
+function applyChecks(){document.querySelectorAll('.di-i .cb, #packingGrid .pi .cb').forEach(cb=>{const it=cb.closest('.di-i,.pi'),id=gi(it);if(window._checks[id]){cb.classList.add('checked');it.classList.add('checked')}else{cb.classList.remove('checked');it.classList.remove('checked')}});up()}
+if(typeof window._tg==='undefined'){window._tg=function(cb){const it=cb.closest('.di-i,.pi'),id=gi(it),ck=!cb.classList.contains('checked');cb.classList.toggle('checked',ck);it.classList.toggle('checked',ck);if(ck)window._checks[id]=true;else delete window._checks[id];up()}}
+document.addEventListener('click',e=>{const cb=e.target.closest('.di-i .cb, #packingGrid .pi .cb');if(cb&&typeof window._tg==='function')window._tg(cb)});
+const vt=document.getElementById('viewToggle');const isMobile=navigator.maxTouchPoints>0&&window.innerWidth<=900;if(isMobile)document.body.classList.add('mobile-mode');
+vt.querySelectorAll('button').forEach(btn=>{btn.addEventListener('click',()=>{vt.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('mobile-mode',btn.dataset.view==='mobile')})});
+document.getElementById('hambBtn')?.addEventListener('click',()=>{document.querySelector('.side')?.classList.toggle('open')});
+const ro=new IntersectionObserver(e=>{e.forEach(n=>{if(n.isIntersecting){n.target.classList.add('revealed');ro.unobserve(n.target)}})},{threshold:0.06,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 const DAY_DATA=[{"color":"#C88242","gradient":"linear-gradient(135deg,#C88242,#D4A05A)","zoom":11,"center":{"lat":24.9,"lng":121.5},"points":[{"name":"香港国际机场","lat":22.3080,"lng":113.9185,"icon":"🛫","desc":"10:15 起飞 → 台北"},{"name":"桃园机场T1","lat":25.0764,"lng":121.2237,"icon":"🛄","desc":"12:10 入境 · 电话卡 · 台币 · 悠游卡"},{"name":"7-Eleven机场B1","lat":25.0760,"lng":121.2245,"icon":"🏪","desc":"地瓜洒布雷 · 茶叶蛋 · 麻油鸡 · 木瓜牛奶"},{"name":"机场捷运","lat":25.0760,"lng":121.2240,"icon":"🚇","desc":"15:30 紫色快车/蓝色普通车"},{"name":"台北车站","lat":25.0478,"lng":121.5170,"icon":"🚄","desc":"16:30到站 · 17:05台铁往花莲"},{"name":"台铁沿线","lat":24.9400,"lng":121.5700,"icon":"🚄","desc":"台北→花莲 · 全程约2h"},{"name":"花莲车站","lat":23.9920,"lng":121.6080,"icon":"🚉","desc":"19:43抵达 · 步行5分钟到酒店"},{"name":"酒店","lat":23.9900,"lng":121.6060,"icon":"🏨","desc":"国联一路201号"},{"name":"花莲香扁食","lat":23.9928,"lng":121.6050,"icon":"🥟","desc":"国联店 · 招牌扁食"},{"name":"曾师傅麻糬","lat":23.9930,"lng":121.6070,"icon":"🍡","desc":"站前门市 · 花生麻糬 · 御皇酥"}]},{"color":"#059669","gradient":"linear-gradient(135deg,#059669,#34D399)","zoom":12,"center":{"lat":24.08,"lng":121.62},"points":[{"name":"酒店出发","lat":23.9900,"lng":121.6060,"icon":"🏨","desc":"长袖长裤 · 防晒衣 · 防蚊液"},{"name":"赏鲸码头","lat":24.0000,"lng":121.6400,"icon":"🐳","desc":"08:00出海赏鲸 · 约3h"},{"name":"回酒店","lat":23.9900,"lng":121.6060,"icon":"🏨","desc":"11:30休整 · 午餐"},{"name":"新城老街","lat":24.1200,"lng":121.6300,"icon":"🏘️","desc":"14:30包车出发"},{"name":"清水断崖","lat":24.2167,"lng":121.6833,"icon":"🏔️","desc":"台湾十景 · 绝壁断崖"},{"name":"板下沙滩","lat":24.1900,"lng":121.6600,"icon":"🏖️","desc":"秘境海滩"},{"name":"太鲁阁牌楼","lat":24.1667,"lng":121.6333,"icon":"🏛️","desc":"太鲁阁国家公园入口"},{"name":"七星潭","lat":24.0333,"lng":121.6333,"icon":"🌊","desc":"月牙形海湾 · 砾石海滩"},{"name":"炸弹葱油饼","lat":24.0100,"lng":121.6200,"icon":"🧅","desc":"花莲必吃小吃"},{"name":"东大门夜市","lat":23.9750,"lng":121.6110,"icon":"🌙","desc":"棺材饭 · 芋头牛奶 · 地瓜球 · 强蛋饼"}]},{"color":"#7C3AED","gradient":"linear-gradient(135deg,#7C3AED,#A78BFA)","zoom":12,"center":{"lat":24.98,"lng":121.55},"points":[{"name":"花莲车站","lat":23.9920,"lng":121.6080,"icon":"🚄","desc":"07:30台铁往台北"},{"name":"台北车站","lat":25.0478,"lng":121.5170,"icon":"🚉","desc":"10:09抵达 · 放行李"},{"name":"酒店","lat":25.0500,"lng":121.5150,"icon":"🏨","desc":"民生西路198号2楼"},{"name":"老张牛肉面","lat":25.0400,"lng":121.5200,"icon":"🍜","desc":"11:30牛三宝面 · 盐酥鸡"},{"name":"中正纪念堂","lat":25.0345,"lng":121.5217,"icon":"🏛️","desc":"13:00整点仪队交接"},{"name":"西门町","lat":25.0458,"lng":121.5072,"icon":"🎭","desc":"14:00红楼 · 涂鸦 · 购物"},{"name":"赛门邓普拉","lat":25.0500,"lng":121.5100,"icon":"🍢","desc":"甜不辣"},{"name":"饶河夜市","lat":25.0508,"lng":121.5767,"icon":"🌙","desc":"18:00胡椒饼 · 臭豆腐 · 马告肠"}]},{"color":"#2563EB","gradient":"linear-gradient(135deg,#2563EB,#60A5FA)","zoom":12,"center":{"lat":25.06,"lng":121.54},"points":[{"name":"酒店出发","lat":25.0500,"lng":121.5150,"icon":"🏨","desc":"09:00出发"},{"name":"国立故宫博物院","lat":25.0972,"lng":121.5483,"icon":"🏛️","desc":"肉形石 · 翠玉白菜 · 汝窑"},{"name":"大稻埕迪化街","lat":25.0597,"lng":121.5100,"icon":"🏘️","desc":"15:00红砖巴洛克 · 南北货"},{"name":"大稻埕码头","lat":25.0580,"lng":121.5080,"icon":"🌅","desc":"17:30货柜市集 · 卤肉饭 · 夕阳"},{"name":"台北101","lat":25.0339,"lng":121.5645,"icon":"🏢","desc":"18:45买特产 · 退税 · 诚品"},{"name":"宁夏夜市","lat":25.0583,"lng":121.5144,"icon":"🌙","desc":"20:00蛋黄芋饼 · 蚵仔煎 · 鸡排"}]},{"color":"#8A847E","gradient":"linear-gradient(135deg,#8A847E,#A8A29E)","zoom":11,"center":{"lat":25.06,"lng":121.40},"points":[{"name":"酒店出发","lat":25.0500,"lng":121.5150,"icon":"🚕","desc":"05:00打车（前一晚预约）"},{"name":"桃园机场","lat":25.0764,"lng":121.2237,"icon":"🛫","desc":"08:00起飞"},{"name":"香港国际机场","lat":22.3080,"lng":113.9185,"icon":"🛬","desc":"10:05抵达"}]}];
 function initMap(){const map=new google.maps.Map(document.getElementById("travel-map"),{center:{lat:24.0,lng:121.4},zoom:10,mapId:"trip_map",disableDefaultUI:false,zoomControl:true,streetViewControl:false,mapTypeControl:false});window._map=map;
 function mi(n,g,s){return{url:"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><circle cx="${s/2}" cy="${s/2}" r="${s/2-2}" fill="${g}" stroke="#fff" stroke-width="${s>30?3:2.5}"/><text x="${s/2}" y="${s/2}" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="${s*0.42}" font-weight="800">${n}</text></svg>`),scaledSize:new google.maps.Size(s,s),anchor:new google.maps.Point(s/2,s/2)}}
-const layers=[];DAY_DATA.forEach((day,di)=>{const mks=[],coords=[];day.points.forEach((pt,pi)=>{coords.push({lat:pt.lat,lng:pt.lng});const sz=pi===0||pi===day.points.length-1?36:30;const mk=new google.maps.Marker({position:{lat:pt.lat,lng:pt.lng},icon:mi(pi+1,day.gradient,sz),map:di===0?map:null,title:pt.name});const es=pi===0?"🚩 起点 ":pi===day.points.length-1?"🏁 终点 ":"";mk.addListener("click",()=>new google.maps.InfoWindow({content:`<div style="font-family:Smartisan C,PingFang SC,sans-serif;padding:2px 0"><div style="font-weight:600;font-size:14px;display:flex;align-items:center;gap:4px"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:${day.color};font-size:10px;font-weight:700;color:#fff;margin-right:2px">${pi+1}</span> ${pt.icon} ${pt.name}</div><div style="font-size:12px;color:#49454F;margin-top:2px">${es}${pt.desc}</div></div>`}).open(map,mk));mks.push(mk)});let pl=null,dm=[];if(coords.length>1){pl=new google.maps.Polyline({path:coords,strokeColor:day.color,strokeWeight:3.5,strokeOpacity:0.75,map:di===0?map:null});for(let i=1;i<coords.length;i++){const ang=Math.atan2(coords[i].lng-coords[i-1].lng,coords[i].lat-coords[i-1].lat)*180/Math.PI+90;const dk=new google.maps.Marker({position:{lat:(coords[i-1].lat+coords[i].lat)/2,lng:(coords[i-1].lng+coords[i].lng)/2},icon:{path:google.maps.SymbolPath.FORWARD_CLOSED_ARROW,scale:5,fillColor:day.color,fillOpacity:0.7,strokeWeight:0,rotation:ang},map:di===0?map:null});dm.push(dk)}}layers.push({markers:mks,polyline:pl,dirs:dm})});
-window.sw=function(i){layers.forEach((d,di)=>{const v=di===i;d.markers.forEach(m=>m.setMap(v?map:null));if(d.polyline)d.polyline.setMap(v?map:null);d.dirs.forEach(m=>m.setMap(v?map:null))});map.panTo(DAY_DATA[i].center);map.setZoom(DAY_DATA[i].zoom);document.querySelectorAll(".day-btn").forEach((b,j)=>b.classList.toggle("active",j===i));document.querySelectorAll(".m3-pills .p").forEach((p,j)=>p.classList.toggle("active",j===i))};document.querySelectorAll(".day-btn").forEach((b,i)=>b.addEventListener("click",()=>sw(i)));sw(0)}
-window.addEventListener("resize",()=>{window.innerWidth<=640?document.body.classList.add("mobile-mode"):document.body.classList.remove("mobile-mode")},{passive:true});
+const layers=[];DAY_DATA.forEach((day,di)=>{const mks=[],coords=[];day.points.forEach((pt,pi)=>{coords.push({lat:pt.lat,lng:pt.lng});const sz=pi===0||pi===day.points.length-1?36:30;const mk=new google.maps.Marker({position:{lat:pt.lat,lng:pt.lng},icon:mi(pi+1,day.gradient,sz),map:di===0?map:null,title:pt.name});const es=pi===0?"🚩 起点 ":pi===day.points.length-1?"🏁 终点 ":"";mk.addListener("click",()=>new google.maps.InfoWindow({content:`<div style="font-family:Smartisan C,PingFang SC,sans-serif;padding:2px 0"><div style="font-weight:600;font-size:14px;display:flex;align-items:center;gap:4px"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:${day.color};font-size:10px;font-weight:700;color:#fff;margin-right:2px">${pi+1}</span> ${pt.icon} ${pt.name}</div><div style="font-size:12px;color:#49454F;margin-top:2px">${es}${pt.desc}</div></div>`}).open(map,mk));mks.push(mk)});let pl=null,dm=[];if(coords.length>1){pl=new google.maps.Polyline({path:coords,strokeColor:day.color,strokeWeight:3,strokeOpacity:0.7,map:di===0?map:null});for(let i=1;i<coords.length;i++){const ang=Math.atan2(coords[i].lng-coords[i-1].lng,coords[i].lat-coords[i-1].lat)*180/Math.PI+90;const dk=new google.maps.Marker({position:{lat:(coords[i-1].lat+coords[i].lat)/2,lng:(coords[i-1].lng+coords[i].lng)/2},icon:{path:google.maps.SymbolPath.FORWARD_CLOSED_ARROW,scale:4,fillColor:day.color,fillOpacity:0.6,strokeWeight:0,rotation:ang},map:di===0?map:null});dm.push(dk)}}layers.push({markers:mks,polyline:pl,dirs:dm})});
+window.sw=function(i){layers.forEach((d,di)=>{const v=di===i;d.markers.forEach(m=>m.setMap(v?map:null));if(d.polyline)d.polyline.setMap(v?map:null);d.dirs.forEach(m=>m.setMap(v?map:null))});map.panTo(DAY_DATA[i].center);map.setZoom(DAY_DATA[i].zoom);document.querySelectorAll('.day-btn').forEach((b,j)=>b.classList.toggle('active',j===i));document.querySelectorAll('.side-nav a[href^="#day-"]').forEach((a,j)=>a.classList.toggle('act',j===i))};document.querySelectorAll('.day-btn').forEach((b,i)=>b.addEventListener('click',()=>sw(i)));sw(0)}
+window.addEventListener('resize',()=>{window.innerWidth<=900?document.body.classList.add('mobile-mode'):document.body.classList.remove('mobile-mode')},{passive:true});
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHlPR1G2MAiPk2t6nUwY6w6VyK8ycJXSA&callback=initMap" async defer></script>
 <script type="module">
@@ -382,15 +408,16 @@ const cfg={apiKey:"AIzaSyB1CpHDKhlKvssrvoYw2W-muwsqq8V_sW4",authDomain:"mapkun-d
 let app,db;try{app=initializeApp(cfg);getAnalytics(app);db=getDatabase(app)}catch(e){db=null}
 const uid=localStorage.getItem("tw_uid")||(localStorage.setItem("tw_uid","u_"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),localStorage.getItem("tw_uid"));
 let nick=localStorage.getItem("tw_nick")||"";if(!nick.trim()){nick=prompt("昵称:","")||"旅伴";localStorage.setItem("tw_nick",nick)}
+document.getElementById('sideNick').textContent=nick;
 const dev=/iPhone/.test(navigator.userAgent)?"iPhone":/Android/.test(navigator.userAgent)?"Android":"Web";
 const pnl=document.getElementById("usersPanel"),pb=document.getElementById("panelBody"),ptg=document.getElementById("panelToggle"),oc=document.getElementById("onlineCount");
 ptg.onclick=e=>{e.stopPropagation();pnl.classList.toggle("collapsed");ptg.textContent=pnl.classList.contains("collapsed")?"▸":"▾"};pnl.onclick=()=>{if(pnl.classList.contains("collapsed")){pnl.classList.remove("collapsed");ptg.textContent="▾"}};
 let umks={},pal=["#C88242","#059669","#7C3AED","#2563EB","#E11D48","#0891B2"],ci=0,lp=null;
 if(db&&navigator.geolocation){
 navigator.geolocation.watchPosition(p=>{const{latitude:lat,longitude:lng}=p.coords;lp={lat,lng};try{set(ref(db,"presence/"+uid),{nick,dev,lat,lng,lastSeen:Date.now()});onDisconnect(ref(db,"presence/"+uid)).remove()}catch(e){}},()=>{},{enableHighAccuracy:true,timeout:15000,maximumAge:10000});
-onValue(ref(db,"presence"),snap=>{const data=snap.val()||{},now=Date.now();let cnt=0;pb.innerHTML="";Object.keys(data).forEach(id=>{const u=data[id];if(id===uid||now-u.lastSeen>120000)return;cnt++;const c=pal[ci++%pal.length],m=Math.round((now-u.lastSeen)/60000),r=document.createElement("div");r.className="ur";r.innerHTML=`<div class="dot pls" style="background:${c}"></div><div class="if"><div class="nm">${u.nick||"旅伴"}</div><div class="mt">${u.dev||""} · ${m<1?"刚刚":m+"分钟前"}</div></div>`;pb.appendChild(r);const map=window._map;if(u.lat&&u.lng&&map){if(umks[id])umks[id].setPosition({lat:u.lat,lng:u.lng});else{const mk=new google.maps.Marker({position:{lat:u.lat,lng:u.lng},map:map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:9,fillColor:c,fillOpacity:0.9,strokeColor:"#fff",strokeWeight:2},title:u.nick||"旅伴"});mk.addListener("click",()=>{new google.maps.InfoWindow({content:`<b>${u.nick||"旅伴"}</b><br>${u.dev||""}`}).open(map,mk)});umks[id]=mk}}});oc.textContent=cnt;Object.keys(umks).forEach(id=>{if(!data[id]||now-(data[id]?.lastSeen||0)>120000){umks[id].setMap(null);delete umks[id]}});if(cnt===0&&!pnl.classList.contains("collapsed"))pnl.classList.add("collapsed")});
+onValue(ref(db,"presence"),snap=>{const data=snap.val()||{},now=Date.now();let cnt=0;pb.innerHTML="";Object.keys(data).forEach(id=>{const u=data[id];if(id===uid||now-u.lastSeen>120000)return;cnt++;const c=pal[ci++%pal.length],m=Math.round((now-u.lastSeen)/60000),r=document.createElement("div");r.className="ur";r.innerHTML=`<div class="dot" style="background:${c}"></div><div class="if"><div class="nm">${u.nick||"旅伴"}</div><div class="mt">${u.dev||""} · ${m<1?"刚刚":m+"分钟前"}</div></div>`;pb.appendChild(r);const map=window._map;if(u.lat&&u.lng&&map){if(umks[id])umks[id].setPosition({lat:u.lat,lng:u.lng});else{const mk=new google.maps.Marker({position:{lat:u.lat,lng:u.lng},map:map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:9,fillColor:c,fillOpacity:0.9,strokeColor:"#fff",strokeWeight:2},title:u.nick||"旅伴"});mk.addListener("click",()=>{new google.maps.InfoWindow({content:`<b>${u.nick||"旅伴"}</b><br>${u.dev||""}`}).open(map,mk)});umks[id]=mk}}});oc.textContent=cnt;Object.keys(umks).forEach(id=>{if(!data[id]||now-(data[id]?.lastSeen||0)>120000){umks[id].setMap(null);delete umks[id]}});if(cnt===0&&!pnl.classList.contains("collapsed"))pnl.classList.add("collapsed")});
 const ival=setInterval(()=>{const map=window._map;if(map&&lp){const mk=new google.maps.Marker({position:lp,map:map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:7,fillColor:"#3B82F6",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:nick+" (你)"});mk.addListener("click",()=>new google.maps.InfoWindow({content:`<b>${nick} (你)</b><br>${dev}`}).open(map,mk));clearInterval(ival);setInterval(()=>{if(lp)mk.setPosition(lp)},3000)}},200)}
-if(db){let il=true;const ot=window._tg;window._tg=function(cb){const it=cb.closest(".di-i,.pi"),id=gi(it),ck=!cb.classList.contains("checked");cb.classList.toggle("checked",ck);it.classList.toggle("checked",ck);if(ck)window._checks[id]=true;else delete window._checks[id];up();try{update(ref(db),{["checks/"+id]:ck||null})}catch(e){}};
+if(db){let il=true;window._tg=function(cb){const it=cb.closest(".di-i,.pi"),id=gi(it),ck=!cb.classList.contains("checked");cb.classList.toggle("checked",ck);it.classList.toggle("checked",ck);if(ck)window._checks[id]=true;else delete window._checks[id];up();try{update(ref(db),{["checks/"+id]:ck||null})}catch(e){}};
 onValue(ref(db,"checks"),snap=>{const fb=snap.val()||{};window._checks={};Object.keys(fb).forEach(k=>{if(fb[k])window._checks[k]=true});il=false;applyChecks()});setTimeout(()=>{if(il){il=false;applyChecks()}},3000)}else setTimeout(()=>applyChecks(),500)
 </script>
 </body>
