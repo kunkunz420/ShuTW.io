@@ -581,10 +581,13 @@ if(db){
     const fb=snap.val()||{};
     window._checks={};
     Object.keys(fb).forEach(key=>{if(fb[key])window._checks[key]=true});
-    if(initialLoad){initialLoad=false;applyChecks();return}
-    /* Subsequent updates from other devices: apply immediately */
-    applyChecks();
+    initialLoad=false;applyChecks();
   });
+  /* Fallback: if Firebase fails to load, at least show something after 3s */
+  setTimeout(()=>{if(initialLoad){initialLoad=false;applyChecks()}},3000);
+} else {
+  /* No Firebase at all (init failed). Just show empty checks. */
+  setTimeout(()=>applyChecks(),500);
 }
 </script>
 
