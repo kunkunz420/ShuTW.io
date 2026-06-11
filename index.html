@@ -63,14 +63,14 @@ html{background:var(--g)}body{font-family:'Smartisan C','PingFang SC',sans-serif
 
 /* ─── Cards ─── */
 .cd{border-radius:12px;border:1px solid var(--b);background:var(--g);overflow:hidden;margin:0 0 10px;transition:background 0.3s,border 0.3s}
-.cd-h{padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--b2)}
+.cd-h{padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--b2)}
 .cd-h .cn{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;flex-shrink:0}
 .cd-h .ct{font-weight:600;font-size:0.85rem;flex:1}
 .cd-h .cd{font-size:10px;color:var(--t2)}
 .cd-pm{display:flex;align-items:center;gap:6px;width:100%;margin-top:4px}
 .cd-pm .tr{flex:1;height:3px;background:var(--b2);border-radius:100px;overflow:hidden}
 .cd-pm .tr .fl{height:100%;border-radius:100px;transition:width 0.4s;width:0%}
-.cd-pm .ct{font-size:10px;color:var(--t2);min-width:26px;text-align:right}
+.cd-pm .ct{font-size:10px;color:var(--t2);min-width:30px;text-align:right}
 .cd-b{padding:6px 12px 10px}
 .di{display:grid;gap:1px}
 .di-i{display:flex;gap:8px;align-items:flex-start;padding:5px 6px;border-radius:6px;font-size:13px;transition:all 0.15s}
@@ -334,7 +334,7 @@ const DAY_DATA=[{color:'#4285F4',gradient:'linear-gradient(135deg,#4285F4,#669DF
 function initMap(){const m=new google.maps.Map(document.getElementById('travel-map'),{center:{lat:24.0,lng:121.4},zoom:10,disableDefaultUI:false,zoomControl:true,streetViewControl:false,mapTypeControl:false});window._map=m;
 function mi(n,g,s){return{url:'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><circle cx="${s/2}" cy="${s/2}" r="${s/2-2}" fill="${g}" stroke="#fff" stroke-width="${s>30?3:2.5}"/><text x="${s/2}" y="${s/2}" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="${s*0.42}" font-weight="700">${n}</text></svg>`),scaledSize:new google.maps.Size(s,s),anchor:new google.maps.Point(s/2,s/2)}}
 const la=[];DAY_DATA.forEach((day,di)=>{const mk=[],co=[];day.points.forEach((pt,pi)=>{co.push({lat:pt.lat,lng:pt.lng});const sz=pi===0||pi===day.points.length-1?36:30;const k=new google.maps.Marker({position:{lat:pt.lat,lng:pt.lng},icon:mi(pi+1,day.gradient,sz),map:di===0?m:null,title:pt.name});const es=pi===0?'🚩 起点 ':pi===day.points.length-1?'🏁 终点 ':'';k.addListener('click',()=>new google.maps.InfoWindow({content:`<div style="font-family:Smartisan C,PingFang SC,sans-serif;padding:1px 0"><div style="font-weight:600;font-size:13px;display:flex;align-items:center;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:${day.color};font-size:9px;font-weight:700;color:#fff">${pi+1}</span> ${pt.icon} ${pt.name}</div><div style="font-size:11px;color:#5F6368;margin-top:1px">${es}${pt.desc}</div></div>`}).open(m,k));mk.push(k)});let pl=null,dm=[];if(co.length>1){pl=new google.maps.Polyline({path:co,strokeColor:day.color,strokeWeight:3,strokeOpacity:0.7,map:di===0?m:null});for(let i=1;i<co.length;i++){const ang=Math.atan2(co[i].lng-co[i-1].lng,co[i].lat-co[i-1].lat)*180/Math.PI+90;const dk=new google.maps.Marker({position:{lat:(co[i-1].lat+co[i].lat)/2,lng:(co[i-1].lng+co[i].lng)/2},icon:{path:google.maps.SymbolPath.FORWARD_CLOSED_ARROW,scale:4,fillColor:day.color,fillOpacity:0.6,strokeWeight:0,rotation:ang},map:di===0?m:null});dm.push(dk)}}la.push({markers:mk,polyline:pl,dirs:dm})});
-window.sw=function(i){la.forEach((d,di)=>{const v=di===i;d.markers.forEach(m=>m.setMap(v?m:null));if(d.polyline)d.polyline.setMap(v?m:null);d.dirs.forEach(m=>m.setMap(v?m:null))});m.panTo(DAY_DATA[i].center);m.setZoom(DAY_DATA[i].zoom);document.querySelectorAll('.d-btn').forEach((b,j)=>b.classList.toggle('active',j===i))};document.querySelectorAll('.d-btn').forEach((b,i)=>b.addEventListener('click',()=>sw(i)));sw(0)}
+window.sw=function(i){const mp=window._map;la.forEach((d,di)=>{const v=di===i;d.markers.forEach(mk=>mk.setMap(v?mp:null));if(d.polyline)d.polyline.setMap(v?mp:null);d.dirs.forEach(dk=>dk.setMap(v?mp:null))});mp.panTo(DAY_DATA[i].center);mp.setZoom(DAY_DATA[i].zoom);document.querySelectorAll('.d-btn').forEach((b,j)=>b.classList.toggle('active',j===i))};document.querySelectorAll('.d-btn').forEach((b,i)=>b.addEventListener('click',()=>sw(i)));sw(0)}
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHlPR1G2MAiPk2t6nUwY6w6VyK8ycJXSA&callback=initMap" async defer></script>
 <script type="module">
